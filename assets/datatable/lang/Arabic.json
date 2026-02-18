@@ -1,0 +1,44 @@
+{
+    "emptyTable": "لا توجد بيانات في الجدول",
+    "info": "عرض _START_ إلى _END_ من _TOTAL_ سجل",
+    "infoEmpty": "عرض 0 إلى 0 من 0 سجل",
+    "infoFiltered": "(تمت التصفية من _MAX_ إجمالي السجلات)",
+    "infoPostFix": "",
+    "thousands": ",",
+    "lengthMenu": "عرض _MENU_ سجل",
+    "loadingRecords": "جارٍ التحميل...",
+    "processing": "جارٍ المعالجة...",
+    "search": "بحث:",
+    "zeroRecords": "لم يتم العثور على سجلات مطابقة",
+    "paginate": {
+        "first": "الأول",
+        "last": "الأخير",
+        "next": "التالي",
+        "previous": "السابق"
+    },
+    "aria": {
+        "sortAscending": ": تفعيل لترتيب العمود تصاعدياً",
+        "sortDescending": ": تفعيل لترتيب العمود تنازلياً"
+    },
+    "buttons": {
+        "copy": "نسخ",
+        "colvis": "إظهار/إخفاء الأعمدة",
+        "colvisRestore": "استعادة العرض",
+        "copySuccess": {
+            "1": "تم نسخ سجل واحد",
+            "_": "تم نسخ %d سجلات"
+        },
+        "copyTitle": "نسخ إلى الحافظة",
+        "csv": "CSV",
+        "excel": "Excel",
+        "pdf": "PDF",
+        "print": "طباعة",
+        "createState": "حفظ حالة التصفية",
+        "removeAllStates": "إزالة جميع الحالات المحفوظة",
+        "removeState": "إزالة",
+        "renameState": "إعادة تسمية",
+        "savedStates": "الحالات المحفوظة",
+        "stateRestore": "استرجاع الحالة %d",
+        "updateState": "تحديث"
+    }
+}

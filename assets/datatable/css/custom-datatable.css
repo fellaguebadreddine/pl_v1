@@ -1,0 +1,89 @@
+/* Styles DataTables personnalisés pour Bootstrap 5 RTL */
+.datatable-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    text-align: left !important;
+}
+
+.dataTables_wrapper .dataTables_length {
+    text-align: right !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #0d6efd !important;
+    color: white !important;
+    border-color: #0d6efd !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #0b5ed7 !important;
+    color: white !important;
+}
+
+/* Styles pour les tables RTL */
+table.dataTable[dir="rtl"] th,
+table.dataTable[dir="rtl"] td {
+    text-align: right !important;
+}
+
+/* Styles pour les boutons d'export */
+.dt-buttons .btn {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+}
+
+/* Styles pour la sélection multiple */
+.select-checkbox {
+    width: 20px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_wrapper .dt-buttons {
+        text-align: center !important;
+    }
+}
+
+/* Badges personnalisés pour DataTables */
+.dataTables_wrapper .badge {
+    font-size: 0.85em;
+    padding: 0.35em 0.65em;
+}
+
+/* Tooltips pour les colonnes */
+table.dataTable th {
+    position: relative;
+}
+
+table.dataTable th .column-tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    display: none;
+}
+
+table.dataTable th:hover .column-tooltip {
+    display: block;
+}

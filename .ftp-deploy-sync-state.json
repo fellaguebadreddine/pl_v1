@@ -1,0 +1,787 @@
+{
+    "description": "DO NOT DELETE THIS FILE. This file is used to keep track of which files have been synced in the most recent deployment. If you delete this file a resync will need to be done (which can take a while) - read more: https://github.com/SamKirkland/FTP-Deploy-Action",
+    "version": "1.0.0",
+    "generatedTime": 1771343799886,
+    "data": [
+        {
+            "type": "file",
+            "name": ".ftpquota",
+            "size": 13,
+            "hash": "55709587812fee7b8e627f3d37941e0f44e4d25e2e4936a24aa9e535c78d4bd2"
+        },
+        {
+            "type": "folder",
+            "name": "admin"
+        },
+        {
+            "type": "folder",
+            "name": "assets"
+        },
+        {
+            "type": "folder",
+            "name": "css"
+        },
+        {
+            "type": "file",
+            "name": "error_403.php",
+            "size": 1756,
+            "hash": "af47c00ab8fa3169b379465c9a95f94df6ade074eceddd0bb2653e24dc2dc808"
+        },
+        {
+            "type": "file",
+            "name": "import_grades.php",
+            "size": 13884,
+            "hash": "4bb4bdecdd9cf64d48c0eb1683ded45b7ad61f09b083a950aa7ee6fbf3af426b"
+        },
+        {
+            "type": "folder",
+            "name": "includes"
+        },
+        {
+            "type": "file",
+            "name": "index.php",
+            "size": 78,
+            "hash": "cb14faf08914c440af7c78a1adfc66bb2b96c151286a1f14831a43fa86466a19"
+        },
+        {
+            "type": "folder",
+            "name": "js"
+        },
+        {
+            "type": "file",
+            "name": "login.php",
+            "size": 6293,
+            "hash": "f2470efbbea88d5875f6a8f6a46565f63df82e592e8c5d21c856595ebbed6e4d"
+        },
+        {
+            "type": "file",
+            "name": "logout.php",
+            "size": 116,
+            "hash": "42d67dcbfe85ab0be8a53114a6e70c3b3ceb15c494e23a7a0f13184cdc003ea8"
+        },
+        {
+            "type": "folder",
+            "name": "super_admin"
+        },
+        {
+            "type": "file",
+            "name": "test.php",
+            "size": 0,
+            "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+            "type": "file",
+            "name": "test_tab.php",
+            "size": 24796,
+            "hash": "28882c052e58dc0fe8ecfdb661fb4fad774b7b7cb5e3bb14ddc62c31a814dc67"
+        },
+        {
+            "type": "folder",
+            "name": "uploads"
+        },
+        {
+            "type": "folder",
+            "name": "utilisateur"
+        },
+        {
+            "type": "folder",
+            "name": "vendor"
+        },
+        {
+            "type": "file",
+            "name": "admin/admin_tableaux1.php",
+            "size": 7329,
+            "hash": "0db42f3d38b87124a93d3a33e08e4e3db5e74e28fc71dea2385e7ad2b9d918de"
+        },
+        {
+            "type": "folder",
+            "name": "admin/ajax"
+        },
+        {
+            "type": "file",
+            "name": "admin/close_file.php",
+            "size": 781,
+            "hash": "21873ddb9ef6de9a16fd6bd248c6bc2fa9b4ad8c33d1d03810e0eca9efb3929b"
+        },
+        {
+            "type": "folder",
+            "name": "admin/composit"
+        },
+        {
+            "type": "file",
+            "name": "admin/details_tableau.php",
+            "size": 20836,
+            "hash": "cfc3ce7a9757d2982aad82231d0d32ade3039b5e6b11055686cabca917aa7279"
+        },
+        {
+            "type": "file",
+            "name": "admin/grades.php",
+            "size": 44218,
+            "hash": "f5c143e5e227b4756eb4b65a27fb62aa7a62694921203872168912e580f1cc77"
+        },
+        {
+            "type": "file",
+            "name": "admin/index.php",
+            "size": 24293,
+            "hash": "844b3547d960fb8c1fb2710913724d027ab60f2770dfde50470e5df54de1e3e9"
+        },
+        {
+            "type": "file",
+            "name": "admin/parametres_exercice.php",
+            "size": 31567,
+            "hash": "03e76531734ae49c1186b3fc2c8b9d8539434261c7b09520424a107e619394f6"
+        },
+        {
+            "type": "file",
+            "name": "admin/print_tab_1.php",
+            "size": 19469,
+            "hash": "425ba2374be337af439b6e71105b2ae79f6d590f36fda7cb3f41d590a6e47ef9"
+        },
+        {
+            "type": "file",
+            "name": "admin/societe.php",
+            "size": 51632,
+            "hash": "9dfac43b2ae635611eb4f54c061af833a33f40030161990d89d8e75e4ca0c035"
+        },
+        {
+            "type": "file",
+            "name": "admin/trait_societe.php",
+            "size": 46241,
+            "hash": "b18ff02b1cbf0442911a894c41348e4953cd5f4f96874fa5df8fe06f1dbe30b4"
+        },
+        {
+            "type": "folder",
+            "name": "admin/uploads"
+        },
+        {
+            "type": "file",
+            "name": "admin/utilisateurs.php",
+            "size": 60722,
+            "hash": "668b643c6c0aafa78a8350af29756b644972bf0728f3b4abd27a332a887cabe3"
+        },
+        {
+            "type": "folder",
+            "name": "assets/datatable"
+        },
+        {
+            "type": "folder",
+            "name": "assets/img"
+        },
+        {
+            "type": "folder",
+            "name": "assets/js"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.css",
+            "size": 361278,
+            "hash": "9f1d9a2bf122eb570213b70bf84beffa56e45f2e802d6221cda3edb75e6ab426"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.css.map",
+            "size": 871702,
+            "hash": "12eeba31c75235a29300917abd3a206445c3267fc171993d210c1ab9f4f0f09a"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.min.css",
+            "size": 297903,
+            "hash": "6b9ac0b2254c45c0573c81ba879d7d4642dce4dcb68b5f2794350dc8364a36d6"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.min.css.map",
+            "size": 762552,
+            "hash": "d15844d0b5fe204471a9496fab4764906f6499bb795bb11acfc5f792c688ecf2"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.rtl.css",
+            "size": 361493,
+            "hash": "cdec86490441558228898c5db73a3dbda64a44d1af3515d707aedbdb3d3f752c"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.rtl.css.map",
+            "size": 871567,
+            "hash": "6694dc26f29a15103fe2b09367669aaa11110a7123d8bb94b2fd8afa4de692f5"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.rtl.min.css",
+            "size": 298070,
+            "hash": "747c6c42e3557152c50a35a1074d61454d20ae9b94e8535339285b33278ea278"
+        },
+        {
+            "type": "file",
+            "name": "css/adminlte.rtl.min.css.map",
+            "size": 1135341,
+            "hash": "55a5df8ef80eb9fa52354b2c6e90509922a031a1e3c5bfe0abb83e7726d4602a"
+        },
+        {
+            "type": "file",
+            "name": "includes/bd.php",
+            "size": 3270,
+            "hash": "9c32ce3421573d893edc235d14fea19cb66f0b09ebacb01bbee95d405cc446a5"
+        },
+        {
+            "type": "file",
+            "name": "includes/accounts.php",
+            "size": 13877,
+            "hash": "b9031da7b8e3a78830a84f6da89b26aa0b6b7c60ebcc4ac3ac5949b138cecb3d"
+        },
+        {
+            "type": "file",
+            "name": "includes/chiffrescnlettres.php",
+            "size": 8896,
+            "hash": "5b85f9cce12f39f1c93fa3bc117bd37e01c564b27037bd7effb85e21e1be8ec1"
+        },
+        {
+            "type": "file",
+            "name": "includes/codebare.php",
+            "size": 10261,
+            "hash": "fe3ee6f0d2df2904556382ffb4486619430038b34f4670b87a7734cd736901c2"
+        },
+        {
+            "type": "file",
+            "name": "includes/config.php",
+            "size": 340,
+            "hash": "1e4ea0d229fc60fc0f6e64fb1b4d01be718a080e3a3890599e0155abe09e1541"
+        },
+        {
+            "type": "file",
+            "name": "includes/detailTab1.php",
+            "size": 7601,
+            "hash": "cadd4abfdb56655b2e1836be954110d9499a32dea538315e338aa9316ea5d87c"
+        },
+        {
+            "type": "file",
+            "name": "includes/detailTab1_hp.php",
+            "size": 7619,
+            "hash": "43716fa1b82a8f0faac0ef82f77dfd37227de291fa6379bea6c196cdca8a75ac"
+        },
+        {
+            "type": "file",
+            "name": "includes/exercice.php",
+            "size": 12107,
+            "hash": "319dd2e15ec2b7911fa1b42e391f694f5801bb2de9ad232cb918fcfeb5d39c84"
+        },
+        {
+            "type": "file",
+            "name": "includes/fonctions.php",
+            "size": 13195,
+            "hash": "08ce364497691ad52494dc093c50a64fa4b65f6cf573907d82bcaad0bf958cc2"
+        },
+        {
+            "type": "file",
+            "name": "includes/grade.php",
+            "size": 7719,
+            "hash": "ef2e15af2bfdd5fe7447d837e3562fba4e02a6fdcc30dffbde919c46326a8789"
+        },
+        {
+            "type": "file",
+            "name": "includes/initialiser.php",
+            "size": 1043,
+            "hash": "8e8165becfb6c6bc7e58e7968f137b7b0a58dc813b130b041601d4d0964dda6c"
+        },
+        {
+            "type": "file",
+            "name": "includes/session.php",
+            "size": 2595,
+            "hash": "16c2abed6325d5c91046717bbe168209855512b1227169c189cddd1a483da257"
+        },
+        {
+            "type": "file",
+            "name": "includes/sessionold.php",
+            "size": 2218,
+            "hash": "c6ffd3eb7062af3abe198111a218640c6a397d1a9e5ac57fc5fb66fc6d980ee8"
+        },
+        {
+            "type": "file",
+            "name": "includes/situation.php",
+            "size": 16610,
+            "hash": "5c849cee3b36c9e0d79ee96eb8657c8243e8db30d5573654635fe9ba8a3f1737"
+        },
+        {
+            "type": "file",
+            "name": "includes/societes.php",
+            "size": 12432,
+            "hash": "0028667f71d346f17a509aef70ed3939e72ad235464092606bd047ecada5d191"
+        },
+        {
+            "type": "file",
+            "name": "includes/tableau_1.php",
+            "size": 7702,
+            "hash": "a0756a096eb70a833abaaa6722a98b6975acab55783f8d8fc0213a580c5fb107"
+        },
+        {
+            "type": "file",
+            "name": "includes/user.php",
+            "size": 28777,
+            "hash": "215e6fefe728642444f316ebbb6346197adcf1ee128d6e2763aff39dff07e746"
+        },
+        {
+            "type": "file",
+            "name": "includes/wilayas.php",
+            "size": 13103,
+            "hash": "7d675a38396b83fdc4e64e8a93a75b81e50ff7c9172d115682fa57d7bade2c6f"
+        },
+        {
+            "type": "file",
+            "name": "js/adminlte.js",
+            "size": 51807,
+            "hash": "9ce2a8e7b53c3cf15f6f79636ba348cc8a6984b27155195ccf1c3514d4195343"
+        },
+        {
+            "type": "file",
+            "name": "js/adminlte.js.map",
+            "size": 35027,
+            "hash": "69db87028e7bbca919e36aaac680452bfc38b50c37ade7e9f1226b5b898a7f40"
+        },
+        {
+            "type": "file",
+            "name": "js/adminlte.min.js",
+            "size": 19123,
+            "hash": "34699aba375500b75eae5f956361ae6ff959182c370960fd6d4e9da23d312095"
+        },
+        {
+            "type": "file",
+            "name": "js/adminlte.min.js.map",
+            "size": 21204,
+            "hash": "7e31e71a0b30d72578f195af9af54732e1a0160ab71ae9a57dc27dddaac6db92"
+        },
+        {
+            "type": "folder",
+            "name": "super_admin/ajax"
+        },
+        {
+            "type": "folder",
+            "name": "super_admin/composit"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/bord.php",
+            "size": 8796,
+            "hash": "804c0150a9e3c9d0fc54c8dd9ace12b80d1f3695e18b6d701dd812435c76f66e"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/index.php",
+            "size": 6250,
+            "hash": "045b76c3e7e2a61dd7a12d7fb17a484db87b142b37121c796373dee037a9ca1d"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/parametres_exercice.php",
+            "size": 30022,
+            "hash": "d870ed2588338cc7a039f2201f42e034e6a637731ce422d395714a438775e932"
+        },
+        {
+            "type": "folder",
+            "name": "uploads/photos"
+        },
+        {
+            "type": "folder",
+            "name": "utilisateur/ajax"
+        },
+        {
+            "type": "folder",
+            "name": "utilisateur/composit"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/index.php",
+            "size": 36263,
+            "hash": "dbac9b0b38e9e5cbf000f61e2226006af253618150e075db7efad0e7892af34e"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/print_tab1.php",
+            "size": 19469,
+            "hash": "425ba2374be337af439b6e71105b2ae79f6d590f36fda7cb3f41d590a6e47ef9"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/tab1.php",
+            "size": 30295,
+            "hash": "46428ba2de773c8a9a86af2bcbf4f21eba0af88cf513db910ad10eb9ebeccca8"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/tableau_1.php",
+            "size": 47630,
+            "hash": "055252633bb48b6b9c43231e927e2ce024fbe5bc46b2da15c6f908b5b2ee90fa"
+        },
+        {
+            "type": "file",
+            "name": "vendor/autoload.php",
+            "size": 178,
+            "hash": "fa7a44393926b08fb48fadd64d407375c24ccdfc41e1f8e769deaa25260912e2"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/save_commentaire_tableau.php",
+            "size": 1354,
+            "hash": "6d8484acab9e29b0302313fb44332605e4753579aadcaa49436922a765a6e619"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/traitement_exercices.php",
+            "size": 4391,
+            "hash": "07ae1ab02b4d3755d4f78b9ffee4c3f4ddd70e208d68fad6868f372c4abd43c5"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/traitement_grades.php",
+            "size": 7889,
+            "hash": "449ac4833dd0cbd9ab60f702f68c30d06657d84eec6af894aa905b3ce650e06a"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/traitement_societe.php",
+            "size": 6060,
+            "hash": "e56d6d5de010f4d13242c2a6571a7c0ef1c533b0de9904612e4b0e8d6a839bed"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/traitement_utilisateurs.php",
+            "size": 12812,
+            "hash": "28dc0a51321006c729f81d51aefa68c30085f450e39ddf22cc01812c25c6c99d"
+        },
+        {
+            "type": "file",
+            "name": "admin/ajax/valider_tableau.php",
+            "size": 2594,
+            "hash": "4883d30c7b0b903c03890f484e371bd5d4116e50284ceba12eb273fe56c06d23"
+        },
+        {
+            "type": "file",
+            "name": "admin/composit/footer.php",
+            "size": 5486,
+            "hash": "3ff5f4902c16fcc0191c7118231d1814a2ce8fd790e22b1aae6c54c85843ed4f"
+        },
+        {
+            "type": "file",
+            "name": "admin/composit/header.php",
+            "size": 15570,
+            "hash": "2d98f6dff88ac32fd2f9b9cf3b7ec2bb7d14e84b2b8e71b75cec4797aa1addfc"
+        },
+        {
+            "type": "folder",
+            "name": "admin/uploads/logos"
+        },
+        {
+            "type": "folder",
+            "name": "assets/datatable/css"
+        },
+        {
+            "type": "folder",
+            "name": "assets/datatable/lang"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/AdminLTELogo.png",
+            "size": 2637,
+            "hash": "b921c343846d962d04dac6339a291e375f89e2d26e89fb3ded1f7ae830f6d456"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/AdminLTEFullLogo.png",
+            "size": 3009,
+            "hash": "30fa2a88c492c23be8105be5a0a18c578db73fd2211c45df33e31bd6512978ac"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/avatar.png",
+            "size": 8118,
+            "hash": "5cf67f060affb99cee01566d45bcde530edc111ec7378f33a739e194bc90f0b7"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/avatar2.png",
+            "size": 8265,
+            "hash": "5044936b7d1d190d9a48fd904a173bfd674b46781376e5ac2e517e9a72c0d4e6"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/avatar3.png",
+            "size": 9246,
+            "hash": "1d32a0e2a32321bdb97b0445796a59c03097c81ca61602fe6e71fb2b85040711"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/avatar4.png",
+            "size": 13543,
+            "hash": "e1d07fd1bf446f1d8f81e5c6a801e055fc1ce1c616ab76126b7577cbfbf0bc8a"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/avatar5.png",
+            "size": 7587,
+            "hash": "2ef83f305e911a0d75c61b2d531da26e28df78dddda8877c49b1b1b8bb9987d9"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/boxed-bg.jpg",
+            "size": 123766,
+            "hash": "90d847b1542cf4171594fe194e61e125fc0064eb6db2098305fb422e25c72e6e"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/boxed-bg.png",
+            "size": 43676,
+            "hash": "1939a38d523b34c479b6385296cbfcf196b1fa53c22d161237ee264e8664e849"
+        },
+        {
+            "type": "folder",
+            "name": "assets/img/credit"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/default-150x150.png",
+            "size": 339,
+            "hash": "c343310d69e3ff3240855105ddc4db3173c3766015b17f90db718bee422ba850"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/default-company.png",
+            "size": 138210,
+            "hash": "b5cc36943a8bbabee6e7c87c14980af13ea7de01f8bcdafbe6a7100cca3c91e8"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/default-user.png",
+            "size": 1472054,
+            "hash": "7a9715c54dafd84da5ca08feb52210f04fb3a0892ab096c4fb3fd92224c3640c"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/icons.png",
+            "size": 1139,
+            "hash": "09cbc1e022c0d69f5725ad345df5066bc574cfdf5cd9b12d82099bad7782cef1"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/photo1.png",
+            "size": 662169,
+            "hash": "889db60a28501f39c853a454906bb0e3b591c95a93d2b10c85fc167f69df79c2"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/photo2.png",
+            "size": 422537,
+            "hash": "063c33773494e147aa56bf076224b42970608311abc03a93e2db5f60f4f5f954"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/photo3.jpg",
+            "size": 370563,
+            "hash": "457102bc8a4d48a472ad64e28c607ee7872def4e53ad7c438361f557743fe399"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/photo4.jpg",
+            "size": 1145510,
+            "hash": "1eb6844b98c617906c397d0692f8aff539b1532b9ed9082e84f7a5b1746fbdde"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/prod-1.jpg",
+            "size": 45269,
+            "hash": "042c618f0c5c82be46ec46cd42d0776869b406979bb0998acacf085f40a3fb0b"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/prod-2.jpg",
+            "size": 32224,
+            "hash": "134b7e67e034b137a950615b6eaf82070bb20a5904cbd4cc9e85fa9f7f856703"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/prod-3.jpg",
+            "size": 21025,
+            "hash": "aa371e520191953fff7ae8b85302da04c22320b66b99e877afccd218c153d9ab"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/prod-4.jpg",
+            "size": 26459,
+            "hash": "7689b65006227f6b96b018c651934ff8b96b4d28d387cf4cf605017a36ee77b0"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/prod-5.jpg",
+            "size": 32090,
+            "hash": "e5a0762cc7342e0deac7ebb8fd9498b8bc28bdb136fea7644f4c9fefcf98be1f"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user2-160x160.jpg",
+            "size": 6905,
+            "hash": "680f6c82f8fa9c070ae385a67ef92c0bbcba6759c5a5845a725102e7ec299622"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user1-128x128.jpg",
+            "size": 2750,
+            "hash": "04c5fc11c9a4549fa4c09a31ebade61d8ffa2cbc040084cbac2fcd84d338324e"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user3-128x128.jpg",
+            "size": 3398,
+            "hash": "2813222580793153de26e2908cd31d35311478ace268c7dd682914803ca47a77"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user4-128x128.jpg",
+            "size": 3455,
+            "hash": "3ed605eca4d887de0e160fba0ff61813a88ab9f5f4877909fb1962d3a83bb973"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user5-128x128.jpg",
+            "size": 6415,
+            "hash": "9188a562cf625c2d2efbd00109566d266c5cb55d39ed9259f3868601650895b0"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user6-128x128.jpg",
+            "size": 4250,
+            "hash": "d3d9cf59b0eafa3fa2ad9ad0ae455c8e15d8eace69c6d955b3258cd30b4dbe07"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user7-128x128.jpg",
+            "size": 6363,
+            "hash": "01cb676dff654af6bea459ecd746ab0092a0e3a74b1718e5dc6d0ee00f2c5232"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/user8-128x128.jpg",
+            "size": 4983,
+            "hash": "2ca5bfaad815f86e3708971fb6f4acacada388595b460bc0efe75e6baa8a8991"
+        },
+        {
+            "type": "file",
+            "name": "assets/js/datatable-init.js",
+            "size": 9980,
+            "hash": "619d5ae3d686d9c7a1383a476cca5e85fd2cfc284b9fda828729c82f6aad439e"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/ajax/traitement_exercices.php",
+            "size": 4388,
+            "hash": "d510cebbf5adacfc4a56495c880df579474285e61c5c2712463b4810c4858040"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/composit/footer.php",
+            "size": 2675,
+            "hash": "1ee3e39147a3bc3de8cb3d1ba7cf88e598eeb2e13bc9f0b83b8b93c13432c599"
+        },
+        {
+            "type": "file",
+            "name": "super_admin/composit/header.php",
+            "size": 14379,
+            "hash": "7caad39380956a4e98f0a88935ac11cd2d148dd7d791a41fd9fff652b513a6db"
+        },
+        {
+            "type": "file",
+            "name": "uploads/photos/user_698379539d92a9.73070719.jpg",
+            "size": 580397,
+            "hash": "a1bb0e4355be8383c0ab7c5b5fc34bf6d945f159f19e6185073bb6564f97f16f"
+        },
+        {
+            "type": "file",
+            "name": "uploads/photos/user_698379a7a7c3a2.79390983.jpg",
+            "size": 580397,
+            "hash": "a1bb0e4355be8383c0ab7c5b5fc34bf6d945f159f19e6185073bb6564f97f16f"
+        },
+        {
+            "type": "file",
+            "name": "uploads/photos/user_698379e6cc8356.36404756.jpg",
+            "size": 580397,
+            "hash": "a1bb0e4355be8383c0ab7c5b5fc34bf6d945f159f19e6185073bb6564f97f16f"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/ajax/traitement_tab1.php",
+            "size": 15693,
+            "hash": "f50cab6f79cfcb9f17630e28c40a3c6f94f2c48ca5271ca7e0177a9e8c711c9e"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/ajax/traitement_utilisateurs.php",
+            "size": 2471,
+            "hash": "7ef035d6bd84b97503ddc4c4aad074f79eee266faf1b685a71bf5881ae8d24da"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/composit/footer.php",
+            "size": 13981,
+            "hash": "aa14aaf47c28dc983f3ed0c04f1179c72573ab8f13daa8040ea8fea57bfa5ba9"
+        },
+        {
+            "type": "file",
+            "name": "utilisateur/composit/header.php",
+            "size": 15244,
+            "hash": "d623859737caffd1329a2912c0f37c0bf16223cbd9e94d4777749c750b1b7900"
+        },
+        {
+            "type": "file",
+            "name": "admin/uploads/logos/logo_6981f4610fb9d1.72418315.png",
+            "size": 430722,
+            "hash": "ad251b16d472580c7da5823ffe80843213f76c21a877a31fccbf075f2a581000"
+        },
+        {
+            "type": "file",
+            "name": "assets/datatable/css/custom-datatable.css",
+            "size": 1912,
+            "hash": "3326d224af17f75ae780c423f63a8b2e2f13c87efc50978e7608b3bb75e29c12"
+        },
+        {
+            "type": "file",
+            "name": "assets/datatable/lang/Arabic.json",
+            "size": 1726,
+            "hash": "7e2d8e08af7441b76ec6e867f0c5e8044450ee424f753cafe327b2420ce05182"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/american-express.png",
+            "size": 2162,
+            "hash": "37589e01b5de9e47176f0d89199a4bf5a77f02e3bdfa3580c6fdbc6a41495f1d"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/cirrus.png",
+            "size": 1577,
+            "hash": "d9fc7707eda860eb0ccf11ccea3c528c3d052a6aaccaec8be71da04d88fbf8c4"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/mastercard.png",
+            "size": 1575,
+            "hash": "878427164ecc2df061c24491c4de49a8f569e040e2450ff66784dfa8f6a06eab"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/paypal.png",
+            "size": 1976,
+            "hash": "6e9959e5cad646572cd0af1a600d61aa99e3a9630135d9879ed7c3f703866e1c"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/paypal2.png",
+            "size": 1219,
+            "hash": "45163771c8b0b774bacf02b11c41de0209ca3d1429831c5c942e06fcf5a7cbf0"
+        },
+        {
+            "type": "file",
+            "name": "assets/img/credit/visa.png",
+            "size": 1062,
+            "hash": "ec18de2907dcc5da12186365dc98fed2bdc86e3871fdeb17bcac7b88456a5df0"
+        }
+    ]
+}
