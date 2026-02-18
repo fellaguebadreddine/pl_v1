@@ -315,31 +315,31 @@
               <li class="nav-item">
                 <a href="tab1.php?action=list_tab1" <?php if ($active_menu == 'tab_1'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-file-text"></i>
-                  <p>هيكلة التعدادات </p>
+                  <p> الجدول 1 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_2.php" <?php if ($active_menu == 'tab_2'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tab_2.php" <?php if ($active_menu == 'tab_2'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>هيكلة التعدار مكرر  </p>
+                  <p>  الجدول 2  </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
-                  <i class="nav-icon bi bi-table"></i>
-                  <p>لجان الموظفين و الطعون</p>
+                <a href="tab3.php?action=list_tab3" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 3 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_4.php" <?php if ($active_menu == 'tab_4'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tab_4.php" <?php if ($active_menu == 'tab_4'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>  وضعية القضايا المتنازع فيها </p>
+                  <p>  الجدول 4 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_5.php" <?php if ($active_menu == 'tab_5'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tab_5.php" <?php if ($active_menu == 'tab_5'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>  وضعية الحـالات التأديبيـة</p>
+                  <p>    الجدول 5</p>
                 </a>
               </li>
               <?php endif; ?>
