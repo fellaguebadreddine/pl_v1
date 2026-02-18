@@ -328,9 +328,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
-                  <i class="nav-icon bi bi-table"></i>
-                  <p>لجان الموظفين و الطعون</p>
+                <a href="tab3.php?action=list_tab3" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 3</p>
                 </a>
               </li>
               <li class="nav-item">
