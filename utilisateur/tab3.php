@@ -126,7 +126,7 @@ require_once("composit/header.php");
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
+                                            <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
                                         </td>
                                         <td class="text-center">
                                             <a href="?action=edit_tab3&id=<?php echo $tabls->id; ?>" 
@@ -172,7 +172,7 @@ require_once("composit/header.php");
                     $tableau_brouillon = Tableau3::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe);
                     if ($tableau_brouillon) {
                         $tableau = $tableau_brouillon;
-                        $details = DetailTab3::trouve_tableeu_vide($tableau->id);
+                        $details = DetailTab3::trouve_par_tableau($tableau->id);
                     }
                 }
 
