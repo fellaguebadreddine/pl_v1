@@ -96,6 +96,7 @@ class Tableau3 {
 	$q .= " WHERE id_societe ={$id}";
     return  self::trouve_par_sql($q);
 	}
+	
 	public static function derniers_par_societe($id_societe, $limit = 5) {
     $q = "SELECT * FROM " . self::$nom_table . " 
             WHERE id_societe = $id_societe

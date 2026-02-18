@@ -40,9 +40,9 @@ $exercice_actif = Exercice::get_exercice_actif();
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab3';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 3 - حركة الموظفين";
-$active_menu = "formulaires";
-$active_submenu = "tabl_3";
+$titre = "الجدول 3 -  ";
+$active_menu = "tab_3";
+$active_submenu = "tab_3";
 $header = array('select2');
 
 require_once("composit/header.php");
@@ -206,7 +206,7 @@ require_once("composit/header.php");
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="formulaireTableau3" method="POST" action="ajax/traitement_tab3.php">
+                        <form id="formulaireTableau3" method="POST" action="ajax/traitement_tab_3.php">
                             <input type="hidden" name="action" value="<?php echo $action == "edit_tab3" ? 'update_tab3' : 'add_tab3'; ?>">
                             <input type="hidden" name="id_tableau" value="<?php echo $tableau ? $tableau->id : '0'; ?>">
                             <input type="hidden" name="annee" value="<?php echo $annee; ?>">
@@ -341,214 +341,7 @@ require_once("composit/header.php");
     <!--end::App Content-->
 </main>
 <!--end::App Main-->
-<!--begin::Script-->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-// Variables globales
-let compteurLignes = <?php echo $index; ?>;
-let tousLesGrades = <?php echo json_encode($grades_js); ?>;
 
-// Initialiser Select2
-document.addEventListener('DOMContentLoaded', function() {
-    $('.select-grade').select2({
-        placeholder: "ابحث أو اختر...",
-        allowClear: true,
-        width: '100%',
-        dir: "rtl",
-        language: {
-            noResults: function() { return "لا توجد نتائج"; },
-            searching: function() { return "جاري البحث..."; }
-        },
-        templateResult: function(grade) {
-            if (!grade.id) return grade.text;
-            const gradeObj = tousLesGrades.find(g => g.id == grade.id);
-            if (gradeObj) {
-                let $result = $('<span>' + gradeObj.designation + '</span>');
-                if (gradeObj.loi) $result.append('<br><small class="text-muted">' + gradeObj.loi + '</small>');
-                return $result;
-            }
-            return grade.text;
-        },
-        templateSelection: function(grade) {
-            if (!grade.id) return grade.text;
-            const gradeObj = tousLesGrades.find(g => g.id == grade.id);
-            return gradeObj ? gradeObj.designation : grade.text;
-        }
-    });
-});
-
-function ajouterLigne() {
-    const tbody = document.getElementById('tbody_details');
-    const nouvelleLigne = document.createElement('tr');
-    let options = '<option value="">اختر السلك</option>';
-    tousLesGrades.forEach(grade => {
-        options += `<option value="${grade.id}" data-code="${grade.code}">${grade.designation}</option>`;
-    });
-
-    nouvelleLigne.innerHTML = `
-        <td>
-            <input type="hidden" name="details[${compteurLignes}][id]" value="0">
-            <input type="hidden" name="details[${compteurLignes}][id_grade]" value="">
-            <input type="text" class="form-control text-center code-grade" readonly>
-        </td>
-        <td>
-            <select name="details[${compteurLignes}][id_grade_select]" class="form-control select-grade" required>
-                ${options}
-            </select>
-        </td>
-        <td><input type="checkbox" name="details[${compteurLignes}][interne]" value="1"></td>
-        <td><input type="checkbox" name="details[${compteurLignes}][externe]" value="1"></td>
-        <td><input type="checkbox" name="details[${compteurLignes}][diplome]" value="1"></td>
-        <td><input type="checkbox" name="details[${compteurLignes}][concour]" value="1"></td>
-        <td><input type="checkbox" name="details[${compteurLignes}][examen_pro]" value="1"></td>
-        <td><input type="checkbox" name="details[${compteurLignes}][test_pro]" value="1"></td>
-        <td><input type="text" name="details[${compteurLignes}][loi]" class="form-control"></td>
-        <td><input type="number" name="details[${compteurLignes}][nomination]" class="form-control" value="0"></td>
-        <td><textarea name="details[${compteurLignes}][observation]" class="form-control" rows="1"></textarea></td>
-        <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
-    `;
-    tbody.appendChild(nouvelleLigne);
-    $(nouvelleLigne.querySelector('.select-grade')).select2({
-        placeholder: "ابحث أو اختر...",
-        allowClear: true,
-        width: '100%',
-        dir: "rtl"
-    });
-    compteurLignes++;
-}
-
-function actualiserCode(select) {
-    const row = select.closest('tr');
-    const selectedOption = select.options[select.selectedIndex];
-    const code = selectedOption.getAttribute('data-code') || '';
-    const idGrade = selectedOption.value;
-    row.querySelector('.code-grade').value = code;
-    const hidden = row.querySelector('input[name*="[id_grade]"]');
-    if (hidden) hidden.value = idGrade;
-}
-
-function supprimerLigne(button) {
-    const row = button.closest('tr');
-    const idDetail = row.getAttribute('data-id-detail');
-    if (idDetail && idDetail > 0) {
-        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
-            const inputSuppression = document.createElement('input');
-            inputSuppression.type = 'hidden';
-            inputSuppression.name = 'supprimer_details[]';
-            inputSuppression.value = idDetail;
-            row.parentNode.appendChild(inputSuppression);
-            row.style.display = 'none';
-        }
-    } else {
-        row.remove();
-    }
-}
-
-// Gestion de la soumission
-document.getElementById('formulaireTableau3')?.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
-        // Mettre à jour les id_grade à partir des selects
-        const selects = this.querySelectorAll('.select-grade');
-        selects.forEach(select => {
-            const row = select.closest('tr');
-            const hidden = row.querySelector('input[name*="[id_grade]"]');
-            if (hidden) hidden.value = select.value;
-        });
-        soumettreFormulaire(this, 'validé');
-    }
-});
-
-function enregistrerBrouillon() {
-    const form = document.getElementById('formulaireTableau3');
-    const inputStatut = document.createElement('input');
-    inputStatut.type = 'hidden';
-    inputStatut.name = 'statut';
-    inputStatut.value = 'brouillon';
-    form.appendChild(inputStatut);
-    if (confirm('هل تريد حفظ الجدول كمسودة؟')) {
-        const selects = form.querySelectorAll('.select-grade');
-        selects.forEach(select => {
-            const row = select.closest('tr');
-            const hidden = row.querySelector('input[name*="[id_grade]"]');
-            if (hidden) hidden.value = select.value;
-        });
-        soumettreFormulaire(form, 'brouillon');
-    } else {
-        form.removeChild(inputStatut);
-    }
-}
-
-function soumettreFormulaire(form, statut) {
-    const formData = new FormData(form);
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...';
-    submitBtn.disabled = true;
-
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showMessage(data.message, 'success');
-            setTimeout(() => {
-                if (statut == 'brouillon') {
-                    window.location.reload();
-                } else {
-                    window.location.href = '?action=list_tab3&success=1';
-                }
-            }, 1500);
-        } else {
-            showMessage(data.message, 'danger');
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    });
-}
-
-function showMessage(message, type) {
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-    alertDiv.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    document.querySelector('.app-content .container-fluid').prepend(alertDiv);
-    setTimeout(() => alertDiv.remove(), 5000);
-}
-
-function supprimerTableau(id) {
-    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
-        fetch('ajax/traitement_tab3.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'action=delete_tab3&id=' + id
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showMessage(data.message, 'success');
-                setTimeout(() => window.location.reload(), 1500);
-            } else {
-                showMessage(data.message, 'danger');
-            }
-        })
-        .catch(error => {
-            console.error(error);
-            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
-        });
-    }
-}
-</script>
 
 <style>
 .select2-container--default .select2-selection--single {
