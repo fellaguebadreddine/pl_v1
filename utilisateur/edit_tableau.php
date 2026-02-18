@@ -93,8 +93,8 @@ require_once("composit/header.php");
 
     <div class="app-content">
         <div class="container-fluid">
-            <div class="card mb-4 border-primary">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-edit me-2"></i> تعديل الجدول رقم 1
                     </h5>
