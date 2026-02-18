@@ -69,6 +69,25 @@ class Tableau3 {
        $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
     }
+
+public static function trouve_par_criteres($criteres = []) {
+    $conditions = [];
+    $params = [];
+    foreach ($criteres as $champ => $valeur) {
+        $conditions[] = "`$champ` = '{$valeur}'";
+        $params[] = $valeur;
+    }
+    $sql = "SELECT * FROM tableau_3 " ;
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+    return static::trouve_par_sql($sql, $params);
+}
+
+	public static function trouve_tableau_1_par_id($id=0) {
+    $result_array = self::trouve_par_sql("SELECT * FROM ".self::$nom_table." WHERE id_societe={$id} LIMIT 1");
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
     
     public static function get_annees_par_societe($id_societe) {
         global $bd;

@@ -646,9 +646,10 @@ function soumettreFormulaire(form, statut) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...';
     submitBtn.disabled = true;
 
-    fetch(form.action, {
+    fetch('ajax/traitement_tab3.php', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
     })
     .then(response => response.json())
     .then(data => {

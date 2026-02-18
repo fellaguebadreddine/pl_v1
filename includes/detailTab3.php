@@ -5,7 +5,7 @@ require_once('fonctions.php');
 // Tableau1.php
 class DetailTab3 {
     protected static $nom_table="detail_tab_3";
-	protected static $champs = array('id', 'id_societe', 'id_tableau_3 ', 'annee', 'id_user', 'code','id_grade','postes_total','postes_reel', 'poste_intirim', 'poste_femme', 'difference', 'observations', 'date_tabl', 'total_hf_postes_total', 'total_hf_postes_reel','total_hf_poste_intirim', 'total_hf_poste_femme', 'total_hf_difference');
+	protected static $champs = array('id', 'id_societe', 'id_tableau_3 ', 'annee', 'id_user', 'code','id_grade','interne','externe', 'diplome', 'concour', 'examen_pro', 'test_pro', 'nomination', 'loi', 'observation');
 	public $id;	
 	public $id_societe;
 	public $id_tableau_3;
@@ -13,18 +13,15 @@ class DetailTab3 {
 	public $id_user;
 	public $code;
 	public $id_grade;
-	public $postes_total;
-	public $postes_reel;
-    public $poste_intirim;
-    public $poste_femme;
-    public $difference;
-    public $observations;
-    public $date_tabl;
-	public $total_hf_postes_total;
-	public $total_hf_postes_reel;
-	public $total_hf_poste_intirim;
-	public $total_hf_poste_femme;
-	public $total_hf_difference;
+	public $interne;
+	public $externe;
+    public $diplome;
+    public $concour;
+    public $examen_pro;
+    public $test_pro;
+    public $nomination;
+	public $loi;
+	public $observation;
    
 public static function trouve_par_tableau($id_tableau_3)
 {
@@ -102,6 +99,11 @@ public static function trouve_par_tableau($id_tableau_3)
     public static function trouve_par_societe($id){
 	$q =  "SELECT * FROM ".self::$nom_table;
 	$q .= " WHERE id_societe ={$id}";
+    return  self::trouve_par_sql($q);
+	}
+	public static function trouve_tableeu_vide($id_societe,$id){
+	$q =  "SELECT * FROM ".self::$nom_table;
+	$q .= " WHERE id_tableau_3 = 0 and id_societe = {$id_societe}   and id_user = {$id}";
     return  self::trouve_par_sql($q);
 	}
 

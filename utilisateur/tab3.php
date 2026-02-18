@@ -106,40 +106,39 @@ require_once("composit/header.php");
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    $tabls = Tableau3::trouve_par_societe($societe->id_societe);
+                                    $tabls = Tableau3::trouve_tableau_1_par_id($societe->id_societe);
                                     if (!empty($tabls)): 
-                                        foreach ($tabls as $row): 
-                                            $statut_badge = $row->statut == 'validé' ? 'success' : 
-                                                          ($row->statut == 'brouillon' ? 'warning' : 'secondary');
+                                       
+                                            $statut_badge = $tabls->statut == 'validé' ? 'success' : 
+                                                          ($tabls->statut == 'brouillon' ? 'warning' : 'secondary');
                                     ?>
                                     <tr>
                                         <td class="text-center">
-                                            <a href="print_tab3.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-info">
-                                                <?php echo $row->id; ?>
+                                            <a href="print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info">
+                                                <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
                                         <td class="text-center"><?php echo $societe->raison_ar; ?></td>
-                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center"><?php echo $tabls->annee; ?></td>
                                         <td class="text-center">
                                             <span class="badge bg-<?php echo $statut_badge; ?>">
-                                                <?php echo $row->statut; ?>
+                                                <?php echo $tabls->statut; ?>
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
+                                            <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="?action=edit_tab3&id=<?php echo $row->id; ?>" 
+                                            <a href="?action=edit_tab3&id=<?php echo $tabls->id; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="تعديل">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" 
+                                            <button onclick="supprimerTableau(<?php echo $tabls->id; ?>)" 
                                                     class="btn btn-sm btn-danger" title="حذف">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                    <?php endforeach; ?>
                                     <?php else: ?>
                                     <tr>
                                         <td colspan="6" class="text-center py-4">
@@ -173,7 +172,7 @@ require_once("composit/header.php");
                     $tableau_brouillon = Tableau3::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe);
                     if ($tableau_brouillon) {
                         $tableau = $tableau_brouillon;
-                        $details = DetailTab3::trouve_par_tableau($tableau->id);
+                        $details = DetailTab3::trouve_tableeu_vide($tableau->id);
                     }
                 }
 
@@ -206,7 +205,7 @@ require_once("composit/header.php");
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="formulaireTableau3" method="POST" action="ajax/traitement_tab_3.php">
+                        <form id="formulaireTableau3" method="POST" action="ajax/traitement_tab3.php">
                             <input type="hidden" name="action" value="<?php echo $action == "edit_tab3" ? 'update_tab3' : 'add_tab3'; ?>">
                             <input type="hidden" name="id_tableau" value="<?php echo $tableau ? $tableau->id : '0'; ?>">
                             <input type="hidden" name="annee" value="<?php echo $annee; ?>">

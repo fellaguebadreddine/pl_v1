@@ -61,7 +61,7 @@ try {
             // Sauvegarder ou mettre à jour le tableau principal
             if ($action == 'add_tab3') {
                 // Vérifier si un tableau existe déjà pour cette année et société
-                $existing = Tableau3::trouve_par_societe_annee(['id_societe' => $id_societe, 'annee' => $annee, 'statut' => 'validé']);
+                $existing = Tableau3::trouve_par_criteres(['id_societe' => $id_societe, 'annee' => $annee, 'statut' => 'validé']);
                 if ($existing && $statut == 'validé') {
                     throw new Exception('يوجد جدول مصادق عليه لهذه السنة بالفعل');
                 }
