@@ -168,7 +168,7 @@ try {
                         $detail->save();
                     }
                 } else {
-                     $id_tableau = $tableau->id;
+                     $id_tableau = Tableau3::trouve_last_id($current_user->id );
                     $response['id_tableau'] = $id_tableau;
                     $response['message'] = 'تم إنشاء الجدول بنجاح';
                 } else {
