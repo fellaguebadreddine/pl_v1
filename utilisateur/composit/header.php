@@ -324,7 +324,7 @@
               <li class="nav-item">
                 <a href="tableau_2.php" <?php if ($active_menu == 'tab_2'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>هيكلة التعدار مكرر  </p>
+                  <p>    الجدول 2</p>
                 </a>
               </li>
               <li class="nav-item">

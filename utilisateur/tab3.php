@@ -47,6 +47,27 @@ $header = array('select2');
 
 require_once("composit/header.php");
 ?>
+<?php
+$annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+$existe = Tableau3::existe_pour_societe_annee($current_user->id_societe, $annee);
+$tabls = Tableau3::trouve_tableau_1_par_id($societe->id_societe);
+
+
+if ($action == "add_tab1") {
+
+$annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+$existe = Tableau3::existe_pour_societe_annee(
+    $current_user->id_societe,
+    $annee
+);
+
+if ($existe) {
+    redirect_to("?action=list_tab3");
+    exit;
+}
+}
+?>
 
 <!--begin::App Main-->
 <main class="app-main">
@@ -87,9 +108,20 @@ require_once("composit/header.php");
                         <h5 class="card-title mb-0">
                             <i class="fas fa-list me-2 text-primary"></i>قائمة الجداول المسجلة
                         </h5>
+                        <?php if ($exercice_actif):?>
+                        <?php if (!$existe): ?>
                         <a href="?action=add_tab3" class="btn btn-primary">
                             <i class="fas fa-plus me-1"></i> إضافة جدول رقم 3
                         </a>
+                        <?php else: 
+                            if ($tabls->statut != 'validé'):?>
+
+                        <a href="?action=edit_tab3&id=<?php echo $existe; ?>" class="btn btn-warning">
+                            <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                        </a>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -106,7 +138,7 @@ require_once("composit/header.php");
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    $tabls = Tableau3::trouve_tableau_1_par_id($societe->id_societe);
+                                   
                                     if (!empty($tabls)): 
                                        
                                             $statut_badge = $tabls->statut == 'validé' ? 'success' : 
@@ -115,7 +147,7 @@ require_once("composit/header.php");
                                     <tr>
                                         <td class="text-center">
                                             <a href="print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info">
-                                                <?php echo $tabls->id; ?>
+                                                <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
                                         <td class="text-center"><?php echo $societe->raison_ar; ?></td>
