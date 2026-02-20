@@ -5,7 +5,7 @@ require_once('fonctions.php');
 // Tableau1.php
 class DetailTab3 {
     protected static $nom_table="detail_tab_3";
-	protected static $champs = array('id', 'id_societe', 'id_tableau_3 ', 'annee', 'id_user', 'code','id_grade','interne','externe', 'diplome', 'concour', 'examen_pro', 'test_pro', 'nomination', 'loi', 'observation');
+	protected static $champs = array('id', 'id_societe', 'id_tableau_3', 'annee', 'id_user', 'code','id_grade','interne','externe', 'diplome', 'concour', 'examen_pro', 'test_pro', 'nomination', 'loi', 'observation');
 	public $id;	
 	public $id_societe;
 	public $id_tableau_3;

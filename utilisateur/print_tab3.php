@@ -32,7 +32,13 @@ if (!$societe) {
 if ($current_user->type == 'utilisateur' && $current_user->id_societe != $societe->id_societe) {
     redirect_to('tab3.php?action=list_tab3&error=غير مصرح بالاطلاع على هذا الجدول');
 }
-
+// Récupère la wilaya de la société (à adapter selon votre structure)
+$wilaya = '';
+if (isset($societe->wilayas)) {
+    $wilaya = Wilayas::trouve_par_id($societe->wilayas);
+} else {
+    $wilaya = '---';
+}
 // Chargement des détails
 $details = DetailTab3::trouve_par_tableau($id); // méthode à implémenter dans DetailTab3
 
@@ -52,11 +58,14 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $titre; ?></title>
 
-    <!-- Bootstrap 5 RTL -->
-    <link rel="stylesheet" href="assets/css/bootstrap.rtl.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="assets/css/all.min.css">
+           <!-- Inclure les fichiers CSS -->
+<link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.rtl.css">
+<link rel="stylesheet" href="assets/datatable/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="assets/datatable/css/custom-datatable.css">
+ <link rel="preload" href="../css/adminlte.rtl.css" as="style" />
+     <link href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- Styles d'impression -->
     <style>
@@ -66,7 +75,7 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
                 margin: 1.5cm;
             }
             body {
-                font-family: 'Arial', 'Tahoma', 'Times New Roman', sans-serif;
+                font-family: 'Tajawal', 'Tahoma', 'Times New Roman', sans-serif;
                 background: white;
                 color: black;
                 font-size: 10pt;
@@ -200,34 +209,10 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
         <!-- En-tête républicain -->
         <div class="republic-header">
             <div class="republic-title">الجمهورية الجزائرية الديمقراطية الشعبية</div>
+            <div><strong>المؤسسة :</strong> <?php echo $societe->raison_ar; ?></td></div>
             <div class="document-ref">الجدول رقم : 03</div>
             <div class="wilaya-info">ولاية : <?php echo $societe->wilaya ?? '---'; ?></div>
             <div class="date-info">جدول يتعلق بحركة الموظفين إلى غاية <?php echo $date_fin; ?></div>
-        </div>
-
-        <!-- Informations de la société -->
-        <div style="margin-bottom: 20px;">
-            <table style="width:100%; border:none;">
-                <tr>
-                    <td style="text-align:right;"><strong>المؤسسة :</strong> <?php echo $societe->raison_ar; ?></td>
-                    <td style="text-align:left;"><strong>ICE :</strong> <?php echo $societe->ice ?? '---'; ?></td>
-                </tr>
-                <tr>
-                    <td style="text-align:right;"><strong>السنة المالية :</strong> <?php echo $annee; ?></td>
-                    <td style="text-align:left;"><strong>تاريخ الإنشاء :</strong> <?php echo date('d/m/Y', strtotime($tableau->date_creation)); ?></td>
-                </tr>
-                <tr>
-                    <td style="text-align:right;"><strong>الحالة :</strong>
-                        <?php
-                        if ($tableau->statut == 'validé') echo 'مصادق عليه';
-                        elseif ($tableau->statut == 'brouillon') echo 'مسودة';
-                        elseif ($tableau->statut == 'en_attente') echo 'في انتظار المراجعة';
-                        else echo $tableau->statut;
-                        ?>
-                    </td>
-                    <td style="text-align:left;"><strong>المسؤول :</strong> <?php echo $createur ? $createur->prenom . ' ' . $createur->nom : '---'; ?></td>
-                </tr>
-            </table>
         </div>
 
         <!-- Tableau principal -->
@@ -239,8 +224,8 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
                         <th rowspan="2" class="align-middle">السلك</th>
                         <th colspan="2" class="text-center">الإلتحاق بالتكوين</th>
                         <th colspan="2" class="text-center">التوظيف الخارجي</th>
-                        <th colspan="2" class="text-center">الترقيبية</th>
-                        <th rowspan="2" class="align-middle">التنبيه حسب</th>
+                        <th colspan="2" class="text-center">الترقية</th>
+                        <th rowspan="2" class="align-middle">التثبيه حسب</th>
                         <th rowspan="2" class="align-middle">إدماج</th>
                         <th rowspan="2" class="align-middle">الملاحظات</th>
                     </tr>
@@ -346,7 +331,7 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
 
     <script>
         // Lancement automatique de l'impression (optionnel, décommentez si souhaité)
-        // window.onload = function() { window.print(); };
+         window.onload = function() { window.print(); };
     </script>
 </body>
 </html>
