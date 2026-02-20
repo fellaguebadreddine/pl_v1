@@ -322,27 +322,43 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_2.php" <?php if ($active_menu == 'tab_2'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tab2.php" <?php if ($active_menu == 'tab_2') {
+                                      echo 'class="nav-link active"';
+                                    } else {
+                                      echo 'class="nav-link"';
+                                    } ?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>هيكلة التعدار مكرر  </p>
+                  <p>الجدول 2</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tab3.php?action=list_tab3" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tab3.php?action=list_tab3" <?php if ($active_menu == 'tab_3') {
+                                                      echo 'class="nav-link active"';
+                                                    } else {
+                                                      echo 'class="nav-link"';
+                                                    } ?>>
                   <i class="nav-icon fa fa-bars"></i>
-                  <p>  الجدول 3</p>
+                  <p> الجدول 3</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_4.php" <?php if ($active_menu == 'tab_4'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tableau_4.php" <?php if ($active_menu == 'tab_4') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>  وضعية القضايا المتنازع فيها </p>
+                  <p> وضعية القضايا المتنازع فيها </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_5.php" <?php if ($active_menu == 'tab_5'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="tableau_5.php" <?php if ($active_menu == 'tab_5') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p>  وضعية الحـالات التأديبيـة</p>
+                  <p> وضعية الحـالات التأديبيـة</p>
                 </a>
               </li>
             <?php endif; ?>
