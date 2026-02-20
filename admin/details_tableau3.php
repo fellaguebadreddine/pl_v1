@@ -32,8 +32,8 @@ $annee = $tableau->annee;
 $date_fin = '31/12/' . $annee;
 
 $titre = "تفاصيل الجدول رقم 3 - " . $id;
-$active_menu = "tableaux";
-$active_submenu = "tab3";
+$active_menu = "tab_3";
+$active_submenu = "tab_3";
 $header = array('select2', 'sweetalert2'); // si nécessaire
 
 require_once("composit/header.php");
