@@ -101,7 +101,7 @@ require_once("composit/header.php");
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal">
                         <i class="fas fa-comment me-1"></i> إضافة ملاحظة
                     </button>
-                    <a href="print_tab3.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
+                    <a href="../utilisateur/print_tab3.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
                         <i class="fas fa-print me-1"></i> طباعة
                     </a>
                 </div>
