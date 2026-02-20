@@ -36,205 +36,135 @@ try {
 
     switch ($action) {
         case 'add_tab3':
-        case 'update_tab3':
-            // Vérifier les détails
-            if (!isset($_POST['details'])) {
-                throw new Exception('لا توجد بيانات للحفظ');
-            }
+case 'update_tab3':
 
-            $details = $_POST['details'];
-            $details_to_delete = isset($_POST['supprimer_details']) ? $_POST['supprimer_details'] : [];
+    if (!isset($_POST['details'])) {
+        throw new Exception('لا توجد بيانات للحفظ');
+    }
 
-            // Préparer les données du tableau
-            $data_tableau = [
-                'id_societe' => $id_societe,
-                'id_user' => $id_user,
-                'annee' => $annee,
-                'statut' => $statut,
-                'date_creation' => date('Y-m-d H:i:s')
-            ];
+    $details = $_POST['details'];
+    $details_to_delete = isset($_POST['supprimer_details']) ? $_POST['supprimer_details'] : [];
 
-            if ($statut == 'validé') {
-                $data_tableau['date_valide'] = date('Y-m-d H:i:s');
-            }
+    $data_tableau = [
+        'id_societe' => $id_societe,
+        'id_user' => $id_user,
+        'annee' => $annee,
+        'statut' => $statut,
+        'date_creation' => date('Y-m-d H:i:s')
+    ];
 
-            // Sauvegarder ou mettre à jour le tableau principal
-            if ($action == 'add_tab3') {
-                // Vérifier si un tableau existe déjà pour cette année et société
-                $existing = Tableau3::trouve_par_criteres(['id_societe' => $id_societe, 'annee' => $annee, 'statut' => 'validé']);
-                if ($existing && $statut == 'validé') {
-                    throw new Exception('يوجد جدول مصادق عليه لهذه السنة بالفعل');
-                }
+    if ($statut == 'validé') {
+        $data_tableau['date_valide'] = date('Y-m-d H:i:s');
+    }
 
-                $tableau = new Tableau3();
-                foreach ($data_tableau as $key => $value) {
-                    if (property_exists($tableau, $key)) {
-                        $tableau->$key = $value;
-                    }
-                }
+    // ===============================
+    // CREATION OU UPDATE TABLEAU
+    // ===============================
 
-                if ($tableau->save()) {
-                    $id_tableau = $tableau->id;
-                    $response['id_tableau'] = $id_tableau;
-                    $response['message'] = 'تم إنشاء الجدول بنجاح';
-                } else {
-                    throw new Exception('خطأ أثناء حفظ الجدول');
-                }
-            } else {
-                $tableau = Tableau3::trouve_par_id($id_tableau);
-                if (!$tableau) {
-                    throw new Exception('الجدول غير موجود');
-                }
+    if ($action == 'add_tab3') {
 
-                // Vérifier les permissions
-                if ($tableau->id_societe != $id_societe || ($tableau->id_user != $id_user && $current_user->type == 'utilisateur')) {
-                    throw new Exception('غير مصرح بتعديل هذا الجدول');
-                }
+        $existing = Tableau3::trouve_par_criteres([
+            'id_societe' => $id_societe,
+            'annee' => $annee,
+            'statut' => 'validé'
+        ]);
 
-                foreach ($data_tableau as $key => $value) {
-                    if (property_exists($tableau, $key)) {
-                        $tableau->$key = $value;
-                    }
-                }
+        if ($existing && $statut == 'validé') {
+            throw new Exception('يوجد جدول مصادق عليه لهذه السنة بالفعل');
+        }
 
-                if (!$tableau->save()) {
-                    throw new Exception('خطأ أثناء تحديث الجدول');
-                }
+        $tableau = new Tableau3();
 
-                $response['message'] = 'تم تحديث الجدول بنجاح';
-            }
+    } else {
 
-            // Supprimer les détails marqués pour suppression
-            if (!empty($details_to_delete)) {
-                foreach ($details_to_delete as $id_detail) {
-                    $id_detail = intval($id_detail);
-                    if ($id_detail > 0) {
-                        $detail = DetailTab3::trouve_par_id($id_detail);
-                        if ($detail && $detail->id_tableau_3 == $id_tableau) {
-                            $detail->supprime();
-                        }
-                    }
-                }
-            }
+        $tableau = Tableau3::trouve_par_id($id_tableau);
 
-            // Traiter les détails
-            foreach ($details as $index => $detail_data) {
-                // Ignorer les lignes sans grade
-                $id_grade = 0;
-                if (isset($detail_data['id_grade']) && !empty($detail_data['id_grade'])) {
-                    $id_grade = intval($detail_data['id_grade']);
-                } elseif (isset($detail_data['id_grade_select']) && !empty($detail_data['id_grade_select'])) {
-                    $id_grade = intval($detail_data['id_grade_select']);
-                }
+        if (!$tableau) {
+            throw new Exception('الجدول غير موجود');
+        }
+    }
 
-                if ($id_grade == 0) {
-                    continue;
-                }
+    foreach ($data_tableau as $key => $value) {
+        if (property_exists($tableau, $key)) {
+            $tableau->$key = $value;
+        }
+    }
 
-                // Vérifier que le grade existe
-                $grade = Grade::trouve_par_id($id_grade);
-                if (!$grade) {
-                    continue;
-                }
+    if (!$tableau->save()) {
+        throw new Exception('خطأ أثناء حفظ الجدول');
+    }
 
-                // Récupérer les données
-                $id_detail = isset($detail_data['id']) ? intval($detail_data['id']) : 0;
-                $interne = isset($detail_data['interne']) ? 1 : 0;
-                $externe = isset($detail_data['externe']) ? 1 : 0;
-                $diplome = isset($detail_data['diplome']) ? 1 : 0;
-                $concour = isset($detail_data['concour']) ? 1 : 0;
-                $examen_pro = isset($detail_data['examen_pro']) ? 1 : 0;
-                $test_pro = isset($detail_data['test_pro']) ? 1 : 0;
-                $nomination = isset($detail_data['nomination']) ? intval($detail_data['nomination']) : 0;
-                $loi = isset($detail_data['loi']) ? trim($detail_data['loi']) : '';
-                $observation = isset($detail_data['observation']) ? trim($detail_data['observation']) : '';
-                $code = isset($detail_data['code']) ? trim($detail_data['code']) : $grade->id; // ou laisser vide
+    // 🔥 IMPORTANT : récupérer ID une seule fois
+    $id_tableau = $tableau->id;
 
-                if ($id_detail > 0) {
-                    // Mettre à jour le détail existant
-                    $detail = DetailTab3::trouve_par_id($id_detail);
-                    if ($detail && $detail->id_tableau_3 == $id_tableau) {
-                        $detail->id_grade = $id_grade;
-                        $detail->interne = $interne;
-                        $detail->externe = $externe;
-                        $detail->diplome = $diplome;
-                        $detail->concour = $concour;
-                        $detail->examen_pro = $examen_pro;
-                        $detail->test_pro = $test_pro;
-                        $detail->nomination = $nomination;
-                        $detail->loi = $loi;
-                        $detail->observation = $observation;
-                        $detail->code = $code;
-                        $detail->save();
-                    }
-                } else {
-                     $id_tableau = Tableau3::trouve_last_id($current_user->id );
-                    $response['id_tableau'] = $id_tableau;
-                    $response['message'] = 'تم إنشاء الجدول بنجاح';
-                } else {
-                    throw new Exception('خطأ أثناء حفظ الجدول');
-                }
-                    // Créer un nouveau détail
-                    $detail = new DetailTab3();
-                    $detail->id_tableau_3 = $id_tableau;
-                    $detail->id_grade = $id_grade;
-                    $detail->annee = $annee;
-                    $detail->id_user = $id_user;
-                    $detail->id_societe = $id_societe;
-                    $detail->code = $code;
-                    $detail->interne = $interne;
-                    $detail->externe = $externe;
-                    $detail->diplome = $diplome;
-                    $detail->concour = $concour;
-                    $detail->examen_pro = $examen_pro;
-                    $detail->test_pro = $test_pro;
-                    $detail->nomination = $nomination;
-                    $detail->loi = $loi;
-                    $detail->observation = $observation;
-                    $detail->save();
+    if (empty($id_tableau)) {
+        throw new Exception('لم يتم توليد رقم الجدول');
+    }
+
+    $response['id_tableau'] = $id_tableau;
+    $response['message'] = ($action == 'add_tab3')
+        ? 'تم إنشاء الجدول بنجاح'
+        : 'تم تحديث الجدول بنجاح';
+
+    // ===============================
+    // SUPPRESSION DETAILS
+    // ===============================
+
+    if (!empty($details_to_delete)) {
+        foreach ($details_to_delete as $id_detail) {
+            $id_detail = intval($id_detail);
+            if ($id_detail > 0) {
+                $detail = DetailTab3::trouve_par_id($id_detail);
+                if ($detail && $detail->id_tableau_3 == $id_tableau) {
+                    $detail->supprime();
                 }
             }
+        }
+    }
 
-            $response['success'] = true;
-            break;
+    // ===============================
+    // INSERT / UPDATE DETAILS
+    // ===============================
 
-        case 'delete_tab3':
-            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+    foreach ($details as $detail_data) {
 
-            if ($id <= 0) {
-                throw new Exception('معرف غير صالح');
-            }
+        $id_grade = intval($detail_data['id_grade'] ?? 0);
+        if ($id_grade == 0) continue;
 
-            $tableau = Tableau3::trouve_par_id($id);
-            if (!$tableau) {
-                throw new Exception('الجدول غير موجود');
-            }
+        $id_detail = intval($detail_data['id'] ?? 0);
 
-            // Vérifier les permissions
-            if ($tableau->id_societe != $current_user->id_societe && $current_user->type == 'utilisateur') {
-                throw new Exception('غير مصرح بحذف هذا الجدول');
-            }
+        if ($id_detail > 0) {
 
-            // Vérifier que c'est un brouillon (ou permettre la suppression si administrateur)
-            if ($tableau->statut != 'brouillon' && $current_user->type == 'utilisateur') {
-                throw new Exception('لا يمكن حذف الجدول إلا إذا كان مسودة');
-            }
+            $detail = DetailTab3::trouve_par_id($id_detail);
 
-            // Supprimer les détails
-            $details = DetailTab3::trouve_par_tableau($id);
-            foreach ($details as $detail) {
-                $detail->supprime();
-            }
+        } else {
 
-            // Supprimer le tableau
-            if ($tableau->supprime()) {
-                $response['success'] = true;
-                $response['message'] = 'تم حذف الجدول بنجاح';
-            } else {
-                throw new Exception('خطأ أثناء حذف الجدول');
-            }
-            break;
+            $detail = new DetailTab3();
+            $detail->id_tableau_3 = $id_tableau;
+        }
 
+        $detail->id_grade = $id_grade;
+        $detail->annee = $annee;
+        $detail->id_user = $id_user;
+        $detail->id_societe = $id_societe;
+        $detail->code = trim($detail_data['code'] ?? '');
+        $detail->interne = isset($detail_data['interne']) ? 1 : 0;
+        $detail->externe = isset($detail_data['externe']) ? 1 : 0;
+        $detail->diplome = isset($detail_data['diplome']) ? 1 : 0;
+        $detail->concour = isset($detail_data['concour']) ? 1 : 0;
+        $detail->examen_pro = isset($detail_data['examen_pro']) ? 1 : 0;
+        $detail->test_pro = isset($detail_data['test_pro']) ? 1 : 0;
+        $detail->nomination = intval($detail_data['nomination'] ?? 0);
+        $detail->loi = trim($detail_data['loi'] ?? '');
+        $detail->observation = trim($detail_data['observation'] ?? '');
+
+        $detail->save();
+    }
+
+    $response['success'] = true;
+
+break;
+       
         default:
             throw new Exception('إجراء غير معروف');
     }
