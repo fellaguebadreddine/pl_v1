@@ -8,28 +8,48 @@ if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQU
 
 // Vérification session
 if (!$session->is_logged_in()) {
-    echo json_encode(['success' => false, 'message' => 'Session expirée']);
+    echo json_encode(['success' => false, 'message' => 'غير مسموح بالوصول']);
     exit;
 }
 
 $current_user = Accounts::trouve_par_id($session->id_utilisateur);
-if (!$current_user || ($current_user->type !== 'administrateur' && $current_user->type !== 'super_administrateur')) {
-    echo json_encode(['success' => false, 'message' => 'Vous n\'êtes pas autorisé à effectuer cette action']);
+if (!$current_user || $current_user->type !== 'administrateur') {
+    echo json_encode(['success' => false, 'message' => 'غير مسموح بالوصول']);
     exit;
 }
 
 $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $commentaire = isset($_POST['commentaire']) ? trim($_POST['commentaire']) : '';
+$type = isset($_POST['type_tableau']) ? $_POST['type_tableau'] : ''; // 'tab1' ou 'tab3' etc.
 
-if ($id <= 0) {
-    echo json_encode(['success' => false, 'message' => 'ID invalide']);
+if ($id <= 0 || empty($type)) {
+    echo json_encode(['success' => false, 'message' => 'عملية غير معروفة']);
     exit;
 }
 
-$tableau = Tableau1::trouve_par_id($id);
+// Mapping des types vers les classes
+$classMap = [
+    'tab1' => 'Tableau1',
+    'tab3' => 'Tableau3',
+    // Ajouter d'autres types si nécessaire
+];
+
+if (!isset($classMap[$type])) {
+    echo json_encode(['success' => false, 'message' => 'نوع الجدول غير معروف']);
+    exit;
+}
+
+$className = $classMap[$type];
+
+if (!class_exists($className)) {
+    echo json_encode(['success' => false, 'message' => 'Classe introuvable']);
+    exit;
+}
+
+$tableau = $className::trouve_par_id($id);
 if (!$tableau) {
-    echo json_encode(['success' => false, 'message' => 'Tableau non trouvé']);
+    echo json_encode(['success' => false, 'message' => 'لايوجد جدول']);
     exit;
 }
 
@@ -64,7 +84,8 @@ try {
     } else {
         echo json_encode(['success' => false, 'message' => 'Action non reconnue']);
     }
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+} catch (Throwable $e) {
+    error_log($e->getMessage());
+    echo json_encode(['success'=>false,'message'=>'خطأ داخلي في النظام']);
 }
 ?>

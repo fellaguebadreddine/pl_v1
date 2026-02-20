@@ -123,36 +123,52 @@ function sauvegarderCommentaire() {
 }
 </script>
 
-<script>
-    function commentTableau1(id) {
-    // Option 1 : ouvrir une boîte de dialogue simple
-    var commentaire = prompt("أدخل ملاحظتك على هذا الجدول:");
-    if (commentaire !== null) {
-        $.ajax({
-            url: 'ajax/save_commentaire_tableau.php',
-            type: 'POST',
-            data: {
-                id: id,
-                commentaire: commentaire
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    alert('تم حفظ الملاحظة');
-                    location.reload(); // recharge proprement
-                } else {
-                    alert('خطأ: ' + response.message);
-                }
-            },
-            error: function() {
-                alert('خطأ في الاتصال');
-            }
-        });
-    }
-}
-</script>
 
 <script>
+function sauvegarderNoteDepuisModal() {
+    var id_tableau = $('#modal_id_tableau').val();
+    var commentaire = $('#modal_commentaire').val();
+
+    $.ajax({
+        url: 'ajax/save_commentaire_tableau.php', // à adapter pour tableau 3 si besoin, mais on peut réutiliser le même
+        type: 'POST',
+        data: {
+            id: id_tableau,
+            commentaire: commentaire,
+             action: 'demander_modification',
+            type_tableau: 'tab3' // optionnel pour distinguer
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                $('#noteModal').modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم الحفظ',
+                    text: 'تم حفظ الملاحظة بنجاح',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: response.message || 'حدث خطأ أثناء الحفظ'
+                });
+            }
+        },
+        error: function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'خطأ',
+                text: 'حدث خطأ في الاتصال'
+            });
+        }
+    });
+}
+
 function validerTableau(id) {
     Swal.fire({
         title: 'تأكيد المصادقة',
@@ -167,11 +183,12 @@ function validerTableau(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'ajax/valider_tableau.php',
+                url: 'ajax/valider_tableau.php', // à adapter pour tableau 3
                 type: 'POST',
                 data: {
                     id: id,
-                    action: 'valider'
+                    action: 'valider',
+                    type_tableau: 'tab3'
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -232,7 +249,8 @@ function demanderModification(id) {
                 data: {
                     id: id,
                     action: 'demander_modification',
-                    commentaire: result.value
+                    commentaire: result.value,
+                    type_tableau: 'tab3'
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -266,6 +284,7 @@ function demanderModification(id) {
     });
 }
 </script>
+
     <!--end::Script-->
   </body>
   <!--end::Body-->

@@ -352,7 +352,49 @@ if (!isset($action)) {
               <li class="nav-item">
                 <a href="admin_tableaux1.php" <?php if ($active_menu == 'tab_1'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-file-text"></i>
-                  <p>هيكلة التعدادات </p>
+                  <p> الجدول 1 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux2.php" <?php if ($active_menu == 'tab_2'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 2 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 3 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 4 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 5 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 6 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 7 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                  <i class="nav-icon bi bi-file-text"></i>
+                  <p> الجدول 8 </p>
                 </a>
               </li>
               <li class="nav-item">
@@ -361,7 +403,7 @@ if (!isset($action)) {
                   <p>
                     إغلاق المؤسسة
                   </p>
-</a>                
+                </a>                
               </li>
              <?php }?>
               
