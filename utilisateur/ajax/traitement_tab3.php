@@ -168,6 +168,12 @@ try {
                         $detail->save();
                     }
                 } else {
+                     $id_tableau = Tableau3::trouve_last_id($current_user->id );
+                    $response['id_tableau'] = $id_tableau;
+                    $response['message'] = 'تم إنشاء الجدول بنجاح';
+                } else {
+                    throw new Exception('خطأ أثناء حفظ الجدول');
+                }
                     // Créer un nouveau détail
                     $detail = new DetailTab3();
                     $detail->id_tableau_3 = $id_tableau;
