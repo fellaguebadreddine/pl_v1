@@ -476,11 +476,9 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
         </div>
     </div>
     
-    <script>
-        window.onload = function() {
-            // Impression automatique ? Décommentez la ligne suivante si vous voulez que l'impression se lance directement
-            // window.print();
-        };
+   <script>
+        // Lancement automatique de l'impression (optionnel, décommentez si souhaité)
+         window.onload = function() { window.print(); };
     </script>
 </body>
 </html>

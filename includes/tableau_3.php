@@ -88,7 +88,11 @@ public static function trouve_par_criteres($criteres = []) {
     $result_array = self::trouve_par_sql("SELECT * FROM ".self::$nom_table." WHERE id_societe={$id} LIMIT 1");
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
-    
+    	public static function trouve_last_id_par_user($id=0) {
+    $result_array = self::trouve_par_sql("SELECT id FROM ".self::$nom_table." WHERE id_user={$id} ORDER BY id DESC LIMIT 1");
+		return !empty($result_array) ? array_shift($result_array) : false;
+  }
+  
     public static function get_annees_par_societe($id_societe) {
         global $bd;
         $sql = "SELECT DISTINCT annee FROM tableau_3 WHERE id_societe = $id_societe ORDER BY annee DESC";
