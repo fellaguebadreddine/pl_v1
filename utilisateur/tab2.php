@@ -37,10 +37,10 @@ if (!$societe) {
 $exercice_actif = Exercice::get_exercice_actif();
 
 // Déterminer l'action
-$action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
+$action = isset($_GET['action']) ? $_GET['action'] : 'list_tab2';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 1 - الأجهزة الاستشارية الداخلية";
+$titre = "الجدول 2 - الأجهزة الاستشارية الداخلية";
 $active_menu = "formulaires";
 $active_submenu = "tabl_1";
 $header = array('select2');
@@ -63,7 +63,7 @@ if ($action == "add_tab1") {
     );
 
     if ($existe) {
-        redirect_to("?action=list_tab1");
+        redirect_to("?action=list_tab2");
         exit;
     }
 }
@@ -102,7 +102,7 @@ if ($action == "add_tab1") {
                 </div>
             <?php endif; ?>
 
-            <?php if ($action == "list_tab1"): ?>
+            <?php if ($action == "list_tab2"): ?>
                 <?php if (!empty($tabls->commentaire_admin) && $tabls->statut != 'validé'): ?>
                     <div class="alert alert-info mt-2">
                         <strong>ملاحظة الإدارة :</strong>
@@ -549,7 +549,7 @@ if ($action == "add_tab1") {
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <a href="?action=list_tab1" class="btn btn-secondary">
+                                        <a href="?action=list_tab2" class="btn btn-secondary">
                                             <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
                                         </a>
                                     </div>
