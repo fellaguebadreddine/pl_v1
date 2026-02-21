@@ -234,20 +234,7 @@ class Tableau2
         $bd->requete($sql);
         return ($bd->affected_rows() == 1) ? true : false;
     }
-    public function modifier_num()
-    {
-        global $bd;
-        $attributes = $this->sanitized_attributes();
-        $attribute_pairs = array();
-        foreach ($attributes as $key => $value) {
-            $attribute_pairs[] = "{$key}='{$value}'";
-        }
-        $sql = "update " . self::$nom_table . " SET ";
-        $sql .= "n_immatriculation = '" . $this->n_immatriculation . "' ";
-        $sql .= " WHERE id =" . $bd->escape_value($this->id);
-        $bd->requete($sql);
-        return ($bd->affected_rows() == 1) ? true : false;
-    }
+
 
     public function supprime()
     {
