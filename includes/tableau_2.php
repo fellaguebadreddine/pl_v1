@@ -6,17 +6,15 @@ require_once('fonctions.php');
 class Tableau2
 {
     protected static $nom_table = "tableau_2";
-    protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user', 'total', 'total_reel', 'total_intrim', 'total_femmes', 'date_creation', 'commentaire_admin', 'id_admin_validateur');
+    protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user', 'total_cp', 'total_cr',  'date_creation', 'commentaire_admin', 'id_admin_validateur');
     public $id;
     public $id_societe;
     public $statut;
     public $annee;
     public $date_valide;
     public $id_user;
-    public $total;
-    public $total_reel;
-    public $total_intrim;
-    public $total_femmes;
+    public $total_cp;
+    public $total_cr;
     public $date_creation;
     public $commentaire_admin;
     public $id_admin_validateur;
@@ -25,7 +23,7 @@ class Tableau2
     {
         global $bd;
 
-        $sql = "SELECT id FROM tableau_1 
+        $sql = "SELECT id FROM " . self::$nom_table . "  
 				WHERE id_societe = $id_societe 
 				AND annee = $annee 
 				LIMIT 1";
@@ -56,26 +54,11 @@ class Tableau2
     }
 
 
-    public static function calculerTotalParType($id_tableau, $champ)
-    {
-        global $bd;
-        $sql = "SELECT SUM(dt.$champ) as total 
-                FROM detail_tab_1 dt 
-                INNER JOIN grades g ON dt.id_grade = g.id 
-                WHERE dt.id_tab_1 = $id_tableau ";
-        $result_set = $bd->requete($sql);
-
-        if ($result_set && $row = $bd->fetch_array($result_set)) {
-            return (float)$row['total'];
-        }
-        return 0;
-    }
-
 
     public static function trouve_par_societe_annee($id_societe, $annee)
     {
         global $bd;
-        $sql = "SELECT * FROM tableau_1 WHERE id_societe = $id_societe AND annee = '{$annee}'";
+        $sql = "SELECT * FROM " . self::$nom_table . "  WHERE id_societe = $id_societe AND annee = '{$annee}'";
         $result_array = self::trouve_par_sql($sql);
         return !empty($result_array) ? array_shift($result_array) : false;
     }
@@ -83,7 +66,7 @@ class Tableau2
     public static function get_annees_par_societe($id_societe)
     {
         global $bd;
-        $sql = "SELECT DISTINCT annee FROM tableau_1 WHERE id_societe = $id_societe ORDER BY annee DESC";
+        $sql = "SELECT DISTINCT annee FROM " . self::$nom_table . "  WHERE id_societe = $id_societe ORDER BY annee DESC";
         $result_array = self::trouve_par_sql($sql);
         return !empty($result_array) ? array_shift($result_array) : false;
     }
@@ -93,7 +76,7 @@ class Tableau2
     public static function creer($data)
     {
         global $bd;
-        $sql = "INSERT INTO " . self::$nom_table . " (id_societe, annee, statut, date_valide, id_user, total, `total_reel`, total_intrim, total_femmes) 
+        $sql = "INSERT INTO " . self::$nom_table . " (id_societe, annee, statut, date_valide, id_user, `total_cp`, total_cr) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $bd->requete($sql, array(
             $data['id_societe'],
@@ -101,10 +84,8 @@ class Tableau2
             $data['statut'],
             $data['date_valide'],
             $data['id_user'],
-            $data['total'],
-            $data['total_reel'],
-            $data['total_intrim'],
-            $data['total_femmes']
+            $data['total_cp'],
+            $data['total_cr']
         ));
         return $bd->dernierId();
     }
