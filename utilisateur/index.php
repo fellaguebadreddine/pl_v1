@@ -36,7 +36,8 @@ $exercice_actif = Exercice::get_exercice_actif();
 ?>
 
 <?php
-
+// Déterminer l'action
+$action = isset($_GET['action']) ? $_GET['action'] : '';
 $titre = "لوحة التحكم - " . $societe->raison_ar;
 
 $active_menu = "dashboard";
