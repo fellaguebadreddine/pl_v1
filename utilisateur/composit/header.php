@@ -342,13 +342,23 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_4.php" <?php if ($active_menu == 'tab_4') {
+                <a href="tab4.php?action=list_tab4" <?php if ($active_menu == 'tab_4') {
+                                                      echo 'class="nav-link active"';
+                                                    } else {
+                                                      echo 'class="nav-link"';
+                                                    } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p> الجدول 4</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tableau_4.php" <?php if ($active_menu == 'tab_5') {
                                           echo 'class="nav-link active"';
                                         } else {
                                           echo 'class="nav-link"';
                                         } ?>>
                   <i class="nav-icon bi bi-table"></i>
-                  <p> وضعية القضايا المتنازع فيها </p>
+                  <p>    الجدول 5 </p>
                 </a>
               </li>
               <li class="nav-item">

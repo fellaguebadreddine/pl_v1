@@ -368,13 +368,13 @@ if (!isset($action)) {
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux4.php" <?php if ($active_menu == 'tab_4'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-file-text"></i>
                   <p> الجدول 4 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_3'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux5.php" <?php if ($active_menu == 'tab_5'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon bi bi-file-text"></i>
                   <p> الجدول 5 </p>
                 </a>

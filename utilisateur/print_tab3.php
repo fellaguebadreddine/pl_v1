@@ -301,13 +301,7 @@ $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $
             </table>
         </div>
 
-        <!-- Commentaire de l'administration (si présent) -->
-        <?php if (!empty($tableau->commentaire_admin)): ?>
-        <div class="mt-3 p-2 border border-info">
-            <strong>ملاحظة الإدارة :</strong>
-            <?php echo nl2br(htmlspecialchars($tableau->commentaire_admin)); ?>
-        </div>
-        <?php endif; ?>
+        
 
         <!-- Signatures -->
         <div class="signature">

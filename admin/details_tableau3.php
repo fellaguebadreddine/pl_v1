@@ -321,5 +321,5 @@ require_once("composit/header.php");
         </div>
     </div>
 </main>
-
+<script> var tableauType = 'tab4'; // exemple </script>
 <?php require_once("composit/footer.php"); ?>

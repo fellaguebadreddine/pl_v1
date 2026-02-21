@@ -712,6 +712,172 @@ function supprimerTableau(id) {
 </script>
 <?php }?>
 
+ <?php if ($action == "add_tab4" || $action == "edit_tab4"){ ?>
+<script>
+let compteurLignes = <?php echo $index; ?>;
+let tousLesGrades = <?php echo json_encode($grades_js); ?>;
+
+$(document).ready(function() {
+    $('.select-grade').select2({
+        placeholder: "ابحث أو اختر...",
+        allowClear: true,
+        width: '100%',
+        dir: "rtl",
+        language: { noResults: () => "لا توجد نتائج", searching: () => "جاري البحث..." }
+    });
+    $(document).on('change', '.select-grade', function() {
+        const row = $(this).closest('tr');
+        const selected = $(this).find('option:selected');
+        const code = selected.data('code') || '';
+        const idGrade = selected.val();
+        row.find('.code-grade').val(code);
+        row.find('input[name*="[id_grade]"]').val(idGrade);
+    });
+    calculerTotaux();
+});
+
+function ajouterLigne() {
+    const tbody = $('#tbody_details');
+    const index = compteurLignes++;
+    let options = '<option value="">اختر السلك</option>';
+    tousLesGrades.forEach(g => options += `<option value="${g.id}" data-code="${g.code}">${g.designation}</option>`);
+    const row = `
+        <tr>
+            <td><input type="hidden" name="details[${index}][id]" value="0"><input type="hidden" name="details[${index}][id_grade]" value=""><input type="text" class="form-control text-center code-grade" readonly></td>
+            <td><select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select></td>
+            <td><input type="number" name="details[${index}][postes_vacants_externe]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][produit_formation_paramedicale]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][concours_sur_titre]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][debutants_contractuels]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][ouvriers_batiment_contractuels]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][methode_sur_titre]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][examen_mini]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][test_mini_ouvriers]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][postes_financiers_exploites]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][nombre_postes_financiers_exploites]" class="form-control" value="0" min="0"></td>
+            <td><textarea name="details[${index}][observations]" class="form-control" rows="1"></textarea></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `;
+    tbody.append(row);
+    tbody.find('tr:last .select-grade').select2({ placeholder: "ابحث أو اختر...", allowClear: true, width: '100%', dir: "rtl" });
+}
+
+function supprimerLigne(btn) {
+    const row = $(btn).closest('tr');
+    const idDetail = row.data('id-detail');
+    if (idDetail && idDetail > 0) {
+        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
+            $('<input>').attr({ type: 'hidden', name: 'supprimer_details[]', value: idDetail }).appendTo(row.parent());
+            row.hide();
+        }
+    } else {
+        row.remove();
+    }
+    calculerTotaux();
+}
+
+function calculerTotaux() {
+    let totals = { postes_vacants:0, produit_formation:0, concours:0, debutants:0, ouvriers:0, methode:0, examen_mini:0, test_mini:0, postes_financiers:0, nombre_postes:0 };
+    $('#tbody_details tr:visible').each(function() {
+        totals.postes_vacants += parseFloat($(this).find('input[name*="[postes_vacants_externe]"]').val()) || 0;
+        totals.produit_formation += parseFloat($(this).find('input[name*="[produit_formation_paramedicale]"]').val()) || 0;
+        totals.concours += parseFloat($(this).find('input[name*="[concours_sur_titre]"]').val()) || 0;
+        totals.debutants += parseFloat($(this).find('input[name*="[debutants_contractuels]"]').val()) || 0;
+        totals.ouvriers += parseFloat($(this).find('input[name*="[ouvriers_batiment_contractuels]"]').val()) || 0;
+        totals.methode += parseFloat($(this).find('input[name*="[methode_sur_titre]"]').val()) || 0;
+        totals.examen_mini += parseFloat($(this).find('input[name*="[examen_mini]"]').val()) || 0;
+        totals.test_mini += parseFloat($(this).find('input[name*="[test_mini_ouvriers]"]').val()) || 0;
+        totals.postes_financiers += parseFloat($(this).find('input[name*="[postes_financiers_exploites]"]').val()) || 0;
+        totals.nombre_postes += parseFloat($(this).find('input[name*="[nombre_postes_financiers_exploites]"]').val()) || 0;
+    });
+    $('#total_postes_vacants').text(totals.postes_vacants);
+    $('#total_produit_formation').text(totals.produit_formation);
+    $('#total_concours').text(totals.concours);
+    $('#total_debutants').text(totals.debutants);
+    $('#total_ouvriers').text(totals.ouvriers);
+    $('#total_methode').text(totals.methode);
+    $('#total_examen_mini').text(totals.examen_mini);
+    $('#total_test_mini').text(totals.test_mini);
+    $('#total_postes_financiers').text(totals.postes_financiers);
+    $('#total_nombre_postes').text(totals.nombre_postes);
+}
+
+function enregistrerBrouillon() {
+    const form = $('#formulaireTableau4')[0];
+    const input = $('<input>').attr({ type: 'hidden', name: 'statut', value: 'brouillon' });
+    $(form).append(input);
+    if (confirm('هل تريد حفظ الجدول كمسودة؟')) {
+        soumettreFormulaire(form, 'brouillon');
+    } else {
+        input.remove();
+    }
+}
+// Gestion de la soumission
+document.getElementById('formulaireTableau4')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
+        // Mettre à jour les id_grade à partir des selects
+        const selects = this.querySelectorAll('.select-grade');
+        selects.forEach(select => {
+            const row = select.closest('tr');
+            const hidden = row.querySelector('input[name*="[id_grade]"]');
+            if (hidden) hidden.value = select.value;
+        });
+        soumettreFormulaire(this, 'validé');
+    }
+});
+function soumettreFormulaire(form, statut) {
+    const formData = new FormData(form);
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...').prop('disabled', true);
+
+    fetch('ajax/traitement_tab4.php', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                setTimeout(() => {
+                    if (statut == 'brouillon') window.location.reload();
+                    else window.location.href = '?action=list_tab4&success=1';
+                }, 1500);
+            } else {
+                showMessage(data.message, 'danger');
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        })
+        .catch(() => {
+            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
+            submitBtn.html(originalText).prop('disabled', false);
+        });
+}
+
+function showMessage(msg, type) {
+    const alert = $('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">'+msg+'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+    $('.app-content .container-fluid').prepend(alert);
+    setTimeout(() => alert.alert('close'), 5000);
+}
+
+function supprimerTableau(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
+        fetch('ajax/traitement_tab4.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab4&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => window.location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger'));
+    }
+}
+</script>
+
+<?php }?>
+
 
     <!--end::Script-->
   </body>

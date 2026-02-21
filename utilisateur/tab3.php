@@ -53,10 +53,9 @@ $existe = Tableau3::existe_pour_societe_annee($current_user->id_societe, $annee)
 $tabls = Tableau3::trouve_tableau_1_par_id($societe->id_societe);
 
 
-if ($action == "add_tab1") {
+if ($action == "add_tab3") {
 
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
-
 $existe = Tableau3::existe_pour_societe_annee(
     $current_user->id_societe,
     $annee

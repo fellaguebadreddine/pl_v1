@@ -35,6 +35,9 @@ switch ($type) {
     case 'tab3':
         $classe = 'Tableau3';
         break;
+    case 'tab4':
+        $classe = 'Tableau4';
+        break;
     // Ajouter d'autres cas si nécessaire
     default:
         echo json_encode(['success' => false, 'message' => 'نوع الجدول غير معروف']);
