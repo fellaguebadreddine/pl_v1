@@ -49,15 +49,15 @@ require_once("composit/header.php");
 ?>
 <?php
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
-$existe = Tableau1::existe_pour_societe_annee($current_user->id_societe, $annee);
-$tabls = Tableau1::trouve_tableau_1_par_id($societe->id_societe);
+$existe = Tableau2::existe_pour_societe_annee($current_user->id_societe, $annee);
+$tabls = Tableau2::trouve_tableau_2_par_id($societe->id_societe);
 
 
-if ($action == "add_tab1") {
+if ($action == "add_tab2") {
 
     $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 
-    $existe = Tableau1::existe_pour_societe_annee(
+    $existe = Tableau2::existe_pour_societe_annee(
         $current_user->id_societe,
         $annee
     );
@@ -198,7 +198,7 @@ if ($action == "add_tab1") {
                     </div>
                 </div>
 
-            <?php elseif ($action == "add_tab1" || $action == "edit_tab1"): ?>
+            <?php elseif ($action == "add_tab2" || $action == "edit_tab2"): ?>
                 <div class="row">
                     <div class="col-12">
                         <!-- Overlay de chargement -->
@@ -218,7 +218,7 @@ if ($action == "add_tab1") {
                         $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 
                         if ($action == "edit_tab1" && $id > 0) {
-                            $tableau = Tableau1::trouve_par_id($id);
+                            $tableau = Tableau2::trouve_par_id($id);
                             if ($tableau) {
                                 $annee = $tableau->annee;
                                 $details = DetailTab1::trouve_tab_vide_par_admin($id);

@@ -125,7 +125,7 @@ class Tableau2
         return  self::trouve_par_sql($q);
     }
 
-    public static function trouve_tableau_1_par_id($id = 0)
+    public static function trouve_tableau_2_par_id($id = 0)
     {
         $result_array = self::trouve_par_sql("SELECT * FROM " . self::$nom_table . " WHERE id_societe={$id} LIMIT 1");
         return !empty($result_array) ? array_shift($result_array) : false;
