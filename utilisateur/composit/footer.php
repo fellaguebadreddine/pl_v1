@@ -69,18 +69,7 @@
     $(document).ready(function(){
     $('[data-bs-toggle="tooltip"]').tooltip();
 });
-$(document).ready(function() {
-    console.log('Document ready - Initialisation AJAX');
-    
-    // Initialiser Select2
-    $('.select2').select2({
-        placeholder: "اختر...",
-        allowClear: true,
-        width: '100%',
-        dir: "rtl"
-    });   
-   
-    });  
+ 
     // Afficher un message
 function showAlert(message, type = 'success') {
     var alertClass = type === 'success' ? 'alert-success' : 
@@ -876,7 +865,7 @@ function supprimerTableau(id) {
 }
 </script>
 
-<?php }?>
+<?php }?> 
 
 
     <!--end::Script-->
