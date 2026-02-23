@@ -349,6 +349,7 @@ require_once("composit/header.php");
                 // Récupérer le tableau principal (s'il existe)
                 $tableau = null;
                 $details = array();
+                
                 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
                 $id_tableau_4 = isset($_GET['id_tableau_4']) ? intval($_GET['id_tableau_4']) : 0; // Si lien depuis tableau 4
 
