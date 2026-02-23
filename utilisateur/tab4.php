@@ -111,9 +111,9 @@ require_once("composit/header.php");
                 <!-- Annexe 4/1 -->
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i> الملحق 4/1</h5>
+                        <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i> مكرر 4/1</h5>
                         <?php if ($exercice_actif): ?>
-                            <a href="?action=add_tab4_1" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة ملحق 4/1</a>
+                            <a href="?action=add_tab4_1" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة جدول 4/1</a>
                         <?php endif; ?>
                     </div>
                     <div class="card-body">
@@ -349,7 +349,6 @@ require_once("composit/header.php");
                 // Récupérer le tableau principal (s'il existe)
                 $tableau = null;
                 $details = array();
-                
                 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
                 $id_tableau_4 = isset($_GET['id_tableau_4']) ? intval($_GET['id_tableau_4']) : 0; // Si lien depuis tableau 4
 
