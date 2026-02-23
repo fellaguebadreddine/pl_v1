@@ -120,7 +120,7 @@ require_once("composit/header.php");
                         <?php elseif ($existe_tab4_1): 
                             $tab4_1_existant = Tableau4_1::trouve_par_societe_annee($societe->id_societe, $exercice_actif->annee);
                             if ($tab4_1_existant && $tab4_1_existant->statut != 'validé'): ?>
-                            <a href="?action=edit_tab4&id=<?php echo $tab4_1_existant->id; ?>" class="btn btn-warning">
+                            <a href="?action=edit_tab4_1&id=<?php echo $tab4_1_existant->id; ?>" class="btn btn-warning">
                                 <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
                             </a>
                         <?php endif; endif; ?>
