@@ -112,9 +112,18 @@ require_once("composit/header.php");
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i> مكرر 4/1</h5>
-                        <?php if ($exercice_actif): ?>
-                            <a href="?action=add_tab4_1" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة جدول 4/1</a>
-                        <?php endif; ?>
+                        
+                        <?php 
+                        $existe_tab4_1 = Tableau4_1::existe_pour_societe_annee($societe->id_societe, $exercice_actif->annee);
+                        if ($exercice_actif && !$existe_tab4_1): ?>
+                            <a href="?action=add_tab4_1" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة جدول رقم 4/1</a>
+                        <?php elseif ($existe_tab4_1): 
+                            $tab4_1_existant = Tableau4_1::trouve_par_societe_annee($societe->id_societe, $exercice_actif->annee);
+                            if ($tab4_1_existant && $tab4_1_existant->statut != 'validé'): ?>
+                            <a href="?action=edit_tab4&id=<?php echo $tab4_1_existant->id; ?>" class="btn btn-warning">
+                                <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                            </a>
+                        <?php endif; endif; ?>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
