@@ -5,15 +5,33 @@ require_once('fonctions.php');
 // Tableau1.php
 class DetailTab4_1 {
     protected static $nom_table="detail_tab_4_1";
-	protected static $champs = array('id', 'id_tableau_4_1', 'id_grade', 'categorie', 'num_categorie', 'temps_complete_contrat_annee', 'temps_partiel_contrat_annee', 'temps_complete_permanente_annee', 'temps_partiel_permanente_annee', 'temps_complete_contrat_annee_1', 'temps_partiel_contrat_annee_1', 'temps_complete_permanente_annee_1', 'temps_partiel_permanente_annee_1', 'temps_complete_contrat_vacant', 'temps_partiel_contrat_vacant', 'temps_complete_permanente_vacant', 'temps_partiel_permanente_vacant', 'observation');
+	protected static $champs = array('id', 'id_tableau_4_1', 'id_grade', 'categorie',
+	 'num_categorie', 'temps_complete_contrat_annee', 'temps_partiel_contrat_annee',
+	  'temps_complete_permanente_annee', 'temps_partiel_permanente_annee',
+	   'temps_complete_contrat_annee_1', 'temps_partiel_contrat_annee_1', 
+	   'temps_complete_permanente_annee_1', 'temps_partiel_permanente_annee_1', 
+	   'temps_complete_contrat_vacant', 'temps_partiel_contrat_vacant', 
+	   'temps_complete_permanente_vacant', 'temps_partiel_permanente_vacant', 'observation');
     public $id;
     public $id_tableau_4_1;
     public $id_grade;
     public $categorie;
     public $num_categorie;
     public $temps_complete_contrat_annee;
-    public $departs;
-    public $observations;
+    public $temps_partiel_contrat_annee;
+    public $temps_complete_permanente_annee;
+	public $temps_partiel_permanente_annee;
+	public $temps_complete_contrat_annee_1;
+	public $temps_partiel_contrat_annee_1;
+	public $temps_complete_permanente_annee_1;
+	public $temps_partiel_permanente_annee_1;
+	public $temps_complete_contrat_vacant;
+	public $temps_partiel_contrat_vacant;
+	public $temps_complete_permanente_vacant;
+	public $temps_partiel_permanente_vacant;
+	public $observation;
+
+
    
 public static function trouve_par_tableau($id_tableau_4_1)
 {

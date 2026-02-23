@@ -865,7 +865,199 @@ function supprimerTableau(id) {
 }
 </script>
 
-<?php }?> 
+<?php }?>
+
+<?php if ($action == "add_tab4_1" || $action == "edit_tab4_1"){ ?>
+<script>
+    // Variables globales pour les deux formulaires
+let compteurLignes4 = <?php echo isset($index) ? $index : 0; ?>;
+let compteurLignes4_1 = <?php echo isset($index) ? $index : 0; ?>;
+let tousLesGrades = <?php echo json_encode($grades_js); ?>;
+
+$(document).ready(function() {
+    // Initialiser Select2 pour tous les selects
+    $('.select-grade').select2({
+        placeholder: "ابحث أو اختر...",
+        allowClear: true,
+        width: '100%',
+        dir: "rtl",
+        language: { noResults: () => "لا توجد نتائج", searching: () => "جاري البحث..." }
+    });
+    
+    // Gestion des changements de select
+    $(document).on('change', '.select-grade', function() {
+        const row = $(this).closest('tr');
+        const selected = $(this).find('option:selected');
+        const code = selected.data('code') || '';
+        const idGrade = selected.val();
+        row.find('.code-grade').val(code);
+        row.find('input[name*="[id_grade]"]').val(idGrade);
+    });
+    
+    // Calculer les totaux si on est sur le formulaire correspondant
+    if ($('#tbody_details4').length) calculerTotaux4();
+    if ($('#tbody_details4_1').length) calculerTotaux4_1();
+});
+
+
+// Fonctions pour l'annexe 4/1
+
+// Fonctions JavaScript spécifiques à l'annexe 4/1 (à ajouter dans la section <script>)
+function ajouterLigne4_1() {
+    const tbody = $('#tbody_details4_1');
+    const index = compteurLignes4_1++;
+    let options = '<option value="">اختر السلك</option>';
+    tousLesGrades.forEach(g => options += `<option value="${g.id}" data-code="${g.code}">${g.designation}</option>`);
+
+    // Générer les champs numériques
+    let numericHtml = '';
+    <?php foreach ($numeric_fields as $field): ?>
+        numericHtml += `<td><input type="number" name="details[${index}][<?php echo $field; ?>]" class="form-control numeric-field" value="0" min="0"></td>`;
+    <?php endforeach; ?>
+
+    const row = `
+        <tr>
+          
+                <input type="hidden" name="details[${index}][id]" value="0">
+                <input type="hidden" name="details[${index}][id_grade]" value="">
+                <input type="text" class="form-control text-center code-grade" readonly>
+            
+            <td>
+                <select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select>
+            </td>
+            <td><input type="text" name="details[${index}][categorie]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][num_categorie]" class="form-control" value="0" min="0"></td>
+            ${numericHtml}
+            <td><textarea name="details[${index}][observation]" class="form-control" rows="1"></textarea></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne4_1(this)"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `;
+    tbody.append(row);
+    tbody.find('tr:last .select-grade').select2({ placeholder: "ابحث أو اختر...", allowClear: true, width: '100%', dir: "rtl" });
+}
+
+function supprimerLigne4_1(btn) {
+    const row = $(btn).closest('tr');
+    const idDetail = row.data('id-detail');
+    if (idDetail && idDetail > 0) {
+        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
+            $('<input>').attr({ type: 'hidden', name: 'supprimer_details[]', value: idDetail }).appendTo(row.parent());
+            row.hide();
+        }
+    } else {
+        row.remove();
+    }
+    calculerTotaux4_1();
+}
+
+function calculerTotaux4_1() {
+    // Initialiser les totaux pour chaque champ numérique
+    let totals = {};
+    <?php foreach ($numeric_fields as $field): ?>
+        totals['<?php echo $field; ?>'] = 0;
+    <?php endforeach; ?>
+
+    $('#tbody_details4_1 tr:visible').each(function() {
+        <?php foreach ($numeric_fields as $field): ?>
+            totals['<?php echo $field; ?>'] += parseFloat($(this).find('input[name*="[<?php echo $field; ?>]"]').val()) || 0;
+        <?php endforeach; ?>
+    });
+
+    // Mettre à jour l'affichage
+    <?php foreach ($numeric_fields as $field): ?>
+        $('#total_<?php echo $field; ?>').text(totals['<?php echo $field; ?>']);
+    <?php endforeach; ?>
+}
+
+function enregistrerBrouillon4_1() {
+    const form = $('#formulaireTableau4_1')[0];
+    const input = $('<input>').attr({ type: 'hidden', name: 'statut', value: 'brouillon' });
+    $(form).append(input);
+    if (confirm('هل تريد حفظ الملحق كمسودة؟')) {
+        soumettreFormulaire4_1(form, 'brouillon');
+    } else {
+        input.remove();
+    }
+}
+// Gestion de la soumission
+document.getElementById('formulaireTableau4_1')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
+        // Mettre à jour les id_grade à partir des selects
+        const selects = this.querySelectorAll('.select-grade');
+        selects.forEach(select => {
+            const row = select.closest('tr');
+            const hidden = row.querySelector('input[name*="[id_grade]"]');
+            if (hidden) hidden.value = select.value;
+        });
+        soumettreFormulaire4_1(this, 'validé');
+    }
+});
+function soumettreFormulaire4_1(form, statut) {
+    const formData = new FormData(form);
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...').prop('disabled', true);
+
+    fetch('ajax/traitement_tab4_1.php', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                setTimeout(() => {
+                    if (statut == 'brouillon') window.location.reload();
+                    else window.location.href = '?action=list_tab4&success=1';
+                }, 1500);
+            } else {
+                showMessage(data.message, 'danger');
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        })
+        .catch(() => {
+            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
+            submitBtn.html(originalText).prop('disabled', false);
+        });
+}
+
+
+
+
+// Fonctions communes
+function showMessage(msg, type) {
+    const alert = $('<div class="alert alert-'+type+' alert-dismissible fade show" role="alert">'+msg+'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+    $('.app-content .container-fluid').prepend(alert);
+    setTimeout(() => alert.alert('close'), 5000);
+}
+
+function supprimerTableau4(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
+        fetch('ajax/traitement_tab4.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab4&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => window.location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger'));
+    }
+}
+
+function supprimerTableau4_1(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الملحق؟')) {
+        fetch('ajax/traitement_tab4_1.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab4_1&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => window.location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger'));
+    }
+}
+</script>
+<?php }?>
 
 
     <!--end::Script-->
