@@ -59,14 +59,14 @@ $numeric_fields = [
 
 // Libellés en arabe pour les colonnes (adaptés)
 $field_labels = [
-    'postes_vacants_externe' => 'عدد المناصب الشاغرة (خارجي)',
-    'produit_formation_paramedicale' => 'منتوج التكوين (شبه الطبيبي)',
-    'concours_sur_titre' => 'مسابقة على أساس الشهادة',
-    'debutants_contractuels' => 'المبتدئين المتعاقدين',
-    'ouvriers_batiment_contractuels' => 'العمال المبنى المتعاقدين',
-    'methode_sur_titre' => 'طريقة على أساس الشهادة',
-    'examen_mini' => 'امتحان ميني',
-    'test_mini_ouvriers' => 'فحص ميني (العمال المبنى صنف)',
+    'postes_vacants_externe' => 'عدد المناصب الشاغرة ',
+    'produit_formation_paramedicale' => ' منتوج التكوين ( شبه الطبيين) ',
+    'concours_sur_titre' => '   مسابقة على أساس الشهادة   ( خارجي ) ',
+    'debutants_contractuels' => ' انتقاء (العمال المهنيين المتعاقدين)',
+    'ouvriers_batiment_contractuels' => '  على اساس الاختبار المهني العمال المهنيين المتعاقدين',
+    'methode_sur_titre' => '   ترقية على اساس الشهادة ',
+    'examen_mini' => 'امتحان مهني',
+    'test_mini_ouvriers' => '  على سبيل الاختيار',
     'postes_financiers_exploites' => 'المناصب المالية التي تم استغلالها',
     'nombre_postes_financiers_exploites' => 'عدد المناصب المالية التي تم استغلالها'
 ];
@@ -240,13 +240,15 @@ $titre = "طباعة الجدول 4 - " . $societe->raison_ar . " - " . $annee;
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th rowspan="2" class="align-middle">الرمز</th>
-                        <th rowspan="2" class="align-middle">السلك</th>
+                        
+                        <th colspan="6">التوظيف الخارجي في المناصب الشاغرة</th>
+                        <th colspan="3">الترقيـــــــــة</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" class="align-middle">الرتبة </th>
                         <?php foreach ($numeric_fields as $field): ?>
                             <th class="text-center"><?php echo $field_labels[$field] ?? $field; ?></th>
                         <?php endforeach; ?>
-                        <th rowspan="2" class="align-middle">الملاحظات</th>
-                    </tr>
                     <tr>
                         <!-- deuxième ligne vide -->
                     </tr>
@@ -257,12 +259,10 @@ $titre = "طباعة الجدول 4 - " . $societe->raison_ar . " - " . $annee;
                             $grade = Grade::trouve_par_id($d->id_grade);
                         ?>
                         <tr>
-                            <td><?php echo $grade ? $grade->id : ''; ?></td>
                             <td><?php echo $grade ? $grade->grade : ''; ?></td>
                             <?php foreach ($numeric_fields as $field): ?>
                                 <td><?php echo $d->$field ?? 0; ?></td>
                             <?php endforeach; ?>
-                            <td><?php echo htmlspecialchars($d->observations); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -271,7 +271,7 @@ $titre = "طباعة الجدول 4 - " . $societe->raison_ar . " - " . $annee;
                 </tbody>
                 <tfoot class="table-secondary">
                     <tr>
-                        <td colspan="2" class="fw-bold text-end">المجموع</td>
+                        <td  class="fw-bold text-end">المجموع</td>
                         <?php foreach ($numeric_fields as $field): ?>
                             <td class="fw-bold"><?php echo $totals[$field]; ?></td>
                         <?php endforeach; ?>
