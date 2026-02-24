@@ -68,6 +68,24 @@ if ($existe) {
 }
 }
 ?>
+<?php
+$existe_tab_1_1 = Tableau1_1::existe_pour_societe_annee($current_user->id_societe, $annee);
+$tabl_1_1 = Tableau1_1::trouve_tableau_1_1_par_id($societe->id_societe);
+
+
+if ($action == "add_tab1_1") {
+$annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+$existe_tab_1_1 = Tableau1_1::existe_pour_societe_annee(
+    $current_user->id_societe,
+    $annee
+);
+
+if ($existe) {
+    redirect_to("?action=list_tab1");
+    exit;
+}
+}
+?>
 
 <!--begin::App Main-->
 <main class="app-main">
@@ -104,11 +122,11 @@ if ($existe) {
             
             <?php if ($action == "list_tab1"): ?>
                  <?php if (!empty($tabls->commentaire_admin) && $tabls->statut !='validé'): ?>
-    <div class="alert alert-info mt-2">
-        <strong>ملاحظة الإدارة :</strong>
-        <?php echo nl2br(htmlspecialchars($tabls->commentaire_admin)); ?>
-    </div>
-<?php endif; ?>
+                    <div class="alert alert-info mt-2">
+                        <strong>ملاحظة الإدارة :</strong>
+                        <?php echo nl2br(htmlspecialchars($tabls->commentaire_admin)); ?>
+                    </div>
+                <?php endif; ?>
                 <!-- Liste des tableaux existants -->
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -197,6 +215,69 @@ if ($existe) {
                                         </td>
                                     </tr>
                                     <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- tableau annexe 1_1 -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i>   الجدول 1 مكرر</h5>
+                        <?php if ($exercice_actif):?>
+                        <?php if (!$existe_tab_1_1): ?>
+                        <a href="?action=add_tab1_1" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> إضافة جدول رقم 1 مكرر
+                        </a>
+
+                        <?php else: 
+                            if ($tabl_1_1->statut != 'validé'):?>
+
+                        <a href="?action=edit_tab1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-warning">
+                            <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                        </a>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>الجدول 1 المرتبط</th>
+                                        <th>السنة</th>
+                                        <th>الحالة</th>
+                                        <th>تاريخ التقديم</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                
+                                if (!empty($tabl_1_1)):
+                                    foreach ($tabl_1_1 as $row):
+                                        $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
+                                ?>
+                                    <tr>
+                                        <td class="text-center"><a href="print_tab1_1.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
+                                        <td class="text-center"><?php echo $row->id_tableau_1; ?></td>
+                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
+                                        <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
+                                        <td class="text-center">
+                                            <a href="?action=edit_tab1_1&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
+                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    endforeach;
+                                else:
+                                ?>
+                                    <tr><td colspan="6" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد ملحقات مسجلة</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
