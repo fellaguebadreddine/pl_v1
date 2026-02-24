@@ -431,6 +431,16 @@
                   <p>  الجدول 12</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="parametres.php" <?php if ($active_menu == 'parametres') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-gear"></i>
+                  <p>إعدادات</p>
+                </a>
+              </li>
             <?php endif; ?>
           </ul>
           <!--end::Sidebar Menu-->
