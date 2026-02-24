@@ -41,7 +41,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 $titre = "الجدول 1 - المناصب العليا";
-$active_menu = "formulaires";
+$active_menu = "tab_1";
 $active_submenu = "tabl_1";
 $header = array('select2');
 
@@ -131,7 +131,7 @@ if ($existe) {
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
-                            <i class="fas fa-list me-2 text-primary"></i>قائمة الجداول المسجلة
+                            <i class="fas fa-list me-2 text-primary"></i>  الجدول رقم 1
                         </h5>
                         <?php if ($exercice_actif):?>
                         <?php if (!$existe): ?>

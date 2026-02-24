@@ -317,7 +317,7 @@
                                                     } else {
                                                       echo 'class="nav-link"';
                                                     } ?>>
-                  <i class="nav-icon bi bi-file-text"></i>
+                  <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 1 </p>
                 </a>
               </li>
@@ -412,7 +412,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tab11.php?action=list_tab11" <?php if ($active_menu == 'tab_1') {
+                <a href="tab11.php?action=list_tab11" <?php if ($active_menu == 'tab_11') {
                                           echo 'class="nav-link active"';
                                         } else {
                                           echo 'class="nav-link"';
