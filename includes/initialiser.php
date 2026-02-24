@@ -37,6 +37,7 @@ require_once(LIB_PATH . DS . 'tableau_4.php');
 require_once(LIB_PATH . DS . 'detailTab4.php');
 require_once(LIB_PATH . DS . 'tableau_4_1.php');
 require_once(LIB_PATH . DS . 'detailTab4_1.php');
+require_once(LIB_PATH . DS . 'tableau_5.php');
 
 require_once(LIB_PATH . DS . 'wilayas.php');
 //require_once(LIB_PATH.DS.'commune.php');
