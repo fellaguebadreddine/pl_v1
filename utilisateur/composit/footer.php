@@ -95,6 +95,7 @@ function showAlert(message, type = 'success') {
 </script>
 <?php if ($action == "add_tab1" || $action == "edit_tab1"){?>
 <script>
+    
 $(document).ready(function(){
 
     /* ===============================
