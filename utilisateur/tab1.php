@@ -343,6 +343,19 @@ if ($existe) {
                 </thead>
                 <tbody>
                     <tr>
+                        <td>1</td>
+                        <td><input type="number" name="poste_sup" id="poste_sup" class="form-control"></td>
+                        <td><input type="number" name="postes_total_sup" id="postes_total_sup" class="form-control"></td>
+                        <td><input type="number" name="postes_reel_sup" id="postes_reel_sup" class="form-control"></td>
+                        <td><input type="number" name="poste_intirim_sup" id="poste_intirim_sup" class="form-control"></td>
+                        <td><input type="number" name="poste_femme_sup" id="poste_femme_sup" class="form-control"></td>
+                        <td><input type="number" name="difference_sup" id="difference_sup" class="form-control"></td>
+                        <td><input type="number" name="observations_sup" id="observations_sup" class="form-control"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-success btn-sm add-sup-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </td>
 
                     </tr>
                 </tbody>
@@ -476,10 +489,10 @@ if ($existe) {
                         <th colspan="9" class="fw-bold text-center bg-info text-white">المناصب العليا</th>
                     </tr>
                     <tr class="table-light">
-                        <th width="5%" class="text-center">الرمز</th>
-                        <th width="25%" class="text-center">المنصب</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية إلى غاية <?php echo ($annee - 1); ?>/12/31</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center"> تعداد المناصب المالية</th>
+                        <th width="10%" class="text-center"> المناصب الحقيقية</th>
                         <th width="10%" class="text-center">بالنيابة</th>
                         <th width="10%" class="text-center">النساء</th>
                         <th width="10%" class="text-center">الفارق</th>
@@ -593,12 +606,7 @@ if ($existe) {
 <!-- Total Général -->
 <div class="row">
     <div class="col-12">
-        <div class="card mb-4 border-success">
-            <div class="card-header bg-success text-white">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-calculator me-2"></i>المجموع العام
-                </h5>
-            </div>
+        <div class="card mb-4">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -606,7 +614,7 @@ if ($existe) {
                             <tr>
                                 <th class="text-center">المجموع العام</th>
                                 <th class="text-center">تعداد المناصب <?php echo ($annee - 1); ?>/12/31</th>
-                                <th class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                                <th class="text-center">    المناصب الحقيقية</th>
                                 <th class="text-center">بالنيابة</th>
                                 <th class="text-center">النساء</th>
                                 <th class="text-center">الفارق</th>
