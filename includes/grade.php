@@ -6,11 +6,13 @@ require_once('fonctions.php');
 class Grade {
 	
 	protected static $nom_table="grades";
-	protected static $champs = array('id','grade', 'lois', 'actif');
+	protected static $champs = array('id','grade', 'loi', 'classe', 'actif');
 	public $id;
 	public $grade;
 	public $lois;
+	public $classe;
 	public $actif;
+
 	public static function compter_tous() {
     $sql = "SELECT COUNT(*) FROM " . static::$table_name;
     $stmt = self::$database->prepare($sql);

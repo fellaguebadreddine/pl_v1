@@ -264,7 +264,7 @@ if ($existe) {
                                         <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
                                         <td class="text-center">
                                             <a href="?action=edit_tab1_1&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
-                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <button onclick="supprimerTableau_1(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 <?php
@@ -369,8 +369,9 @@ if ($existe) {
                         ?>
                         <tr data-id="<?php echo $detail->id; ?>">
                             <td>
-                                <input type="text" class="form-control text-center" 
+                                <input type="hidden" class="form-control text-center" 
                                        value="<?php echo $grade ? $grade->id : ''; ?>" readonly>
+                                       <?php echo $grade ? $grade->classe : ''; ?>
                             </td>
                             <td>
                                 <?php echo $grade ? $grade->grade : ''; ?>
@@ -613,8 +614,8 @@ if ($existe) {
                         <thead class="table-success">
                             <tr>
                                 <th class="text-center">المجموع العام</th>
-                                <th class="text-center">تعداد المناصب <?php echo ($annee - 1); ?>/12/31</th>
-                                <th class="text-center">    المناصب الحقيقية</th>
+                                <th class="text-center">تعداد المناصب </th>
+                                <th class="text-center">المناصب الحقيقية</th>
                                 <th class="text-center">بالنيابة</th>
                                 <th class="text-center">النساء</th>
                                 <th class="text-center">الفارق</th>
