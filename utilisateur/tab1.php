@@ -40,7 +40,7 @@ $exercice_actif = Exercice::get_exercice_actif();
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 1 - المناصب العليا";
+$titre = "الجدول 1  ";
 $active_menu = "tab_1";
 $active_submenu = "tabl_1";
 $header = array('select2');
@@ -94,7 +94,8 @@ if ($existe) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">الجدول 1 - <?php echo $societe->raison_ar; ?> </h3>
+                    <h3 class="mb-0">الجدول رقم 1 </h3>
+                    <h4>جدول يتعلق بهيكل التعددات إلى غاية : <?php echo '31-12-'. ($annee -1);?></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -158,11 +159,8 @@ if ($existe) {
                                         <th width="5%" class="text-center">ID</th>
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
-                                        <th width="15%" class="text-center">تاريخ التقديم</th>
-                                        <th width="10%" class="text-center">إجمالي المناصب</th>
-                                        <th width="10%" class="text-center">المناصب الحقيقية</th>
-                                        <th width="10%" class="text-center">بالنيابة</th>
-                                        <th width="10%" class="text-center">النساء</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                        
+                                        <th width="10%" class="text-center">الملاحظات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -190,10 +188,7 @@ if ($existe) {
                                         <td class="text-center">
                                             <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                         </td>
-                                        <td class="text-center"><?php echo $tabls->total; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_reel; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_intrim; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_femmes; ?></td>
+                                        <td class="text-center"><?php echo $tabls->observations; ?></td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabls->statut != 'validé'):?>
                                             <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
@@ -327,14 +322,18 @@ if ($existe) {
         <div class="portlet-body table-responsive hauts_fonctionnaires">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
+                    
                     <tr>
-                        <th colspan="9" class="fw-bold text-center bg-primary text-white">الوظائف العليا</th>
+                        <th colspan="3"></th>
+                        <th colspan="3">تعداد المناصب الحقيقية</th>
+                        <th colspan="3"></th>
                     </tr>
                     <tr class="table-light">
-                        <th width="5%" class="text-center">الرمز</th>
-                        <th width="25%" class="text-center">الوظيفة</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية إلى غاية <?php echo ($annee - 1); ?>/12/31</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center">تعداد المناصب المالية</th>
+                        
+                        <th width="10%" class="text-center">المناصب الحقيقية</th>
                         <th width="10%" class="text-center">بالنيابة</th>
                         <th width="10%" class="text-center">النساء</th>
                         <th width="10%" class="text-center">الفارق</th>
@@ -342,6 +341,14 @@ if ($existe) {
                         <th width="10%" class="text-center">الإجراءات</th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr>
+
+                    </tr>
+                </tbody>
+                <tr>
+                        <th colspan="9" class="fw-bold text-center bg-primary text-white">الوظائف العليا</th>
+                    </tr>
                 <tbody id="existing_hauts_fonctionnaires">
                     <?php if (!empty($details)): ?>
                         <?php foreach ($details as $detail): 
