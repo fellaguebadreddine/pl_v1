@@ -188,13 +188,13 @@ if ($existe) {
                                         <td class="text-center">
                                             <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                         </td>
-                                        <td class="text-center"><?php echo $tabls->observations; ?></td>
+                                        <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabls->statut != 'validé'):?>
                                             <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button onclick="supprimerTableau(<?php echo $tabls->id; ?>)" 
+                                            <button onclick=" (<?php echo $tabls->id; ?>)" 
                                                     class="btn btn-sm btn-danger" title="حذف">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -264,7 +264,7 @@ if ($existe) {
                                         <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
                                         <td class="text-center">
                                             <a href="?action=edit_tab1_1&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
-                                            <button onclick="supprimerTableau_1(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 <?php
@@ -296,6 +296,7 @@ if ($existe) {
         // Récupérer les données existantes si en mode édition
         $tableau = null;
         $details = array();
+        $sup_details = array();
         $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
         
         if ($action == "edit_tab1" && $id > 0) {
@@ -303,10 +304,12 @@ if ($existe) {
             if ($tableau) {
                 $annee = $tableau->annee;
                 $details = DetailTab1::trouve_tab_vide_par_admin($id);
+                $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
             $details = DetailTab1::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
+            $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
         }
         
         // Récupérer tous les grades
@@ -341,8 +344,52 @@ if ($existe) {
                         <th width="10%" class="text-center">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
+                <tbody id="existing_hauts_fonctionnaires">
+                    <?php if (!empty($sup_details)): ?>
+                        <?php foreach ($sup_details as $detail): ?>
+                                                    
+                       <tr data-id="<?php echo $detail->id; ?>">
+                            <td>
+                                
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->postes_total_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->postes_reel_sup ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_intirim_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_femme_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->difference_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($detail->observations_sup); ?>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteDetailSup(<?php echo $detail->id; ?>)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr id="noDataSup">
+                            <td colspan="9" class="text-center text-muted">
+                                لا توجد بيانات مسجلة
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <tbody id="body_sup_body">
+                    <tr class="item-row"> 
                         <td>1</td>
                         <td><input type="number" name="poste_sup" id="poste_sup" class="form-control"></td>
                         <td><input type="number" name="postes_total_sup" id="postes_total_sup" class="form-control"></td>
@@ -371,7 +418,7 @@ if ($existe) {
                             <td>
                                 <input type="hidden" class="form-control text-center" 
                                        value="<?php echo $grade ? $grade->id : ''; ?>" readonly>
-                                       <?php echo $grade ? $grade->classe : ''; ?>
+                                    <?php echo $grade ? $grade->classe : ''; ?>
                             </td>
                             <td>
                                 <?php echo $grade ? $grade->grade : ''; ?>

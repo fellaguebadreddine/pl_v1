@@ -56,7 +56,9 @@ public function commitTransactions() {
     mysqli_query($this->connection, "COMMIT");
     mysqli_query($this->connection, "set autocommit = 1");
 }
-
+public function prepare($sql){
+    return mysqli_prepare($this->connection, $sql);
+}
 public function rollbackTransactions() {
     mysqli_query($this->connection, "ROLLBACK");
     mysqli_query($this->connection, "set autocommit = 1");

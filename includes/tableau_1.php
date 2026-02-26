@@ -6,15 +6,17 @@ require_once('fonctions.php');
 class Tableau1
 {
 	protected static $nom_table = "tableau_1";
-	protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user', 'total_cp', 'total_cr',  'date_creation', 'commentaire_admin', 'id_admin_validateur');
+	protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide',
+	 'id_user', 'total_reel', 'total_intrim', 'total_femmes', 'date_creation', 'commentaire_admin', 'id_admin_validateur');
 	public $id;
     public $id_societe;
     public $statut;
     public $annee;
     public $date_valide;
     public $id_user;
-    public $total_cp;
-    public $total_cr;
+    public $total_reel;
+    public $total_intrim;
+	public $total_femmes;
     public $date_creation;
     public $commentaire_admin;
     public $id_admin_validateur;

@@ -69,6 +69,19 @@
     $(document).ready(function(){
     $('[data-bs-toggle="tooltip"]').tooltip();
 });
+
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "اختر الوظيفة",
+        allowClear: true,
+        dir: "rtl",
+        language: {
+            noResults: function() {
+                return "لا توجد نتائج";
+            }
+        }
+    });
+});
  
     // Afficher un message
 function showAlert(message, type = 'success') {
@@ -95,8 +108,33 @@ function showAlert(message, type = 'success') {
 </script>
 <?php if ($action == "add_tab1" || $action == "edit_tab1"){?>
 <script>
+    function deleteDetailSup(id) {
+    if (!confirm('هل أنت متأكد من حذف هذا السطر؟')) return;
+    $.ajax({
+        url: 'ajax/tableau1_sup_ajax.php',
+        type: 'POST',
+        data: { action: 'delete_sup', id: id },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                $('tr[data-id="' + id + '"]').fadeOut(300, function() {
+                    $(this).remove();
+                    // si plus de lignes, afficher un message
+                    if ($('#existing_hauts_fonctionnaires tr').length === 0) {
+                        $('#existing_hauts_fonctionnaires').html('<tr><td colspan="9" class="text-center text-muted">لا توجد بيانات مسجلة</td></tr>');
+                    }
+                });
+            } else {
+                alert(response.message || 'Erreur lors de la suppression');
+            }
+        },
+        error: function() {
+            alert('Erreur serveur');
+        }
+    });
+}
     
-$(document).ready(function(){
+$(document).ready(function(){    
 
     /* ===============================
        CALCUL AUTOMATIQUE DIFFERENCE HF
@@ -120,6 +158,74 @@ $(document).ready(function(){
         row.find('.difference-hp').val(reel - total);
     });
 
+    /*================================
+    AJOUTER SUP POSTE
+    ================================ */
+    
+$(document).on('click', '.add-sup-btn', function () {
+
+    let btn = $(this);
+    let row = btn.closest('tr');
+
+    let data = {
+        action: 'add_sup',
+         id_user: <?php echo $current_user->id; ?>,
+            id_societe: <?php echo $current_user->id_societe; ?>,
+            annee: <?php echo $annee; ?>,
+        id_tableau: <?php echo $id ?? 0; ?>,
+        code: $('#code').val(),
+        poste_sup: $('#poste_sup').val(),
+        postes_total_sup: $('#postes_total_sup').val(),
+        postes_reel_sup: $('#postes_reel_sup').val(),
+        poste_intirim_sup: $('#poste_intirim_sup').val(),
+        poste_femme_sup: $('#poste_femme_sup').val(),
+        difference_sup: $('#difference_sup').val(),
+        observations_sup: $('#observations_sup').val()
+    };
+
+    $.ajax({
+        url: 'ajax/tableau1_sup_ajax.php',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function (response) {
+
+            if (response.status === 'success') {
+
+                $('#noDataSup').remove();
+
+                $('#existing_hauts_fonctionnaires').append(response.html);
+
+                // Reset inputs
+                row.find('input').val('');
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function () {
+            alert('Erreur serveur');
+        }
+    });
+
+});
+
+
+function calcDifferenceSup() {
+
+    let total = parseFloat($('#postes_total_sup').val()) || 0;
+    let reel  = parseFloat($('#postes_reel_sup').val()) || 0;
+
+    let difference = total - reel;
+
+    $('#difference_sup').val(difference);
+}
+
+// Calcul automatique quand on tape
+$(document).on('keyup change', 
+    '#postes_total_sup, #postes_reel_sup', 
+    function () {
+        calcDifferenceSup();
+});
     /* ===============================
        AJOUT HAUTS FONCTIONNAIRES
     ================================ */
@@ -245,7 +351,7 @@ function saveTableau(){
     $.post('ajax/traitement_tab1.php', {
 
         action: 'save_tableau',
-        statut: 'validé',
+        statut: 'en_attente',
         id_user: <?php echo $current_user->id; ?>,
         id_societe: <?php echo $current_user->id_societe; ?>,
         annee: <?php echo $annee; ?>
@@ -488,6 +594,7 @@ function showLoading(show) {
     $('#btnSubmit, .btn-warning').prop('disabled', show);
 }
 </script>
+
 <?php }?>
 
 <?php if ($action == "add_tab3" || $action == "edit_tab3" ){?>
