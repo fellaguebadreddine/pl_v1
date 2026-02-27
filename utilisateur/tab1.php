@@ -37,6 +37,7 @@ if (!$societe) {
 $exercice_actif = Exercice::get_exercice_actif();
 
 // Déterminer l'action
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 

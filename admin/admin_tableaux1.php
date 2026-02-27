@@ -42,11 +42,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
 // Exercices
 $exercice_actif = Exercice::get_exercice_actif();
 $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
-
-
-
 ?>
-
 
 <main class="app-main">
     <div class="app-content-header">
@@ -78,11 +74,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <th width="5%" class="text-center">ID</th>
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
-                                        <th width="15%" class="text-center">تاريخ التقديم</th>
-                                        <th width="10%" class="text-center">إجمالي المناصب</th>
-                                        <th width="10%" class="text-center">المناصب الحقيقية</th>
-                                        <th width="10%" class="text-center">بالنيابة</th>
-                                        <th width="10%" class="text-center">النساء</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                       
                                         <th width="10%" class="text-center">الملاحظة</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
@@ -110,11 +102,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         </td>
                                         <td class="text-center">
                                             <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
-                                        </td>
-                                        <td class="text-center"><?php echo $row->total; ?></td>
-                                        <td class="text-center"><?php echo $row->total_reel; ?></td>
-                                        <td class="text-center"><?php echo $row->total_intrim; ?></td>
-                                        <td class="text-center"><?php echo $row->total_femmes; ?></td>
+                                        </td>                                        
                                         <td><?php echo $row->commentaire_admin; ?></td>
                                         <td class="text-center">
                                       

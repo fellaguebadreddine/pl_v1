@@ -336,6 +336,7 @@ require_once("composit/header.php");
                             هذا الجدول مسودة. يمكنك المصادقة عليه مباشرة أو إضافة ملاحظة لطلب تعديل.
                         <?php endif; ?>
                     </div>
+                    <script> var tableauType = 'tab1'; // exemple </script>
                     <div class="d-flex justify-content-center gap-3">
                         <!-- Bouton de validation -->
                         <button type="button" class="btn btn-success btn-lg" onclick="validerTableau(<?php echo $id; ?>)">
@@ -371,7 +372,7 @@ require_once("composit/header.php");
         </div>
     </div>
 </main>
-<script> var tableauType = 'tab4'; // exemple </script>
+
 
 
 <?php require_once("composit/footer.php"); ?>
