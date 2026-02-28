@@ -43,6 +43,7 @@ if (isset($societe->wilayas)) {
 // Récupère les détails du tableau
 $details_hf = DetailTab1::trouve_par_tableau($id);
 $details_hp = DetailTab1_hp::trouve_par_tableau($id);
+$details_sup = DetailTab1_sup::trouve_par_tableau($id);
 
 // Récupère l'admin qui a créé le tableau
 $admin = Accounts::trouve_par_id($current_user->id);
@@ -60,14 +61,50 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $titre; ?></title>
-    <link href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <!-- Inclure les fichiers CSS -->
-<link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.rtl.css">
-<link rel="stylesheet" href="assets/datatable/css/responsive.bootstrap5.min.css">
-<link rel="stylesheet" href="assets/datatable/css/custom-datatable.css">
- <link rel="preload" href="../css/adminlte.rtl.css" as="style" />
+    <!--end::Accessibility Meta Tags-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+
+  <!--end::Primary Meta Tags-->
+  <!-- begin data table -->
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Inclure les fichiers CSS -->
+  <link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="assets/datatable/css/dataTables.bootstrap5.rtl.css">
+  <link rel="stylesheet" href="assets/datatable/css/responsive.bootstrap5.min.css">
+  <link rel="stylesheet" href="assets/datatable/css/custom-datatable.css">
+
+
+  <!--begin::Accessibility Features-->
+  <!-- Skip links will be dynamically added by accessibility.js -->
+  <meta name="supported-color-schemes" content="light dark" />
+  <link rel="preload" href="../css/adminlte.rtl.css" as="style" />
+  <!--end::Accessibility Features-->
+
+  <!--begin::Fonts-->
+  <link href='https://fonts.googleapis.com/css?family=Tajawal' rel='stylesheet'>
+  <!--end::Fonts-->
+
+  <!--begin::Third Party Plugin(OverlayScrollbars)-->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+    crossorigin="anonymous" />
+  <!--end::Third Party Plugin(OverlayScrollbars)-->
+
+  <!--begin::Third Party Plugin(Bootstrap Icons)-->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    crossorigin="anonymous" />
+  <!--end::Third Party Plugin(Bootstrap Icons)-->
+
+  <!--begin::Required Plugin(AdminLTE)-->
+  <link rel="stylesheet" href="../css/adminlte.rtl.css" />
+  <!--end::Required Plugin(AdminLTE)-->
     <!-- Styles d'impression -->
     <style>
         /* Styles généraux pour l'impression */
@@ -117,6 +154,7 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
                 text-align: center;
                 vertical-align: middle;
             }
+            
             
             .card {
                 border: 1px solid #333;
@@ -245,6 +283,7 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
                 font-weight: bold;
                 margin-bottom: 5px;
             }
+            
         }
         
         /* Styles communs */
@@ -256,6 +295,10 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
             padding: 4px 8px;
             border-radius: 4px;
         }
+        .table-light{
+                background-color: #adafb1 !important;
+                font-weight: bold;
+            }
     </style>
 </head>
 <body>
@@ -270,40 +313,59 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
             </button>
         </div>
         
-        <!-- Informations de l'organisme -->
-        <div style="margin-bottom: 20px;">
-            <table style="width: 100%; border: none;">
-                <tr><div class="republic-title text-center">الجمهورية الجزائرية الديمقراطية الشعبية</div></tr>
-                <tr>
-                    <td style="text-align: right; width: 33%;">
-                        <strong>المؤسسة:</strong> <?php echo $societe->raison_ar; ?>-<?php echo $wilaya->nom; ?>
-                    </td>
-                    <td style="text-align: left; width: 33%;">
-                        <div class="date-info">جدول يتعلق بهيكلة التعدادات إلى غاية <?php echo $date_fin; ?></div>
-                    </td>
-                    <td style="text-align: left; width: 33%;">
-                        <div class="date-info">جدول رقم : 01</div>
-                    </td>
-                </tr>
-            </table>
+        <!-- En-tête républicain -->
+        <div class="republic-header">
+            <div class="republic-title">الجمهورية الجزائرية الديمقراطية الشعبية</div>
+            <div class="document-ref">الجدول رقم :  01 : يتعلق بهيكل التعدادات إلى غاية : <?php echo $date_fin; ?></div>
         </div>
         
         <!-- Section 1: الوظائف العليا -->
-        <div class="section-title">الوظائف العليا :</div>
         <div class="table-responsive">
             <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th width="5%">الرمز</th>
-                        <th width="25%">الوظائف العليا</th>
-                        <th width="10%">عدد المناصب المالية</th>
-                        <th width="10%">عدد المناصب الحقيقية</th>
-                        <th width="10%">بالنيابة</th>
-                        <th width="10%">النساء</th>
-                        <th width="10%">الفارق</th>
-                        <th width="20%">الملاحظات</th>
+                <thead class="table-light">
+                     <tr>
+                        <th colspan="3"></th>
+                        <th colspan="3">تعداد المناصب الحقيقية</th>
+                        <th colspan="3"></th>
+                    </tr>
+                    <tr class="table-light">
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center">تعداد المناصب المالية</th>
+                        
+                        <th width="10%" class="text-center">المناصب الحقيقية</th>
+                        <th width="10%" class="text-center">بالنيابة</th>
+                        <th width="10%" class="text-center">النساء</th>
+                        <th width="10%" class="text-center">الفارق</th>
+                        <th width="20%" class="text-center">الملاحظات</th>
                     </tr>
                 </thead>
+                <tbody>
+                    <?php 
+                    if (!empty($details_sup)): 
+                        foreach ($details_sup as $detail):
+                    ?>
+                     <tr>
+                        <td><?php echo  '---'; ?></td>
+                         <td><?php echo number_format($detail->poste_sup, 0, '', ' '); ?></td>
+                        <td><?php echo number_format($detail->postes_total_sup, 0, '', ' '); ?></td>
+                        <td><?php echo number_format($detail->postes_reel_sup, 0, '', ' '); ?></td>
+                        <td><?php echo number_format($detail->poste_intirim_sup, 0, '', ' '); ?></td>
+                        <td><?php echo number_format($detail->poste_femme_sup, 0, '', ' '); ?></td>
+                        <td><?php echo number_format($detail->difference_sup, 0, '', ' '); ?></td>
+                        <td><?php echo htmlspecialchars($detail->observations_sup); ?></td>
+                    </tr>
+                     <?php endforeach; ?>
+                    <?php else: ?>
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">لا توجد بيانات مسجلة</td>
+                    </tr>
+                    <?php endif; ?>
+
+                </tbody>
+                <tr>
+                        <th colspan="9" class="fw-bold bg-primary">الوظائف العليا</th>
+                    </tr>
                 <tbody>
                     <?php 
                     $total_hf_poste = 0;
@@ -360,19 +422,23 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
         </div>
         
         <!-- Section 2: المناصب العليا -->
-        <div class="section-title">المناصب العليا :</div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
-                    <tr>
-                        <th width="5%">الرمز</th>
-                        <th width="25%">المناصب العليا</th>
-                        <th width="10%">عدد المناصب المالية</th>
-                        <th width="10%">عدد المناصب الحقيقية</th>
-                        <th width="10%">بالنيابة</th>
-                        <th width="10%">النساء</th>
-                        <th width="10%">الفارق</th>
-                        <th width="20%">الملاحظات</th>
+                    <tr class="table-light">
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center">تعداد المناصب المالية</th>
+                        
+                        <th width="10%" class="text-center">المناصب الحقيقية</th>
+                        <th width="10%" class="text-center">بالنيابة</th>
+                        <th width="10%" class="text-center">النساء</th>
+                        <th width="10%" class="text-center">الفارق</th>
+                        <th width="20%" class="text-center">الملاحظات</th>
+                    </tr>
+                    <tr class="table-light">
+                        <th colspan="9" class="text-center">المناصب العليا</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -454,22 +520,7 @@ $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
                     </tr>
                 </tbody>
             </table>
-        </div>
-        
-        <!-- Signatures -->
-        <div style="margin-top: 40px; display: flex; justify-content: space-between;">
-            <div style="text-align: center; width: 30%;">
-                <div style="border-top: 1px solid #333; width: 100%; margin-top: 30px; padding-top: 5px;">
-                    <strong>رئيس المؤسسة</strong>
-                </div>
-            </div>
-            <div style="text-align: center; width: 30%;">
-                <div style="border-top: 1px solid #333; width: 100%; margin-top: 30px; padding-top: 5px;">
-                    <strong>المدقق</strong>
-                </div>
-            </div>
-        </div>
-        
+        </div>        
         <!-- Pied de page -->
         <div class="footer">
             تمت الطباعة في: <?php echo date('d/m/Y H:i'); ?>

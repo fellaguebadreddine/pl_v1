@@ -5,22 +5,34 @@ require_once('fonctions.php');
 // Tableau1.php
 class DetailTab1_1 {
     protected static $nom_table="detail_tab_1_1";
-	protected static $champs = array( 'id', 'id_tableau_1_1', 'id_grade', 'loi', 'categorie',
-        'effectif_reel_annee_1', 'moyennes', 'employes',
-        'effectif_reel_31_dec_2023', 'nb_indetermine', 'nb_determine',
-        'nb_contrat_determine', 'observations');
+	protected static $champs = array( 'id','id_societe', 'id_tableau_1_1', 'annee', 'id_user', 'id_grade', 'loi', 'effectif_reel_31_dec',
+        'effectif_reel_annee_1', 'titulaires',
+        'stagaires', 'tol_titu_stag', 'femmes',
+        'difrence', 'titulaie_temps_complet', 'titulaie_femmes_complet', 'titulaie_temps_partiel',
+		'titulaie_femmes_partiel','contrat_temps_complet', 'contrat_femme_complet',
+		'contrat_temps_pratiel', 'contrat_femmes_pratiel', 'observations');
     public $id;
+	public $id_societe;
     public $id_tableau_1_1;
+	public $annee;
+	public $id_user;
     public $id_grade;
     public $loi;
-    public $categorie;
-    public $effectif_reel_annee_1 = 0;
-    public $moyennes = 0;
-    public $employes = 0;
-    public $effectif_reel_31_dec_2023 = 0;
-    public $nb_indetermine = 0;
-    public $nb_determine = 0;
-    public $nb_contrat_determine = 0;
+    public $effectif_reel_31_dec;
+	public $effectif_reel_annee_1;
+	public $titulaires;
+	public $stagaires;
+	public $tol_titu_stag;
+	public $femmes;
+	public $difrence;
+	public $titulaie_temps_complet;
+	public $titulaie_femmes_complet;
+	public $titulaie_temps_partiel;
+	public $titulaie_femmes_partiel;
+	public $contrat_temps_complet;
+	public $contrat_femme_complet;
+	public $contrat_temps_pratiel;
+	public $contrat_femmes_pratiel;
     public $observations;
 
    

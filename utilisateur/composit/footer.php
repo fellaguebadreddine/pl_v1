@@ -597,6 +597,192 @@ function showLoading(show) {
 
 <?php }?>
 
+<!--begin TABLEAU 1 - 1-->
+<?php if ($action == "add_tab1_1" || $action == "edit_tab1_1"){?>
+<script>
+$(document).ready(function(){
+
+    // ==============================
+    // CALCUL AUTOMATIQUE LIGNE SAISIE
+    // ==============================
+    $(document).on('keyup change', '.item-row input', function(){
+
+        let row = $(this).closest('tr');
+
+        let titulaires  = parseFloat(row.find('[name="titulaires"]').val()) || 0;
+        let stagaires   = parseFloat(row.find('[name="stagaires"]').val()) || 0;
+        let effectif1   = parseFloat(row.find('[name="effectif_reel_annee_1"]').val()) || 0;
+
+        let total = titulaires + stagaires;
+        row.find('[name="tol_titu_stag"]').val(total);
+
+        let diff = total - effectif1;
+        row.find('[name="difrence"]').val(diff);
+
+        calculateTotals();
+    });
+
+
+    // ==============================
+    // AJOUT LIGNE AJAX
+    // ==============================
+    $(document).on('click','.add-tab1_1-btn',function(){
+
+        let row = $(this).closest('tr');
+
+        let formData = {
+            action: 'add_detail',
+            id_grade: row.find('[name="id_grade"]').val(),
+            effectif_reel_31_dec: row.find('[name="effectif_reel_31_dec"]').val(),
+            effectif_reel_annee_1: row.find('[name="effectif_reel_annee_1"]').val(),
+            titulaires: row.find('[name="titulaires"]').val(),
+            stagaires: row.find('[name="stagaires"]').val(),
+            femmes: row.find('[name="femmes"]').val(),
+            titulaie_temps_complet: row.find('[name="titulaie_temps_complet"]').val(),
+            titulaie_femmes_complet: row.find('[name="titulaie_femmes_complet"]').val(),
+            titulaie_temps_partiel: row.find('[name="titulaie_temps_partiel"]').val(),
+            titulaie_femmes_partiel: row.find('[name="titulaie_femmes_partiel"]').val(),
+            contrat_temps_complet: row.find('[name="contrat_temps_complet"]').val(),
+            contrat_femme_complet: row.find('[name="contrat_femme_complet"]').val(),
+            contrat_temps_pratiel: row.find('[name="contrat_temps_pratiel"]').val(),
+            contrat_femmes_pratiel: row.find('[name="contrat_femmes_pratiel"]').val(),
+            observations: row.find('[name="observations"]').val()
+        };
+
+        $.ajax({
+            url: 'ajax/traitement_tab1_1.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+
+                    // Supprimer message noData
+                    $('#noData').remove();
+
+                    // Ajouter ligne dans tableau
+                    let newRow = `
+                        <tr data-id="${response.id}">
+                            <td></td>
+                            <td>${response.grade_name}</td>
+                            <td>${formData.effectif_reel_31_dec}</td>
+                            <td>${formData.effectif_reel_annee_1}</td>
+                            <td>${formData.titulaires}</td>
+                            <td>${formData.stagaires}</td>
+                            <td>${response.tol_titu_stag}</td>
+                            <td>${formData.femmes}</td>
+                            <td>${response.difrence}</td>
+                            <td>${formData.titulaie_temps_complet}</td>
+                            <td>${formData.titulaie_femmes_complet}</td>
+                            <td>${formData.titulaie_temps_partiel}</td>
+                            <td>${formData.titulaie_femmes_partiel}</td>
+                            <td>${formData.contrat_temps_complet}</td>
+                            <td>${formData.contrat_femme_complet}</td>
+                            <td>${formData.contrat_temps_pratiel}</td>
+                            <td>${formData.contrat_femmes_pratiel}</td>
+                            <td>${formData.observations}</td>
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
+                    $('#existing_hauts_fonctionnaires').append(newRow);
+
+                    // Reset inputs
+                    row.find('input').val('');
+                    row.find('select').val('').trigger('change');
+
+                    calculateTotals();
+
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    // ==============================
+    // SUPPRESSION AJAX
+    // ==============================
+    $(document).on('click','.delete-btn',function(){
+
+        if(!confirm("تأكيد الحذف ؟")) return;
+
+        let tr = $(this).closest('tr');
+        let id = tr.data('id');
+
+        $.ajax({
+            url: 'ajax/traitement_tab1_1.php',
+            type: 'POST',
+            data: {
+                action: 'delete_detail',
+                id: id
+            },
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+                    tr.remove();
+                    calculateTotals();
+                }else{
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    calculateTotals();
+});
+
+
+// ==============================
+// TOTAL GENERAL
+// ==============================
+function calculateTotals(){
+
+    let totals = new Array(17).fill(0);
+
+    $('#existing_hauts_fonctionnaires tr').each(function(){
+
+        $(this).find('td').each(function(index){
+
+            let val = parseFloat($(this).text()) || 0;
+
+            if(index >= 2 && index <= 16){
+                totals[index] += val;
+            }
+        });
+
+    });
+
+    $('.total_effectif_reel_31_dec').text(totals[2]);
+    $('.total_effectif_reel_annee_1').text(totals[3]);
+    $('.total_titulaires').text(totals[4]);
+    $('.total_stagaires').text(totals[5]);
+    $('.total_tol_titu_stag').text(totals[6]);
+    $('.total_femmes').text(totals[7]);
+    $('.total_difrence').text(totals[8]);
+    $('.total_titulaie_temps_complet').text(totals[9]);
+    $('.total_titulaie_femmes_complet').text(totals[10]);
+    $('.total_titulaie_temps_partiel').text(totals[11]);
+    $('.total_titulaie_femmes_partiel').text(totals[12]);
+    $('.total_contrat_temps_complet').text(totals[13]);
+    $('.total_contrat_femme_complet').text(totals[14]);
+    $('.total_contrat_temps_pratiel').text(totals[15]);
+    $('.total_contrat_femmes_pratiel').text(totals[16]);
+}
+</script>
+    
+<?php }?>
+
 <?php if ($action == "add_tab3" || $action == "edit_tab3" ){?>
 <!--begin::Script-->
    

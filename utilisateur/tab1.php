@@ -81,7 +81,7 @@ $existe_tab_1_1 = Tableau1_1::existe_pour_societe_annee(
     $annee
 );
 
-if ($existe) {
+if ($existe_tab_1_1) {
     redirect_to("?action=list_tab1");
     exit;
 }
@@ -225,17 +225,14 @@ if ($existe) {
                         <a href="?action=add_tab1_1" class="btn btn-primary">
                             <i class="fas fa-plus me-1"></i> إضافة جدول رقم 1 مكرر
                         </a>
-
                         <?php else: 
                             if ($tabl_1_1->statut != 'validé'):?>
-
                         <a href="?action=edit_tab1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-warning">
                             <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
                         </a>
                         <?php endif; ?>
                         <?php endif; ?>
-                        <?php endif; ?>
-                        
+                        <?php endif; ?>                        
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -713,6 +710,236 @@ if ($existe) {
         </div>
     </div>
 </div>
+ <?php elseif ($action == "add_tab1_1" || $action == "edit_tab1_1"): ?>
+<div class="row">
+    <div class="col-12">
+        <!-- Overlay de chargement -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <div class="mt-3 text-primary fw-bold">جاري معالجة البيانات...</div>
+        </div>
+
+        <!-- Messages d'alerte -->
+        <div id="alertContainer"></div>
+
+        <!-- Section  الرتب العادية -->
+        <?php
+        // Récupérer les données existantes si en mode édition
+        $tableau = null;
+        $details = array();
+        $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+        
+        if ($action == "edit_tab1_1" && $id > 0) {
+            $tableau = Tableau1_1::trouve_par_id($id);
+            if ($tableau) {
+                $annee = $tableau->annee;
+                $details = DetailTab1_1::trouve_tab_vide_par_admin($id);
+            }
+        } else {
+            // En mode ajout, vérifier s'il y a un brouillon
+            $details = DetailTab1_1::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
+           
+        }
+        
+        // Récupérer tous les grades
+        $grades = Grade::trouve_tous();
+        
+        // Calculer les totaux
+        $tol_titulaires = array_sum(array_column($details, 'tol_titulaires'));
+        $tol_stagaires = array_sum(array_column($details, 'tol_stagaires'));
+        $total_hf_intirim = array_sum(array_column($details, 'poste_intirim'));
+        $total_hf_femme = array_sum(array_column($details, 'poste_femme'));
+        ?>
+        
+        <div class="portlet-body table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                    
+                    <tr>
+                        <th colspan="4"></th>
+                        <th colspan="5">  التعداد الحقيقي إلى غاية 31-12 <?php echo $annee;?></th>
+                        <th colspan="4">عقد غير محدد المدة</th>
+                        <th colspan="6">عقد محدد المدة</th>
+                    </tr>
+                    <tr class="table-light">
+                        <th  class="text-center">القانون الأساسي</th>
+                        <th class="text-center">السلك و الرتبة </th>
+                        <th class="text-center">  التعداد الحقيقي </th>                        
+                        <th  class="text-center"> التعداد المالي لسنة <?php echo $annee;?></th>
+                        <th  class="text-center">المرسمون</th>
+                        <th  class="text-center">المتربصون</th>
+                        <th  class="text-center">المجموع </th>
+                        <th class="text-center">من بينهم نساء</th>
+                        <th class="text-center">الفرق</th>
+                        <th>التوقيت الكامل</th>
+                        <th>من بينهم نساء </th>
+                        <th>التوقيت الجزئي</th>
+                        <th>من بينهم نساء </th>
+                         <th>التوقيت الكامل</th>
+                        <th>من بينهم نساء </th>
+                        <th>التوقيت الجزئي</th>
+                        <th>من بينهم نساء </th>
+                        <th>الملاحظة</th>
+                        <th># </th>
+                    </tr>
+                </thead>
+                <tbody id="existing_hauts_fonctionnaires">
+                    <?php if (!empty($details)): ?>
+                        <?php foreach ($details as $detail): 
+                          $grade = Grade::trouve_par_id($detail->id_grade);
+                            ?>
+                                                    
+                       <tr data-id="<?php echo $detail->id; ?>">
+                            <td>
+                                <?php echo $detail->loi; ?>
+                            </td>
+                            <td>
+                                 <?php echo $grade ? $grade->grade : ''; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->effectif_reel_31_dec; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->effectif_reel_annee_1 ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->titulaires; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->stagaires; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->tol_titu_stag; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->femmes; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->difrence; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->titulaie_temps_complet; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->titulaie_femmes_complet; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->titulaie_temps_partiel; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->titulaie_femmes_partiel; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->contrat_temps_complet; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->contrat_femme_complet; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->contrat_temps_pratiel; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->contrat_femmes_pratiel; ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($detail->observations); ?>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr id="noData">
+                            <td colspan="19" class="text-center text-muted">
+                                لا توجد بيانات مسجلة
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <tbody id="body_tab_1_1">
+                    <tr class="item-row">
+                        <td class="loi"></td>
+                        <td >
+                            <select name="id_grade" class="form-control select2 grade-select" required>
+                                <option value="">اختر المنصب</option>
+                                <?php foreach ($grades as $g): ?>
+                                    <option value="<?php echo $g->id; ?>" data-code="<?php echo $g->id; ?>">
+                                        <?php echo $g->grade; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </td>
+                        <td><input type="number" name="effectif_reel_31_dec" id="effectif_reel_31_dec" class="form-control"></td>
+                        <td><input type="number" name="effectif_reel_annee_1" id="effectif_reel_annee_1" class="form-control"></td>
+                        <td><input type="number" name="titulaires" id="titulaires" class="form-control"></td>
+                        <td><input type="number" name="stagaires" id="stagaires" class="form-control"></td>
+                        <td><input type="number" name="tol_titu_stag" id="tol_titu_stag" class="form-control"></td>
+                        <td><input type="number" name="femmes" id="femmes" class="form-control"></td>
+                       <td><input type="number" name="difrence" id="difrence" class="form-control"></td>
+                       <td><input type="number" name="titulaie_temps_complet" id="titulaie_temps_complet" class="form-control"></td>
+                       <td><input type="number" name="titulaie_femmes_complet" id="titulaie_femmes_complet" class="form-control"></td>
+                       <td><input type="number" name="titulaie_temps_partiel" id="titulaie_temps_partiel" class="form-control"></td>
+                       <td><input type="number" name="titulaie_femmes_partiel" id="titulaie_femmes_partiel" class="form-control"></td>
+                       <td><input type="number" name="contrat_temps_complet" id="contrat_temps_complet" class="form-control"></td>
+                       <td><input type="number" name="contrat_femme_complet" id="contrat_femme_complet" class="form-control"></td>
+                       <td><input type="number" name="contrat_temps_pratiel" id="contrat_temps_pratiel" class="form-control"></td>
+                       <td><input type="number" name="contrat_femmes_pratiel" id="contrat_femmes_pratiel" class="form-control"></td>
+                       <td><input type="text" name="observations" id="observations" class="form-control"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-success btn-sm add-tab1_1-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr class="table-secondary fw-bold" id="totalRow">
+                        <td colspan="2" class="text-center">المجموع العام</td>
+                        <td class="total_effectif_reel_31_dec">0</td>
+                        <td class="total_effectif_reel_annee_1">0</td>
+                        <td class="total_titulaires">0</td>
+                        <td class="total_stagaires">0</td>
+                        <td class="total_tol_titu_stag">0</td>
+                        <td class="total_femmes">0</td>
+                        <td class="total_difrence">0</td>
+                        <td class="total_titulaie_temps_complet">0</td>
+                        <td class="total_titulaie_femmes_complet">0</td>
+                        <td class="total_titulaie_temps_partiel">0</td>
+                        <td class="total_titulaie_femmes_partiel">0</td>
+                        <td class="total_contrat_temps_complet">0</td>
+                        <td class="total_contrat_femme_complet">0</td>
+                        <td class="total_contrat_temps_pratiel">0</td>
+                        <td class="total_contrat_femmes_pratiel">0</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <br>
+                         <!-- Boutons d'action -->
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a href="?action=list_tab1" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
+                        </a>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-success" onclick="saveTableau_1_1()">
+                            <i class="fas fa-paper-plane me-1"></i> حفظ وتقديم
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+             
 
 <!-- JavaScript AJAX -->
 
