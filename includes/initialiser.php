@@ -27,12 +27,21 @@ require_once(LIB_PATH . DS . 'accounts.php');
 require_once(LIB_PATH . DS . 'societes.php');
 require_once(LIB_PATH . DS . 'exercice.php');
 require_once(LIB_PATH . DS . 'grade.php');
+
 require_once(LIB_PATH . DS . 'tableau_1.php');
-require_once(LIB_PATH . DS . 'tableau_2.php');
+require_once(LIB_PATH . DS . 'tableau_1_1.php');
 require_once(LIB_PATH . DS . 'detailTab1.php');
+require_once(LIB_PATH . DS . 'detailTab1_sup.php');
+require_once(LIB_PATH . DS . 'detail_tab_1_1.php');
 require_once(LIB_PATH . DS . 'detailTab1_hp.php');
+require_once(LIB_PATH . DS . 'tableau_2.php');
 require_once(LIB_PATH . DS . 'tableau_3.php');
 require_once(LIB_PATH . DS . 'detailTab3.php');
+require_once(LIB_PATH . DS . 'tableau_4.php');
+require_once(LIB_PATH . DS . 'detailTab4.php');
+require_once(LIB_PATH . DS . 'tableau_4_1.php');
+require_once(LIB_PATH . DS . 'detailTab4_1.php');
+require_once(LIB_PATH . DS . 'tableau_5.php');
 
 require_once(LIB_PATH . DS . 'wilayas.php');
 //require_once(LIB_PATH.DS.'commune.php');

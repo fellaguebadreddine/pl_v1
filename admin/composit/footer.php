@@ -123,20 +123,21 @@ function sauvegarderCommentaire() {
 }
 </script>
 
-
 <script>
+// Variable globale définie dans chaque page
+// var tableauType = 'tab3'; // exemple
+
 function sauvegarderNoteDepuisModal() {
     var id_tableau = $('#modal_id_tableau').val();
     var commentaire = $('#modal_commentaire').val();
 
     $.ajax({
-        url: 'ajax/save_commentaire_tableau.php', // à adapter pour tableau 3 si besoin, mais on peut réutiliser le même
+        url: 'ajax/save_commentaire_tableau.php',
         type: 'POST',
         data: {
             id: id_tableau,
             commentaire: commentaire,
-             action: 'demander_modification',
-            type_tableau: 'tab3' // optionnel pour distinguer
+            type_tableau: tableauType  // utilisation de la variable globale
         },
         dataType: 'json',
         success: function(response) {
@@ -183,12 +184,12 @@ function validerTableau(id) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'ajax/valider_tableau.php', // à adapter pour tableau 3
+                url: 'ajax/valider_tableau.php',
                 type: 'POST',
                 data: {
                     id: id,
                     action: 'valider',
-                    type_tableau: 'tab3'
+                    type_tableau: tableauType
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -250,7 +251,7 @@ function demanderModification(id) {
                     id: id,
                     action: 'demander_modification',
                     commentaire: result.value,
-                    type_tableau: 'tab3'
+                    type_tableau: tableauType
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -283,7 +284,7 @@ function demanderModification(id) {
         }
     });
 }
-</script>
+    </script>
 
     <!--end::Script-->
   </body>

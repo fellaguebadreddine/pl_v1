@@ -32,11 +32,86 @@ if (!$societe) {
     $session->logout();
     redirect_to('../login.php');
 }
-$exercice_actif = Exercice::get_exercice_actif();
 ?>
 
 <?php
+$exercice_actif = Exercice::get_exercice_actif();
+$annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
+// Définir la liste des tables avec leurs classes, noms et liens
+$tables = [
+    ['code' => 'tab1', 'nom' => 'الجدول 1 - المناصب العليا', 'classe' => 'Tableau1', 'lien_edit' => 'tab1.php?action=edit_tab1&id=', 'lien_add' => 'tab1.php?action=add_tab1'],
+    ['code' => 'tab1_1', 'nom' => 'الملحق 1/1', 'classe' => 'Tableau1_1', 'lien_edit' => 'tab1_1.php?action=edit_tab1_1&id=', 'lien_add' => 'tab1_1.php?action=add_tab1_1'],
+    ['code' => 'tab2', 'nom' => 'الجدول 2', 'classe' => 'Tableau2', 'lien_edit' => 'tab2.php?action=edit_tab2&id=', 'lien_add' => 'tab2.php?action=add_tab2'],
+    ['code' => 'tab3', 'nom' => 'الجدول 3 - حركة الموظفين', 'classe' => 'Tableau3', 'lien_edit' => 'tab3.php?action=edit_tab3&id=', 'lien_add' => 'tab3.php?action=add_tab3'],
+    ['code' => 'tab4', 'nom' => 'الجدول 4', 'classe' => 'Tableau4', 'lien_edit' => 'tab4.php?action=edit_tab4&id=', 'lien_add' => 'tab4.php?action=add_tab4'],
+    ['code' => 'tab4_1', 'nom' => 'الملحق 4/1', 'classe' => 'Tableau4_1', 'lien_edit' => 'tab4_1.php?action=edit_tab4_1&id=', 'lien_add' => 'tab4_1.php?action=add_tab4_1'],
+    ['code' => 'tab5', 'nom' => 'الجدول 5', 'classe' => 'Tableau5', 'lien_edit' => 'tab5.php?action=edit_tab5&id=', 'lien_add' => 'tab5.php?action=add_tab5'],
+    // Ajoutez ici les autres tables (tab2, tab6, etc.) selon votre besoin
+];
 
+// Récupérer le statut de chaque table pour l'année courante
+$statuts = [];
+foreach ($tables as $t) {
+    $classe = $t['classe'];
+    if (class_exists($classe)) {
+        // On cherche s'il existe un enregistrement pour cette société et année
+        // On suppose que chaque classe a une méthode trouve_par_societe_annee ou similaire
+        // Sinon on peut faire une requête générique
+        $method = 'trouve_par_societe_annee'; // à implémenter dans chaque classe
+        if (method_exists($classe, $method)) {
+            $obj = $classe::$method($societe->id_societe, $annee_courante);
+        } else {
+            // Fallback : on cherche le premier enregistrement pour cette société et année
+            $obj = $classe::trouve_par_criteres(['id_societe' => $societe->id_societe, 'annee' => $annee_courante]);
+            if (is_array($obj) && !empty($obj)) {
+                $obj = $obj[0];
+            } else {
+                $obj = null;
+            }
+        }
+        if ($obj) {
+            $statuts[$t['code']] = [
+                'id' => $obj->id,
+                'statut' => $obj->statut,
+                'date_modif' => $obj->date_creation ?? $obj->date_valide ?? '',
+                'objet' => $obj
+            ];
+        } else {
+            $statuts[$t['code']] = null;
+        }
+    } else {
+        $statuts[$t['code']] = null;
+    }
+}
+
+// Compteurs
+$total_tables = count($tables);
+$termines = 0;
+$en_attente = 0;
+$brouillons = 0;
+$non_commences = 0;
+
+foreach ($statuts as $s) {
+    if (!$s) {
+        $non_commences++;
+    } else {
+        switch ($s['statut']) {
+            case 'validé':
+                $termines++;
+                break;
+            case 'en_attente':
+                $en_attente++;
+                break;
+            case 'brouillon':
+                $brouillons++;
+                break;
+            default:
+                $non_commences++;
+        }
+    }
+}
+// Déterminer l'action
+$action = isset($_GET['action']) ? $_GET['action'] : '';
 $titre = "لوحة التحكم - " . $societe->raison_ar;
 
 $active_menu = "dashboard";
@@ -273,156 +348,175 @@ require_once("composit/header.php");
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
-
-
-
-               
-                <!-- Informations de la Société -->
-                <div class="col-lg-8 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-white border-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">
-                                    <i class="fas fa-building me-2 text-primary"></i>معلومات المؤسسة
-                                </h5>
-                                <button class="btn btn-sm btn-outline-primary" onclick="modifierSociete()">
-                                    <i class="fas fa-edit me-1"></i> تعديل المعلومات
-                                </button>
-                            </div>
+                            <?php endif; ?> 
+                              <!-- Cartes de progression -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3><?php echo $total_tables; ?></h3>
+                            <p>إجمالي الجداول</p>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-signature me-2"></i>الاسم بالعربية:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->raison_ar; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-signature me-2"></i>الاسم بالفرنسية:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->raison_fr; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-map-marker-alt me-2"></i>العنوان:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->adresse_ar; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-flag me-2"></i>الولاية:</strong>
-                                    <p class="mt-1 text-dark"><?php if (isset($societe->wilaya)){$ville = Wilayas::trouve_par_id($societe->wilaya); echo $ville->nom;} ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-barcode me-2"></i>الرمز البريدي:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->postal ?: '---'; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-phone me-2"></i>الهاتف:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->tel1; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-envelope me-2"></i>البريد الإلكتروني:</strong>
-                                    <p class="mt-1 text-dark"><?php echo $societe->email ?: '---'; ?></p>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <strong><i class="fas fa-calendar-alt me-2"></i>السنة المالية:</strong>
-                                    <p class="mt-1 text-dark">من <?php echo $societe->exercice_debut; ?> إلى <?php echo $societe->exercice_fin; ?></p>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="icon"><i class="fas fa-table"></i></div>
                     </div>
                 </div>
-
-                <!-- Actions Rapides -->
-                <div class="col-lg-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-header bg-white border-0">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-bolt me-2 text-warning"></i>إجراءات سريعة
-                            </h5>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3><?php echo $termines; ?></h3>
+                            <p>مكتملة</p>
                         </div>
-                        <div class="card-body">
-                            <div class="d-grid gap-2">                                
-                                <button class="btn btn-outline-success text-start" onclick="window.location.href='ajouter_employe.php'">
-                                    <i class="fas fa-user-plus me-2"></i> إضافة موظف جديد
-                                </button>
-                                
-                                <button class="btn btn-outline-info text-start" onclick="window.location.href='documents.php'">
-                                    <i class="fas fa-folder me-2"></i> المستندات والملفات
-                                </button>
-                                
-                                <button class="btn btn-outline-warning text-start" onclick="modifierProfil()">
-                                    <i class="fas fa-user-edit me-2"></i> تعديل الملف الشخصي
-                                </button>
-                                
-                                <button class="btn btn-outline-secondary text-start" onclick="changerMotPasse()">
-                                    <i class="fas fa-key me-2"></i> تغيير كلمة المرور
-                                </button>
-                                
-                                <button class="btn btn-outline-danger text-start" onclick="window.location.href='../logout.php'">
-                                    <i class="fas fa-sign-out-alt me-2"></i> تسجيل الخروج
-                                </button>
-                            </div>
-                        </div>
+                        <div class="icon"><i class="fas fa-check-circle"></i></div>
                     </div>
                 </div>
-
-                <!-- Informations du Compte -->
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-white border-0">
-                            <h5 class="card-title mb-0">
-                                <i class="fas fa-user-circle me-2 text-success"></i>معلومات حسابك
-                            </h5>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3><?php echo $en_attente; ?></h3>
+                            <p>في انتظار المراجعة</p>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3 text-center mb-4">
-                                    <?php if($current_user->photo): ?>
-                                        <img src="../uploads/photos/<?php echo $current_user->photo; ?>" 
-                                             alt="<?php echo $current_user->prenom . ' ' . $current_user->nom; ?>" 
-                                             class="img-fluid rounded-circle border" 
-                                             style="width: 120px; height: 120px; object-fit: cover;">
-                                    <?php else: ?>
-                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" 
-                                             style="width: 120px; height: 120px;">
-                                            <i class="fas fa-user fa-3x text-secondary"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <h5 class="mt-3 mb-0"><?php echo $current_user->prenom . ' ' . $current_user->nom; ?></h5>
-                                    <p class="text-muted"><?php echo $current_user->user; ?></p>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-envelope me-2"></i>البريد الإلكتروني:</strong>
-                                            <p class="mt-1 text-dark"><?php echo $current_user->email ?: '---'; ?></p>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-phone me-2"></i>رقم الهاتف:</strong>
-                                            <p class="mt-1 text-dark"><?php echo $current_user->telephone ?: '---'; ?></p>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-mobile-alt me-2"></i>رقم الجوال:</strong>
-                                            <p class="mt-1 text-dark"><?php echo $current_user->mobile ?: '---'; ?></p>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-map-marker-alt me-2"></i>العنوان:</strong>
-                                            <p class="mt-1 text-dark"><?php echo $current_user->adresse ?: '---'; ?></p>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-calendar-alt me-2"></i>تاريخ التسجيل:</strong>
-                                            <p class="mt-1 text-dark"><?php echo date('d/m/Y', strtotime($current_user->date_creation)); ?></p>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <strong><i class="fas fa-history me-2"></i>آخر دخول:</strong>
-                                            <p class="mt-1 text-dark">
-                                                <?php echo $current_user->date_der ? date('d/m/Y H:i', strtotime($current_user->date_der)) : 'لم يسجل دخول من قبل'; ?>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="icon"><i class="fas fa-clock"></i></div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3><?php echo $brouillons + $non_commences; ?></h3>
+                            <p>غير مكتملة</p>
+                        </div>
+                        <div class="icon"><i class="fas fa-pencil-alt"></i></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barre de progression globale -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">التقدم العام</h5>
+                </div>
+                <div class="card-body">
+                    <?php $pourcentage = $total_tables > 0 ? round(($termines / $total_tables) * 100) : 0; ?>
+                    <div class="progress mb-3" style="height: 30px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $pourcentage; ?>%;" aria-valuenow="<?php echo $pourcentage; ?>" aria-valuemin="0" aria-valuemax="100">
+                            <?php echo $pourcentage; ?>% مكتمل
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col-3"><span class="badge bg-success"><?php echo $termines; ?> مكتملة</span></div>
+                        <div class="col-3"><span class="badge bg-warning"><?php echo $en_attente; ?> في المراجعة</span></div>
+                        <div class="col-3"><span class="badge bg-info"><?php echo $brouillons; ?> مسودات</span></div>
+                        <div class="col-3"><span class="badge bg-secondary"><?php echo $non_commences; ?> غير مبدوءة</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des tables -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">حالة الجداول للسنة <?php echo $annee_courante; ?></h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>الجدول</th>
+                                    <th>الحالة</th>
+                                    <th>آخر تحديث</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($tables as $t): 
+                                    $code = $t['code'];
+                                    $stat = $statuts[$code] ?? null;
+                                ?>
+                                <tr>
+                                    <td><?php echo $t['nom']; ?></td>
+                                    <td>
+                                        <?php if (!$stat): ?>
+                                            <span class="badge bg-secondary">غير مبدوء</span>
+                                        <?php else: 
+                                            $s = $stat['statut'];
+                                            $badge = 'secondary';
+                                            $texte = $s;
+                                            if ($s == 'validé') { $badge = 'success'; $texte = 'مصادق عليه'; }
+                                            elseif ($s == 'en_attente') { $badge = 'warning'; $texte = 'في انتظار المراجعة'; }
+                                            elseif ($s == 'brouillon') { $badge = 'info'; $texte = 'مسودة'; }
+                                        ?>
+                                            <span class="badge bg-<?php echo $badge; ?>"><?php echo $texte; ?></span>
+                                            <?php if (!empty($stat['objet']->commentaire_admin)): ?>
+                                                <i class="fas fa-comment text-info ms-1" data-bs-toggle="tooltip" title="<?php echo htmlspecialchars($stat['objet']->commentaire_admin); ?>"></i>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($stat): ?>
+                                            <?php echo date('d/m/Y', strtotime($stat['date_modif'])); ?>
+                                        <?php else: ?>
+                                            ---
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if (!$stat): ?>
+                                            <a href="<?php echo $t['lien_add']; ?>" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> إضافة</a>
+                                        <?php else: ?>
+                                            <a href="<?php echo $t['lien_edit'] . $stat['id']; ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> تعديل</a>
+                                            <a href="print_<?php echo $code; ?>.php?id=<?php echo $stat['id']; ?>" class="btn btn-sm btn-info" target="_blank"><i class="fas fa-print"></i> طباعة</a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+           
+
+<!-- Activation des tooltips -->
+<script>
+$(document).ready(function() {
+    $('[data-bs-toggle="tooltip"]').tooltip();
+});
+</script>
+
+<style>
+.small-box {
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+}
+.small-box > .inner {
+    padding: 10px;
+}
+.small-box h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    padding: 0;
+    white-space: nowrap;
+}
+.small-box .icon {
+    color: rgba(0,0,0,0.15);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    z-index: 0;
+    font-size: 70px;
+    transform: rotate(-15deg);
+}
+.bg-info { background-color: #17a2b8 !important; }
+.bg-success { background-color: #28a745 !important; }
+.bg-warning { background-color: #ffc107 !important; }
+.bg-danger { background-color: #dc3545 !important; }
+.opacity-50 { opacity: 0.5; }
+</style>
+      
+                
             </div>
             <!--end::Row-->
         </div>

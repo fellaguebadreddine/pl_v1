@@ -317,7 +317,7 @@
                                                     } else {
                                                       echo 'class="nav-link"';
                                                     } ?>>
-                  <i class="nav-icon bi bi-file-text"></i>
+                  <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 1 </p>
                 </a>
               </li>
@@ -327,7 +327,7 @@
                                     } else {
                                       echo 'class="nav-link"';
                                     } ?>>
-                  <i class="nav-icon bi bi-table"></i>
+                  <i class="nav-icon fa fa-bars"></i>
                   <p>الجدول 2</p>
                 </a>
               </li>
@@ -342,23 +342,103 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_4.php" <?php if ($active_menu == 'tab_4') {
-                                          echo 'class="nav-link active"';
-                                        } else {
-                                          echo 'class="nav-link"';
-                                        } ?>>
-                  <i class="nav-icon bi bi-table"></i>
-                  <p> وضعية القضايا المتنازع فيها </p>
+                <a href="tab4.php?action=list_tab4" <?php if ($active_menu == 'tab_4') {
+                                                      echo 'class="nav-link active"';
+                                                    } else {
+                                                      echo 'class="nav-link"';
+                                                    } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p> الجدول 4</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="tableau_5.php" <?php if ($active_menu == 'tab_5') {
+                <a href="tab5.php?action=list_tab5" <?php if ($active_menu == 'tab_5') {
                                           echo 'class="nav-link active"';
                                         } else {
                                           echo 'class="nav-link"';
                                         } ?>>
-                  <i class="nav-icon bi bi-table"></i>
-                  <p> وضعية الحـالات التأديبيـة</p>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>    الجدول 5 </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab6.php?action=list_tab6" <?php if ($active_menu == 'tab_6') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 6</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab7.php?action=list_tab7" <?php if ($active_menu == 'tab_7') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 7</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab8.php?action=list_tab8" <?php if ($active_menu == 'tab_8') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 8</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab9.php?action=list_tab9" <?php if ($active_menu == 'tab_9') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 9</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab10.php?action=list_tab10" <?php if ($active_menu == 'tab_10') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 10</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab11.php?action=list_tab11" <?php if ($active_menu == 'tab_11') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>   الجدول 11</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="tab12.php?action=list_tab12" <?php if ($active_menu == 'tab_12') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-bars"></i>
+                  <p>  الجدول 12</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="parametres.php" <?php if ($active_menu == 'parametres') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-gear"></i>
+                  <p>إعدادات</p>
                 </a>
               </li>
             <?php endif; ?>

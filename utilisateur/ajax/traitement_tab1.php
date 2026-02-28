@@ -296,6 +296,11 @@ try {
                     $detail_hp_tab1->id_tab_1 = $tableau->id;
                     $detail_hp_tab1->save();
                 }
+                $detail_sup_tab1s= DetailTab1_sup::trouve_tab_vide_par_admin($id_user,$id_societe);
+                foreach ($detail_sup_tab1s as $detail_sup_tab1){
+                    $detail_sup_tab1->id_tab_1 = $tableau->id;
+                    $detail_sup_tab1->save();
+                }
                 // Calculer les totaux finaux
            
 

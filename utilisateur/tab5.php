@@ -37,32 +37,32 @@ if (!$societe) {
 $exercice_actif = Exercice::get_exercice_actif();
 
 // Déterminer l'action
-$action = isset($_GET['action']) ? $_GET['action'] : 'list_tab3';
+$action = isset($_GET['action']) ? $_GET['action'] : 'list_tab5';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 3 -  ";
-$active_menu = "tab_3";
-$active_submenu = "tab_3";
+$titre = "الجدول 5 -  ";
+$active_menu = "tab_5";
+$active_submenu = "tab_5";
 $header = array('select2');
 
 require_once("composit/header.php");
 ?>
 <?php
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
-$existe = Tableau3::existe_pour_societe_annee($current_user->id_societe, $annee);
-$tabls = Tableau3::trouve_tableau_1_par_id($societe->id_societe);
+$existe = Tableau5::existe_pour_societe_annee($current_user->id_societe, $annee);
+$tabls = Tableau5::trouve_tableau_1_par_id($societe->id_societe);
 
 
-if ($action == "add_tab3") {
+if ($action == "add_tab5") {
 
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
-$existe = Tableau3::existe_pour_societe_annee(
+$existe = Tableau5::existe_pour_societe_annee(
     $current_user->id_societe,
     $annee
 );
 
 if ($existe) {
-    redirect_to("?action=list_tab3");
+    redirect_to("?action=list_tab5");
     exit;
 }
 }
@@ -75,13 +75,13 @@ if ($existe) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">الجدول 3 -  قرارات الاطار المتعلقة بالامتحانات و المسابقات</h3>
+                    <h5 class="mb-0">الجدول 5 -       </h5>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="index.php">الرئيسية</a></li>
                         <li class="breadcrumb-item"><a href="dashboard.php">لوحة التحكم</a></li>
-                        <li class="breadcrumb-item active">الجدول 3</li>
+                        <li class="breadcrumb-item active">الجدول 5</li>
                     </ol>
                 </div>
             </div>
@@ -100,7 +100,7 @@ if ($existe) {
                 </div>
             <?php endif; ?>
 
-            <?php if ($action == "list_tab3"): ?>
+            <?php if ($action == "list_tab5"): ?>
                 <!-- Liste des tableaux existants -->
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -109,8 +109,8 @@ if ($existe) {
                         </h5>
                         <?php if ($exercice_actif):?>
                         <?php if (!$existe): ?>
-                        <a href="?action=add_tab3" class="btn btn-primary">
-                            <i class="fas fa-plus me-1"></i> إضافة جدول رقم 3
+                        <a href="?action=add_tab5" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> إضافة جدول رقم 5
                         </a>
                         <?php else: 
                             if ($tabls->statut != 'validé'):?>
@@ -145,7 +145,7 @@ if ($existe) {
                                     ?>
                                     <tr>
                                         <td class="text-center">
-                                            <a href="print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                            <a href="print_tab5.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
                                                 <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
@@ -160,7 +160,7 @@ if ($existe) {
                                             <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="?action=edit_tab3&id=<?php echo $tabls->id; ?>" 
+                                            <a href="?action=edit_tab5&id=<?php echo $tabls->id; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="تعديل">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -184,7 +184,7 @@ if ($existe) {
                     </div>
                 </div>
 
-            <?php elseif ($action == "add_tab3" || $action == "edit_tab3"): ?>
+            <?php elseif ($action == "add_tab5" || $action == "edit_tab5"): ?>
                 <!-- Formulaire d'ajout ou modification -->
                 <?php
                 // Récupérer les données existantes si en mode édition
@@ -192,18 +192,18 @@ if ($existe) {
                 $details = array();
                 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 
-                if ($action == "edit_tab3" && $id > 0) {
-                    $tableau = Tableau3::trouve_par_id($id);
+                if ($action == "edit_tab5" && $id > 0) {
+                    $tableau = Tableau5::trouve_par_id($id);
                     if ($tableau) {
                         $annee = $tableau->annee;
-                        $details = DetailTab3::trouve_par_tableau($id);
+                        $details = DetailTab5::trouve_par_tableau($id);
                     }
                 } else {
                     // En mode ajout, vérifier s'il y a un brouillon
-                    $tableau_brouillon = Tableau3::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe);
+                    $tableau_brouillon = Tableau5::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe);
                     if ($tableau_brouillon) {
                         $tableau = $tableau_brouillon;
-                        $details = DetailTab3::trouve_par_tableau($tableau->id);
+                        $details = DetailTab5::trouve_par_tableau($tableau->id);
                     }
                 }
 
@@ -226,7 +226,7 @@ if ($existe) {
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
                             <i class="fas fa-edit me-2"></i>
-                            <?php echo $action == "edit_tab3" ? 'تعديل الجدول رقم 3' : 'إضافة جدول رقم 3'; ?>
+                            <?php echo $action == "edit_tab5" ? 'تعديل الجدول رقم 5' : 'إضافة جدول رقم 5'; ?>
                         </h5>
                         <div>
                             <span class="badge bg-warning me-2">السنة المالية: <?php echo $annee; ?></span>
@@ -236,8 +236,8 @@ if ($existe) {
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="formulaireTableau3" method="POST" action="ajax/traitement_tab3.php">
-                            <input type="hidden" name="action" value="<?php echo $action == "edit_tab3" ? 'update_tab3' : 'add_tab3'; ?>">
+                        <form id="formulaireTableau5" method="POST" action="ajax/traitement_tab5.php">
+                            <input type="hidden" name="action" value="<?php echo $action == "edit_tab5" ? 'update_tab5' : 'add_tab5'; ?>">
                             <input type="hidden" name="id_tableau" value="<?php echo $tableau ? $tableau->id : '0'; ?>">
                             <input type="hidden" name="annee" value="<?php echo $annee; ?>">
                             <input type="hidden" name="id_societe" value="<?php echo $societe->id_societe; ?>">
@@ -347,7 +347,7 @@ if ($existe) {
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <a href="?action=list_tab3" class="btn btn-secondary">
+                                        <a href="?action=list_tab5" class="btn btn-secondary">
                                             <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
                                         </a>
                                         <div>
@@ -356,7 +356,7 @@ if ($existe) {
                                             </button>
                                             <button type="submit" class="btn btn-success">
                                                 <i class="fas fa-paper-plane me-1"></i>
-                                                <?php echo $action == "edit_tab3" ? 'تحديث الجدول' : 'تقديم الجدول'; ?>
+                                                <?php echo $action == "edit_tab5" ? 'تحديث الجدول' : 'تقديم الجدول'; ?>
                                             </button>
                                         </div>
                                     </div>

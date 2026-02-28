@@ -24,7 +24,10 @@ class Societe {
 	public $etat;
 	public $wilayas;
 	
-
+public static function trouve_par_societe(){
+	$q =  "SELECT * FROM societe ORDER BY raison_ar";
+    return  self::trouve_par_sql($q);
+	}
 
 
 

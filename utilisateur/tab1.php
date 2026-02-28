@@ -37,11 +37,12 @@ if (!$societe) {
 $exercice_actif = Exercice::get_exercice_actif();
 
 // Déterminer l'action
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 1 - المناصب العليا";
-$active_menu = "formulaires";
+$titre = "الجدول 1  ";
+$active_menu = "tab_1";
 $active_submenu = "tabl_1";
 $header = array('select2');
 
@@ -68,6 +69,24 @@ if ($existe) {
 }
 }
 ?>
+<?php
+$existe_tab_1_1 = Tableau1_1::existe_pour_societe_annee($current_user->id_societe, $annee);
+$tabl_1_1 = Tableau1_1::trouve_tableau_1_1_par_id($societe->id_societe);
+
+
+if ($action == "add_tab1_1") {
+$annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+$existe_tab_1_1 = Tableau1_1::existe_pour_societe_annee(
+    $current_user->id_societe,
+    $annee
+);
+
+if ($existe) {
+    redirect_to("?action=list_tab1");
+    exit;
+}
+}
+?>
 
 <!--begin::App Main-->
 <main class="app-main">
@@ -76,7 +95,8 @@ if ($existe) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">الجدول 1 - <?php echo $societe->raison_ar; ?> </h3>
+                    <h3 class="mb-0">الجدول رقم 1 </h3>
+                    <h4>جدول يتعلق بهيكل التعددات إلى غاية : <?php echo '31-12-'. ($annee -1);?></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -104,16 +124,16 @@ if ($existe) {
             
             <?php if ($action == "list_tab1"): ?>
                  <?php if (!empty($tabls->commentaire_admin) && $tabls->statut !='validé'): ?>
-    <div class="alert alert-info mt-2">
-        <strong>ملاحظة الإدارة :</strong>
-        <?php echo nl2br(htmlspecialchars($tabls->commentaire_admin)); ?>
-    </div>
-<?php endif; ?>
+                    <div class="alert alert-info mt-2">
+                        <strong>ملاحظة الإدارة :</strong>
+                        <?php echo nl2br(htmlspecialchars($tabls->commentaire_admin)); ?>
+                    </div>
+                <?php endif; ?>
                 <!-- Liste des tableaux existants -->
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
-                            <i class="fas fa-list me-2 text-primary"></i>قائمة الجداول المسجلة
+                            <i class="fas fa-list me-2 text-primary"></i>  الجدول رقم 1
                         </h5>
                         <?php if ($exercice_actif):?>
                         <?php if (!$existe): ?>
@@ -140,11 +160,8 @@ if ($existe) {
                                         <th width="5%" class="text-center">ID</th>
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
-                                        <th width="15%" class="text-center">تاريخ التقديم</th>
-                                        <th width="10%" class="text-center">إجمالي المناصب</th>
-                                        <th width="10%" class="text-center">المناصب الحقيقية</th>
-                                        <th width="10%" class="text-center">بالنيابة</th>
-                                        <th width="10%" class="text-center">النساء</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                        
+                                        <th width="10%" class="text-center">الملاحظات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -172,16 +189,13 @@ if ($existe) {
                                         <td class="text-center">
                                             <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                         </td>
-                                        <td class="text-center"><?php echo $tabls->total; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_reel; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_intrim; ?></td>
-                                        <td class="text-center"><?php echo $tabls->total_femmes; ?></td>
+                                        <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabls->statut != 'validé'):?>
                                             <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button onclick="supprimerTableau(<?php echo $tabls->id; ?>)" 
+                                            <button onclick=" (<?php echo $tabls->id; ?>)" 
                                                     class="btn btn-sm btn-danger" title="حذف">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -197,6 +211,69 @@ if ($existe) {
                                         </td>
                                     </tr>
                                     <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- tableau annexe 1_1 -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i>   الجدول 1 مكرر</h5>
+                        <?php if ($exercice_actif):?>
+                        <?php if (!$existe_tab_1_1): ?>
+                        <a href="?action=add_tab1_1" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i> إضافة جدول رقم 1 مكرر
+                        </a>
+
+                        <?php else: 
+                            if ($tabl_1_1->statut != 'validé'):?>
+
+                        <a href="?action=edit_tab1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-warning">
+                            <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                        </a>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        <?php endif; ?>
+                        
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>الجدول 1 المرتبط</th>
+                                        <th>السنة</th>
+                                        <th>الحالة</th>
+                                        <th>تاريخ التقديم</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                
+                                if (!empty($tabl_1_1)):
+                                    foreach ($tabl_1_1 as $row):
+                                        $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
+                                ?>
+                                    <tr>
+                                        <td class="text-center"><a href="print_tab1_1.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
+                                        <td class="text-center"><?php echo $row->id_tableau_1; ?></td>
+                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
+                                        <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
+                                        <td class="text-center">
+                                            <a href="?action=edit_tab1_1&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
+                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    endforeach;
+                                else:
+                                ?>
+                                    <tr><td colspan="6" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد ملحقات مسجلة</td></tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -220,6 +297,7 @@ if ($existe) {
         // Récupérer les données existantes si en mode édition
         $tableau = null;
         $details = array();
+        $sup_details = array();
         $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
         
         if ($action == "edit_tab1" && $id > 0) {
@@ -227,10 +305,12 @@ if ($existe) {
             if ($tableau) {
                 $annee = $tableau->annee;
                 $details = DetailTab1::trouve_tab_vide_par_admin($id);
+                $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
             $details = DetailTab1::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
+            $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
         }
         
         // Récupérer tous les grades
@@ -246,14 +326,18 @@ if ($existe) {
         <div class="portlet-body table-responsive hauts_fonctionnaires">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
+                    
                     <tr>
-                        <th colspan="9" class="fw-bold text-center bg-primary text-white">الوظائف العليا</th>
+                        <th colspan="3"></th>
+                        <th colspan="3">تعداد المناصب الحقيقية</th>
+                        <th colspan="3"></th>
                     </tr>
                     <tr class="table-light">
-                        <th width="5%" class="text-center">الرمز</th>
-                        <th width="25%" class="text-center">الوظيفة</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية إلى غاية <?php echo ($annee - 1); ?>/12/31</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center">تعداد المناصب المالية</th>
+                        
+                        <th width="10%" class="text-center">المناصب الحقيقية</th>
                         <th width="10%" class="text-center">بالنيابة</th>
                         <th width="10%" class="text-center">النساء</th>
                         <th width="10%" class="text-center">الفارق</th>
@@ -262,14 +346,80 @@ if ($existe) {
                     </tr>
                 </thead>
                 <tbody id="existing_hauts_fonctionnaires">
+                    <?php if (!empty($sup_details)): ?>
+                        <?php foreach ($sup_details as $detail): ?>
+                                                    
+                       <tr data-id="<?php echo $detail->id; ?>">
+                            <td>
+                                
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->postes_total_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->postes_reel_sup ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_intirim_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->poste_femme_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo $detail->difference_sup; ?>
+                            </td>
+                            <td>
+                                <?php echo htmlspecialchars($detail->observations_sup); ?>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteDetailSup(<?php echo $detail->id; ?>)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr id="noDataSup">
+                            <td colspan="9" class="text-center text-muted">
+                                لا توجد بيانات مسجلة
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+                <tbody id="body_sup_body">
+                    <tr class="item-row"> 
+                        <td>1</td>
+                        <td><input type="number" name="poste_sup" id="poste_sup" class="form-control"></td>
+                        <td><input type="number" name="postes_total_sup" id="postes_total_sup" class="form-control"></td>
+                        <td><input type="number" name="postes_reel_sup" id="postes_reel_sup" class="form-control"></td>
+                        <td><input type="number" name="poste_intirim_sup" id="poste_intirim_sup" class="form-control"></td>
+                        <td><input type="number" name="poste_femme_sup" id="poste_femme_sup" class="form-control"></td>
+                        <td><input type="number" name="difference_sup" id="difference_sup" class="form-control"></td>
+                        <td><input type="number" name="observations_sup" id="observations_sup" class="form-control"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-success btn-sm add-sup-btn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tr>
+                        <th colspan="9" class="fw-bold text-center bg-primary text-white">الوظائف العليا</th>
+                    </tr>
+                <tbody id="existing_hauts_fonctionnaires">
                     <?php if (!empty($details)): ?>
                         <?php foreach ($details as $detail): 
                             $grade = Grade::trouve_par_id($detail->id_grade);
                         ?>
                         <tr data-id="<?php echo $detail->id; ?>">
                             <td>
-                                <input type="text" class="form-control text-center" 
+                                <input type="hidden" class="form-control text-center" 
                                        value="<?php echo $grade ? $grade->id : ''; ?>" readonly>
+                                    <?php echo $grade ? $grade->classe : ''; ?>
                             </td>
                             <td>
                                 <?php echo $grade ? $grade->grade : ''; ?>
@@ -388,10 +538,10 @@ if ($existe) {
                         <th colspan="9" class="fw-bold text-center bg-info text-white">المناصب العليا</th>
                     </tr>
                     <tr class="table-light">
-                        <th width="5%" class="text-center">الرمز</th>
-                        <th width="25%" class="text-center">المنصب</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية إلى غاية <?php echo ($annee - 1); ?>/12/31</th>
-                        <th width="10%" class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                        <th width="5%" class="text-center">الدليل</th>
+                        <th width="25%" class="text-center">الوظائف السامية و المناصب العليا</th>
+                        <th width="10%" class="text-center"> تعداد المناصب المالية</th>
+                        <th width="10%" class="text-center"> المناصب الحقيقية</th>
                         <th width="10%" class="text-center">بالنيابة</th>
                         <th width="10%" class="text-center">النساء</th>
                         <th width="10%" class="text-center">الفارق</th>
@@ -505,20 +655,15 @@ if ($existe) {
 <!-- Total Général -->
 <div class="row">
     <div class="col-12">
-        <div class="card mb-4 border-success">
-            <div class="card-header bg-success text-white">
-                <h5 class="card-title mb-0">
-                    <i class="fas fa-calculator me-2"></i>المجموع العام
-                </h5>
-            </div>
+        <div class="card mb-4">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="table-success">
                             <tr>
                                 <th class="text-center">المجموع العام</th>
-                                <th class="text-center">تعداد المناصب <?php echo ($annee - 1); ?>/12/31</th>
-                                <th class="text-center">عدد المناصب المالية الحقيقية في السنة <?php echo $annee; ?></th>
+                                <th class="text-center">تعداد المناصب </th>
+                                <th class="text-center">المناصب الحقيقية</th>
                                 <th class="text-center">بالنيابة</th>
                                 <th class="text-center">النساء</th>
                                 <th class="text-center">الفارق</th>

@@ -27,9 +27,9 @@ $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 $titre = "إدارة الجداول - الإدارة العامة";
 
-$active_menu = "tab_1";
+$active_menu = "tab_4";
 
-$active_submenu = "tab_1";
+$active_submenu = "tab_4";
 
 $header = array('todo');
 
@@ -42,19 +42,23 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
 // Exercices
 $exercice_actif = Exercice::get_exercice_actif();
 $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+
+
 ?>
+
 
 <main class="app-main">
     <div class="app-content-header">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>  جدول هيكلة التعدادات </h3>
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول 4 </h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
                         <li class="breadcrumb-item"><a href="index.php">الرئيسية</a></li>
-                        <li class="breadcrumb-item active">  جدول هيكلة التعدادات </li>
+                        <li class="breadcrumb-item active">  جدول  4 </li>
                     </ol>
                 </div>
             </div>
@@ -74,50 +78,47 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <th width="5%" class="text-center">ID</th>
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
-                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                       
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                        
                                         <th width="10%" class="text-center">الملاحظة</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    $tabls = Tableau1::trouve_par_societe($nav_societe->id_societe);
+                                    $tabls = Tableau4::trouve_tableau_4_par_id($nav_societe->id_societe);
+                                    ?>
+                                    <?php 
+                                   
                                     if (!empty($tabls)): 
-                                        foreach ($tabls as $row): 
-                                            $statut_badge = $row->statut == 'validé' ? 'success' : 
-                                                          ($row->statut == 'en_attente' ? 'warning' : 'secondary');
+                                       
+                                            $statut_badge = $tabls->statut == 'validé' ? 'success' : 
+                                                          ($tabls->statut == 'brouillon' ? 'warning' : 'secondary');
                                     ?>
                                     <tr>
-                                        <td class="text-center">
-                                            
-                                            <a href="print_tab_1.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
-                                            <i class="fa fa-print "></i> <?php echo $row->id; ?>
+                                       <td class="text-center">
+                                            <a href="../utilisateur/print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                                <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
-                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center"><?php echo $tabls->annee; ?></td>
                                         <td class="text-center">
                                             <span class="badge bg-<?php echo $statut_badge; ?>">
-                                                <?php echo $row->statut; ?>
+                                                <?php echo $tabls->statut; ?>
                                             </span>
                                         </td>
                                         <td class="text-center">
-                                            <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
-                                        </td>                                        
-                                        <td><?php echo $row->commentaire_admin; ?></td>
+                                            <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
+                                        </td>
+                                        <td><?php echo $tabls->commentaire_admin; ?></td>
                                         <td class="text-center">
                                       
-                                            <a href="details_tableau.php?action=affchier_detail&id=<?php echo $row->id; ?>" 
+                                            <a href="details_tableau4.php?action=affchier_detail&id=<?php echo $tabls->id; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="التفاصيل">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <button onclick="commentTableau1(<?php echo $row->id; ?>)" 
-                                                    class="btn btn-sm btn-danger" title="ملاحظة">
-                                                <i class="fas fa-commenting"></i>
-                                            </button>
                                             
                                         </td>
                                     </tr>
-                                    <?php endforeach; ?>
                                     <?php else: ?>
                                     <tr>
                                         <td colspan="10" class="text-center py-4">

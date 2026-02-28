@@ -57,7 +57,7 @@ foreach ($grades as $grade) {
         'loi' => $grade->lois
     );
 }
-
+$action = isset($_GET['action']) ? $_GET['action'] : '';
 // Titre de la page
 $titre = "تعديل الجدول رقم " . $id;
 $active_menu = "tableaux";

@@ -20,7 +20,7 @@ if (!$current_user || $current_user->type !== 'administrateur') {
 
 $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 $commentaire = isset($_POST['commentaire']) ? trim($_POST['commentaire']) : '';
-$type = isset($_POST['type']) ? $_POST['type'] : 'tab1'; // Par défaut tab1
+$type = isset($_POST['type_tableau']) ? $_POST['type_tableau'] : 'tab1'; // Par défaut tab1
 
 if ($id <= 0) {
     echo json_encode(['success' => false, 'message' => 'عملية غير معروفة']);
@@ -34,6 +34,9 @@ switch ($type) {
         break;
     case 'tab3':
         $classe = 'Tableau3';
+        break;
+    case 'tab4':
+        $classe = 'Tableau4';
         break;
     // Ajouter d'autres cas si nécessaire
     default:
