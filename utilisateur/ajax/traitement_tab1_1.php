@@ -132,7 +132,78 @@ try {
     }
 
     $response['success'] = true;
-}
+}elseif ($action === 'save_tableau') {
+
+    
+    // ==============================
+    // Sécurité : toujours utiliser session
+    // ==============================
+    $id_user    = $current_user->id;
+    $id_societe = $current_user->id_societe;
+
+    $statut = isset($_POST['statut']) ? trim($_POST['statut']) : 'en attente';
+    $annee  = isset($_POST['annee']) ? intval($_POST['annee']) : date('Y');
+
+    // ==============================
+    // Vérifier qu'il existe des détails brouillon
+    // ==============================
+    $details = DetailTab1_1::trouve_tableeu_vide($id_societe, $id_user);
+
+    if (empty($details)) {
+        throw new Exception('لا توجد بيانات للحفظ');
+    }
+
+    // ==============================
+    // TRANSACTION (IMPORTANT ERP)
+    // ==============================
+   
+
+    try {
+
+        // ==============================
+        // 1️⃣ Créer tableau principal
+        // ==============================
+        $tableau = new Tableau1_1();
+        $tableau->statut = $statut;
+        $tableau->annee = $annee;
+        $tableau->id_user = $id_user;
+        $tableau->id_societe = $id_societe;
+        $tableau->date_creation = date('Y-m-d H:i:s');
+
+        if ($statut === 'en_attente') {
+            $tableau->date_valide = date('Y-m-d H:i:s');
+        } else {
+            $tableau->date_valide = null;
+        }
+
+        if (!$tableau->save()) {
+            throw new Exception('خطأ أثناء حفظ الجدول الرئيسي');
+        }
+
+        $last_id = $tableau->id;
+
+        // ==============================
+        // 2️⃣ Update detail_tab_1_1
+        // ==============================
+        foreach ($details as $detail) {
+            $detail->id_tableau_1_1 = $last_id;
+
+            if (!$detail->save()) {
+                throw new Exception('فشل تحديث تفاصيل الجدول');
+            }
+        }
+        $response['success'] = true;
+        $response['message'] = ($statut === 'en_attente')
+            ? 'تم تقديم الجدول بنجاح'
+            : 'تم حفظ المسودة بنجاح';
+
+    } catch (Exception $e) {
+
+        $database->connection->rollback();
+        throw $e;
+    }
+} 
+
 
 } catch (Exception $e) {
     $response['message'] = $e->getMessage();

@@ -248,29 +248,51 @@ if ($existe_tab_1_1) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <?php
-                                
-                                if (!empty($tabl_1_1)):
-                                    foreach ($tabl_1_1 as $row):
-                                        $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
-                                ?>
+                                    <?php 
+                                    
+                                    if (!empty($tabl_1_1)): 
+                                         
+                                            $statut_badge = $tabl_1_1->statut == 'validé' ? 'success' : 
+                                                          ($tabl_1_1->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
                                     <tr>
-                                        <td class="text-center"><a href="print_tab1_1.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
-                                        <td class="text-center"><?php echo $row->id_tableau_1; ?></td>
-                                        <td class="text-center"><?php echo $row->annee; ?></td>
-                                        <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
-                                        <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
                                         <td class="text-center">
-                                            <a href="?action=edit_tab1_1&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
-                                            <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            
+                                            <a href="print_tab1_1.php?id=<?php echo $tabl_1_1->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                            <i class="fa fa-print "></i> <?php echo $tabl_1_1->id; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-center"><?php echo $tabl_1_1->annee; ?></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                <?php echo $tabl_1_1->statut; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $tabl_1_1->date_valide ? date('d/m/Y', strtotime($tabl_1_1->date_valide)) : '---'; ?>
+                                        </td>
+                                        <td class="text-center"><?php echo $tabl_1_1->commentaire_admin; ?></td>
+                                        <td class="text-center">
+                                        <?php if ($exercice_actif && $tabl_1_1->statut != 'validé'):?>
+                                            <a href="edit_tableau.php?id=<?php echo $tabl_1_1->id; ?>" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button onclick=" (<?php echo $tabl_1_1->id; ?>)" 
+                                                    class="btn btn-sm btn-danger" title="حذف">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
-                                <?php
-                                    endforeach;
-                                else:
-                                ?>
-                                    <tr><td colspan="6" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد ملحقات مسجلة</td></tr>
-                                <?php endif; ?>
+                                    
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" class="text-center py-4">
+                                            <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                            لا توجد جداول مسجلة
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -791,7 +813,7 @@ if ($existe_tab_1_1) {
                                                     
                        <tr data-id="<?php echo $detail->id; ?>">
                             <td>
-                                <?php echo $detail->loi; ?>
+                                <?php echo $grade->loi; ?>
                             </td>
                             <td>
                                  <?php echo $grade ? $grade->grade : ''; ?>

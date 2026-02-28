@@ -9,7 +9,7 @@ class Grade {
 	protected static $champs = array('id','grade', 'loi', 'classe', 'actif');
 	public $id;
 	public $grade;
-	public $lois;
+	public $loi;
 	public $classe;
 	public $actif;
 

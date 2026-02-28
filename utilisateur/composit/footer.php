@@ -779,6 +779,34 @@ function calculateTotals(){
     $('.total_contrat_temps_pratiel').text(totals[15]);
     $('.total_contrat_femmes_pratiel').text(totals[16]);
 }
+
+function saveTableau_1_1(){
+
+    if(!confirm("تأكيد حفظ وتقديم الجدول ؟")) return;
+
+    $('#loadingOverlay').show();
+
+    $.post('ajax/traitement_tab1_1.php', {
+
+        action: 'save_tableau',
+        statut: 'en_attente',
+        id_user: <?php echo $current_user->id; ?>,
+        id_societe: <?php echo $current_user->id_societe; ?>,
+        annee: <?php echo $annee; ?>
+
+    }, function(response){
+
+        $('#loadingOverlay').hide();
+
+        if(response.success){
+            alert(response.message);
+            window.location.href='?action=list_tab1';
+        }else{
+            alert(response.message);
+        }
+
+    }, 'json');
+}
 </script>
     
 <?php }?>
