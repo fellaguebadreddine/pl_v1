@@ -323,36 +323,36 @@ if ($action == "add_tab2") {
                                                 <?php endforeach; ?>
                                             </select>
                                         </td>
-                                        <td>
-                                            <input type="text" class="form-control text-center code-input">
-                                        </td>
 
                                         <td>
-                                            <input type="text" name="postes_total" class="form-control text-center postes-total" required>
+                                            <input type="text" name="loi_consiel_employer" id="loi_consiel_employer" class="form-control text-center" required>
                                         </td>
                                         <td>
-                                            <input type="text" name="postes_reel" class="form-control text-center postes-reel" required>
+                                            <input type="date" name="date_fin_consiel_employer" id="date_fin_consiel_employer" class="form-control text-center postes-reel" required>
                                         </td>
                                         <td>
-                                            <input type="text" name="poste_intirim" class="form-control text-center poste-intirim">
+                                            <input type="text" name="reference_consiel_employer_prolong" id="reference_consiel_employer_prolong" class="form-control text-center poste-intirim">
                                         </td>
                                         <td>
-                                            <input type="text" name="poste_femme" class="form-control text-center poste-femme">
+                                            <input type="date" name="date_fin_consiel_employer_prolong" id="date_fin_consiel_employer_prolong" class="form-control">
                                         </td>
                                         <td>
-                                            <input type="text" name="difference" class="form-control text-center ">
+                                            <input type="text" name="reference_consiel_recours" id="reference_consiel_recours" class="form-control text-center ">
                                         </td>
                                         <td>
-                                            <input type="text" name="difference" class="form-control text-center ">
+                                            <input type="date" name="date_fin_consiel_recours" id="date_fin_consiel_recours" class="form-control text-center ">
                                         </td>
                                         <td>
-                                            <input type="text" name="difference" class="form-control text-center ">
+                                            <input type="text" name="reference_consiel_recours_prolong" id="reference_consiel_recours_prolong" class="form-control text-center ">
                                         </td>
                                         <td>
-                                            <input type="text" name="difference" class="form-control text-center ">
+                                            <input type="text" name="date_fin_consiel_recours_prolong" id="date_fin_consiel_recours_prolong" class="form-control text-center ">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="observations" id="observations" class="form-control text-center ">
                                         </td>
                                         <td class="text-center">
-                                            <button type="button" class="btn btn-success btn-sm add-hf-btn">
+                                            <button type="button" class="btn btn-success btn-sm add-consiel-btn">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </td>
