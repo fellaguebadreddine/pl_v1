@@ -18,7 +18,7 @@ class DetailTab2 {
 	public $loi_consiel_employer;
 	public $date_fin_consiel_employer;
     public $reference_consiel_employer_prolong;
-    public $$date_fin_consiel_employer_prolong;
+    public $date_fin_consiel_employer_prolong;
     public $reference_consiel_recours;
     public $date_fin_consiel_recours;
     public $reference_consiel_recours_prolong;

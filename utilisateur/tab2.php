@@ -77,7 +77,7 @@ if ($action == "add_tab2") {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">الجدول 2 - <?php echo $societe->raison_ar; ?> </h3>
+                    <h3 class="mb-0">الجدول 2 - لجان المستخدمين / لجان الطعن </h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -113,7 +113,7 @@ if ($action == "add_tab2") {
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
-                            <i class="fas fa-list me-2 text-primary"></i>قائمة الجداول المسجلة
+                            <i class="fas fa-list me-2 text-primary"></i>الجدول 2  
                         </h5>
                         <?php if ($exercice_actif): ?>
                             <?php if (!$existe): ?>
@@ -141,8 +141,7 @@ if ($action == "add_tab2") {
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>
-                                        <th width="10%" class="text-center">عدد لجان الموظفين</th>
-                                        <th width="10%" class="text-center">عدد لجان الطعن</th>
+                                        <th width="10%" class="text-center">  الملاحظات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -169,8 +168,7 @@ if ($action == "add_tab2") {
                                             <td class="text-center">
                                                 <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                             </td>
-                                            <td class="text-center"><?php echo $tabls->total_cp; ?></td>
-                                            <td class="text-center"><?php echo $tabls->total_cr; ?></td>
+                                            <td class="text-center"><?php echo $tabls->observations; ?></td>                                            <td class="text-center"><?php echo $tabls->total_cr; ?></td>
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
                                                     <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
@@ -220,30 +218,21 @@ if ($action == "add_tab2") {
                             $tableau = Tableau2::trouve_par_id($id);
                             if ($tableau) {
                                 $annee = $tableau->annee;
-                                $details = DetailTab1::trouve_tab_vide_par_admin($id);
+                                $details = DetailTab2::trouve_tab_vide_par_admin($id);
                             }
                         } else {
                             // En mode ajout, vérifier s'il y a un brouillon
-                            $details = DetailTab1::trouve_tab_vide_par_admin($current_user->id, $current_user->id_societe);
+                            $details = DetailTab2::trouve_tab_vide_par_admin($current_user->id, $current_user->id_societe);
                         }
 
                         // Récupérer tous les grades
                         $grades = Grade::trouve_tous();
-
-                        // Calculer les totaux
-                        $total_hf = array_sum(array_column($details, 'postes_total'));
-                        $total_hf_reel = array_sum(array_column($details, 'postes_reel'));
-                        $total_hf_intirim = array_sum(array_column($details, 'poste_intirim'));
-                        $total_hf_femme = array_sum(array_column($details, 'poste_femme'));
                         ?>
 
                         <div class="portlet-body table-responsive hauts_fonctionnaires">
                             <table class="table table-bordered table-striped">
                                 <thead>
-                                    <th colspan="11" class="fw-bold text-center bg-primary text-white">الأجهزة الاستشارية الداخلية </th>
-                                    <!-- Niveau 1 -->
-                                    <tr>
-                                        <th width="15%" rowspan="3">السلك أو الرتبة</th>
+                                        <th width="15%" rowspan="3"> الأسلاك</th>
                                         <th colspan="4">لجان الموظفين</th>
                                         <th colspan="4">لجان الطعن</th>
                                         <th rowspan="3">الملاحظات</th>
@@ -271,42 +260,41 @@ if ($action == "add_tab2") {
                                     </tr>
 
                                 </thead>
-                                <tbody id="existing_hauts_fonctionnaires">
+                                <tbody id="">
                                     <?php if (!empty($details)): ?>
                                         <?php foreach ($details as $detail):
                                             $grade = Grade::trouve_par_id($detail->id_grade);
                                         ?>
                                             <tr data-id="<?php echo $detail->id; ?>">
                                                 <td>
-                                                    <input type="text" class="form-control text-center"
-                                                        value="<?php echo $grade ? $grade->id : ''; ?>" readonly>
+                                                    <?php echo $grade ? $grade->corps : ''; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $grade ? $grade->grade : ''; ?>
+                                                    <?php echo $detail->loi_consiel_employer; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $detail->postes_total; ?>
+                                                    <?php echo $detail->date_fin_consiel_employer; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $detail->postes_reel; ?>
+                                                    <?php echo $detail->reference_consiel_employer_prolong; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $detail->poste_intirim; ?>
+                                                    <?php echo $detail->date_fin_consiel_employer_prolong; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $detail->poste_femme; ?>
+                                                    <?php echo $detail->reference_consiel_recours; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $detail->difference; ?>
+                                                    <?php echo $detail->date_fin_consiel_recours; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $detail->reference_consiel_recours_prolong; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $detail->date_fin_consiel_recours_prolong; ?>
                                                 </td>
                                                 <td>
                                                     <?php echo htmlspecialchars($detail->observations); ?>
-                                                </td>
-                                                <td>
-
-                                                </td>
-                                                <td>
-
                                                 </td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteDetail(<?php echo $detail->id; ?>, 'hf')">
@@ -316,7 +304,7 @@ if ($action == "add_tab2") {
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr id="noDataHf">
+                                        <tr id="noData">
                                             <td colspan="11" class="text-center text-muted">
                                                 لا توجد بيانات مسجلة
                                             </td>
@@ -327,10 +315,10 @@ if ($action == "add_tab2") {
                                     <tr class="item-row">
                                         <td>
                                             <select name="id_grade" class="form-control select2 grade-select" required>
-                                                <option value="">اختر الوظيفة</option>
+                                                <option value="">اختر السلك</option>
                                                 <?php foreach ($grades as $g): ?>
                                                     <option value="<?php echo $g->id; ?>" data-code="<?php echo $g->id; ?>">
-                                                        <?php echo $g->grade; ?>
+                                                        <?php echo $g->corps; ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
