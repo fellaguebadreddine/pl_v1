@@ -94,7 +94,11 @@ public static function trouve_par_tableau($id_tab_2)
 		$bd->requete($sql);
 		return($bd->affected_rows() == 1) ? true : false ;
 			}
-
+public static function trouve_tableeu_vide($id_societe,$id){
+	$q =  "SELECT * FROM ".self::$nom_table;
+	$q .= " WHERE id_tab_2 = 0 and id_societe = {$id_societe}   and id_user = {$id}";
+    return  self::trouve_par_sql($q);
+	}
 
 
    

@@ -168,7 +168,7 @@ if ($action == "add_tab2") {
                                             <td class="text-center">
                                                 <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                             </td>
-                                            <td class="text-center"><?php echo $tabls->observations; ?></td>                                            <td class="text-center"><?php echo $tabls->total_cr; ?></td>
+                                            <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>  
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
                                                     <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
@@ -260,7 +260,7 @@ if ($action == "add_tab2") {
                                     </tr>
 
                                 </thead>
-                                <tbody id="">
+                                <tbody id="existing_consiel">
                                     <?php if (!empty($details)): ?>
                                         <?php foreach ($details as $detail):
                                             $grade = Grade::trouve_par_id($detail->id_grade);
@@ -297,7 +297,7 @@ if ($action == "add_tab2") {
                                                     <?php echo htmlspecialchars($detail->observations); ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteDetail(<?php echo $detail->id; ?>, 'hf')">
+                                                    <button type="button" class="btn btn-danger btn-sm delete-btn" >
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -346,7 +346,7 @@ if ($action == "add_tab2") {
                                             <input type="text" name="reference_consiel_recours_prolong" id="reference_consiel_recours_prolong" class="form-control text-center ">
                                         </td>
                                         <td>
-                                            <input type="text" name="date_fin_consiel_recours_prolong" id="date_fin_consiel_recours_prolong" class="form-control text-center ">
+                                            <input type="date" name="date_fin_consiel_recours_prolong" id="date_fin_consiel_recours_prolong" class="form-control text-center ">
                                         </td>
                                         <td>
                                             <input type="text" name="observations" id="observations" class="form-control text-center ">
@@ -373,7 +373,7 @@ if ($action == "add_tab2") {
                                 </a>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-success" onclick="saveTableau()">
+                                <button type="button" class="btn btn-success" onclick="saveTableau2()">
                                     <i class="fas fa-paper-plane me-1"></i> حفظ وتقديم
                                 </button>
                             </div>

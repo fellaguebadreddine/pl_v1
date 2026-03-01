@@ -829,7 +829,7 @@ $(document).ready(function(){
             id_grade: row.find('[name="id_grade"]').val(),
             loi_consiel_employer: row.find('[name="loi_consiel_employer"]').val(),
             date_fin_consiel_employer: row.find('[name="date_fin_consiel_employer"]').val(),
-            reference_consiel_employer_prolong: row.find('[reference_consiel_employer_prolong"]').val(),
+            reference_consiel_employer_prolong: row.find('[name="reference_consiel_employer_prolong"]').val(),
             date_fin_consiel_employer_prolong: row.find('[name="date_fin_consiel_employer_prolong"]').val(),
             reference_consiel_recours: row.find('[name="reference_consiel_recours"]').val(),
             date_fin_consiel_recours: row.find('[name="date_fin_consiel_recours"]').val(),
@@ -853,15 +853,14 @@ $(document).ready(function(){
                     // Ajouter ligne dans tableau
                     let newRow = `
                         <tr data-id="${response.id}">
-                            <td></td>
                             <td>${response.grade_name}</td>
                             <td>${formData.loi_consiel_employer}</td>
                             <td>${formData.date_fin_consiel_employer}</td>
                             <td>${formData.reference_consiel_employer_prolong}</td>
                             <td>${formData.date_fin_consiel_employer_prolong}</td>
-                            <td>${response.reference_consiel_recours}</td>
+                            <td>${formData.reference_consiel_recours}</td>
                             <td>${formData.date_fin_consiel_recours}</td>
-                            <td>${response.reference_consiel_recours_prolong}</td>
+                            <td>${formData.reference_consiel_recours_prolong}</td>
                             <td>${formData.date_fin_consiel_recours_prolong}</td>
                             <td>${formData.observations}</td>
                             <td class="text-center">
@@ -872,13 +871,11 @@ $(document).ready(function(){
                         </tr>
                     `;
 
-                    $('#existing_hauts_fonctionnaires').append(newRow);
+                    $('#existing_consiel').append(newRow);
 
                     // Reset inputs
                     row.find('input').val('');
                     row.find('select').val('').trigger('change');
-
-                    calculateTotals();
 
                 } else {
                     alert(response.message);
@@ -900,7 +897,7 @@ $(document).ready(function(){
         let id = tr.data('id');
 
         $.ajax({
-            url: 'ajax/traitement_tab1_1.php',
+            url: 'ajax/traitement_tab2.php',
             type: 'POST',
             data: {
                 action: 'delete_detail',
@@ -911,7 +908,6 @@ $(document).ready(function(){
 
                 if(response.success){
                     tr.remove();
-                    calculateTotals();
                 }else{
                     alert(response.message);
                 }
@@ -920,55 +916,16 @@ $(document).ready(function(){
 
     });
 
-
-    calculateTotals();
 });
 
 
-// ==============================
-// TOTAL GENERAL
-// ==============================
-function calculateTotals(){
-
-    let totals = new Array(17).fill(0);
-
-    $('#existing_hauts_fonctionnaires tr').each(function(){
-
-        $(this).find('td').each(function(index){
-
-            let val = parseFloat($(this).text()) || 0;
-
-            if(index >= 2 && index <= 16){
-                totals[index] += val;
-            }
-        });
-
-    });
-
-    $('.total_effectif_reel_31_dec').text(totals[2]);
-    $('.total_effectif_reel_annee_1').text(totals[3]);
-    $('.total_titulaires').text(totals[4]);
-    $('.total_stagaires').text(totals[5]);
-    $('.total_tol_titu_stag').text(totals[6]);
-    $('.total_femmes').text(totals[7]);
-    $('.total_difrence').text(totals[8]);
-    $('.total_titulaie_temps_complet').text(totals[9]);
-    $('.total_titulaie_femmes_complet').text(totals[10]);
-    $('.total_titulaie_temps_partiel').text(totals[11]);
-    $('.total_titulaie_femmes_partiel').text(totals[12]);
-    $('.total_contrat_temps_complet').text(totals[13]);
-    $('.total_contrat_femme_complet').text(totals[14]);
-    $('.total_contrat_temps_pratiel').text(totals[15]);
-    $('.total_contrat_femmes_pratiel').text(totals[16]);
-}
-
-function saveTableau_1_1(){
+function saveTableau2(){
 
     if(!confirm("تأكيد حفظ وتقديم الجدول ؟")) return;
 
     $('#loadingOverlay').show();
 
-    $.post('ajax/traitement_tab1_1.php', {
+    $.post('ajax/traitement_tab2.php', {
 
         action: 'save_tableau',
         statut: 'en_attente',
@@ -982,7 +939,7 @@ function saveTableau_1_1(){
 
         if(response.success){
             alert(response.message);
-            window.location.href='?action=list_tab1';
+            window.location.href='?action=list_tab2';
         }else{
             alert(response.message);
         }
