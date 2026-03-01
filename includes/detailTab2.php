@@ -3,8 +3,8 @@
 require_once('bd.php');
 require_once('fonctions.php');
 // Tableau1.php
-class DetailTab1 {
-    protected static $nom_table="detail_tab_1";
+class DetailTab2 {
+    protected static $nom_table="detail_tab_2";
 	protected static $champs = array('id', 'id_societe', 'id_tab_2', 'annee', 'id_user', 'id_grade',
     'loi_consiel_employer','date_fin_consiel_employer', 'reference_consiel_employer_prolong',
      'date_fin_consiel_employer_prolong', 'reference_consiel_recours', 'date_fin_consiel_recours', 
