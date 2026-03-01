@@ -40,8 +40,8 @@ $exercice_actif = Exercice::get_exercice_actif();
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab2';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 2 - الأجهزة الاستشارية الداخلية";
-$active_menu = "formulaires";
+$titre = "الجدول 2 -   لجان المستخدمين";
+$active_menu = "tab_2";
 $active_submenu = "tabl_2";
 $header = array('select2');
 
