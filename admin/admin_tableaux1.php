@@ -65,11 +65,12 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
         <div class="container-fluid">
             <?php if ($action == 'liste'): ?>
                 <!-- Onglets de navigation -->
-                 <div class="card">
+                 <div class="col-md-12">
+                <div class="card">
                <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
-                     <thead class="table-light">
+                                 <thead class="table-light">
                                     <tr>
                                         <th width="5%" class="text-center">ID</th>
                                         <th width="10%" class="text-center">السنة</th>
@@ -90,7 +91,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                     <tr>
                                         <td class="text-center">
                                             
-                                            <a href="print_tab_1.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
+                                            <a href="../utilisateur/print_tab1.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
                                             <i class="fa fa-print "></i> <?php echo $row->id; ?>
                                             </a>
                                         </td>
@@ -126,11 +127,82 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         </td>
                                     </tr>
                                     <?php endif; ?>
-                        </tbody>
-                    </table>
-                                    </div>
-                                    </div>
-                                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+                <br>
+                <div class="col-md-12">
+                     <!-- Onglets de navigation -->
+                <div class="card">
+               <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                 <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                       
+                                        <th width="10%" class="text-center">الملاحظة</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $tab_1tabls = Tableau1_1::trouve_par_societe($nav_societe->id_societe);
+                                    if (!empty($tab_1tabls)): 
+                                        foreach ($tab_1tabls as $row): 
+                                            $statut_badge = $row->statut == 'validé' ? 'success' : 
+                                                          ($row->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            
+                                            <a href="../utilisateur/print_tab1_1.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
+                                            <i class="fa fa-print "></i> <?php echo $row->id; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                <?php echo $row->statut; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
+                                        </td>                                        
+                                        <td><?php echo $row->commentaire_admin; ?></td>
+                                        <td class="text-center">
+                                      
+                                            <a href="details_tableau1_1.php?action=affchier_detail&id=<?php echo $row->id; ?>" 
+                                               class="btn btn-sm btn-warning me-1" title="التفاصيل">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button onclick="commentTableau1(<?php echo $row->id; ?>)" 
+                                                    class="btn btn-sm btn-danger" title="ملاحظة">
+                                                <i class="fas fa-commenting"></i>
+                                            </button>
+                                            
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" class="text-center py-4">
+                                            <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                            لا توجد جداول مسجلة
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+                                    
             <?php endif; ?>
         </div>
     </div>
