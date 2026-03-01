@@ -811,6 +811,188 @@ function saveTableau_1_1(){
     
 <?php }?>
 
+<!--begin TABLEAU 2 -->
+<?php if ($action == "add_tab2" || $action == "edit_tab2"){?>
+<script>
+$(document).ready(function(){
+
+
+    // ==============================
+    // AJOUT LIGNE AJAX
+    // ==============================
+    $(document).on('click','.add-consiel-btn',function(){
+
+        let row = $(this).closest('tr');
+
+        let formData = {
+            action: 'add_detail',
+            id_grade: row.find('[name="id_grade"]').val(),
+            loi_consiel_employer: row.find('[name="loi_consiel_employer"]').val(),
+            date_fin_consiel_employer: row.find('[name="date_fin_consiel_employer"]').val(),
+            reference_consiel_employer_prolong: row.find('[reference_consiel_employer_prolong"]').val(),
+            date_fin_consiel_employer_prolong: row.find('[name="date_fin_consiel_employer_prolong"]').val(),
+            reference_consiel_recours: row.find('[name="reference_consiel_recours"]').val(),
+            date_fin_consiel_recours: row.find('[name="date_fin_consiel_recours"]').val(),
+            reference_consiel_recours_prolong: row.find('[name="reference_consiel_recours_prolong"]').val(),
+            date_fin_consiel_recours_prolong: row.find('[name="date_fin_consiel_recours_prolong"]').val(),
+            observations: row.find('[name="observations"]').val()
+        };
+
+        $.ajax({
+            url: 'ajax/traitement_tab2.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+
+                    // Supprimer message noData
+                    $('#noData').remove();
+
+                    // Ajouter ligne dans tableau
+                    let newRow = `
+                        <tr data-id="${response.id}">
+                            <td></td>
+                            <td>${response.grade_name}</td>
+                            <td>${formData.loi_consiel_employer}</td>
+                            <td>${formData.date_fin_consiel_employer}</td>
+                            <td>${formData.reference_consiel_employer_prolong}</td>
+                            <td>${formData.date_fin_consiel_employer_prolong}</td>
+                            <td>${response.reference_consiel_recours}</td>
+                            <td>${formData.date_fin_consiel_recours}</td>
+                            <td>${response.reference_consiel_recours_prolong}</td>
+                            <td>${formData.date_fin_consiel_recours_prolong}</td>
+                            <td>${formData.observations}</td>
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-sm delete-btn">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+
+                    $('#existing_hauts_fonctionnaires').append(newRow);
+
+                    // Reset inputs
+                    row.find('input').val('');
+                    row.find('select').val('').trigger('change');
+
+                    calculateTotals();
+
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    // ==============================
+    // SUPPRESSION AJAX
+    // ==============================
+    $(document).on('click','.delete-btn',function(){
+
+        if(!confirm("تأكيد الحذف ؟")) return;
+
+        let tr = $(this).closest('tr');
+        let id = tr.data('id');
+
+        $.ajax({
+            url: 'ajax/traitement_tab1_1.php',
+            type: 'POST',
+            data: {
+                action: 'delete_detail',
+                id: id
+            },
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+                    tr.remove();
+                    calculateTotals();
+                }else{
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    calculateTotals();
+});
+
+
+// ==============================
+// TOTAL GENERAL
+// ==============================
+function calculateTotals(){
+
+    let totals = new Array(17).fill(0);
+
+    $('#existing_hauts_fonctionnaires tr').each(function(){
+
+        $(this).find('td').each(function(index){
+
+            let val = parseFloat($(this).text()) || 0;
+
+            if(index >= 2 && index <= 16){
+                totals[index] += val;
+            }
+        });
+
+    });
+
+    $('.total_effectif_reel_31_dec').text(totals[2]);
+    $('.total_effectif_reel_annee_1').text(totals[3]);
+    $('.total_titulaires').text(totals[4]);
+    $('.total_stagaires').text(totals[5]);
+    $('.total_tol_titu_stag').text(totals[6]);
+    $('.total_femmes').text(totals[7]);
+    $('.total_difrence').text(totals[8]);
+    $('.total_titulaie_temps_complet').text(totals[9]);
+    $('.total_titulaie_femmes_complet').text(totals[10]);
+    $('.total_titulaie_temps_partiel').text(totals[11]);
+    $('.total_titulaie_femmes_partiel').text(totals[12]);
+    $('.total_contrat_temps_complet').text(totals[13]);
+    $('.total_contrat_femme_complet').text(totals[14]);
+    $('.total_contrat_temps_pratiel').text(totals[15]);
+    $('.total_contrat_femmes_pratiel').text(totals[16]);
+}
+
+function saveTableau_1_1(){
+
+    if(!confirm("تأكيد حفظ وتقديم الجدول ؟")) return;
+
+    $('#loadingOverlay').show();
+
+    $.post('ajax/traitement_tab1_1.php', {
+
+        action: 'save_tableau',
+        statut: 'en_attente',
+        id_user: <?php echo $current_user->id; ?>,
+        id_societe: <?php echo $current_user->id_societe; ?>,
+        annee: <?php echo $annee; ?>
+
+    }, function(response){
+
+        $('#loadingOverlay').hide();
+
+        if(response.success){
+            alert(response.message);
+            window.location.href='?action=list_tab1';
+        }else{
+            alert(response.message);
+        }
+
+    }, 'json');
+}
+</script>
+    
+<?php }?>
+
 <?php if ($action == "add_tab3" || $action == "edit_tab3" ){?>
 <!--begin::Script-->
    
