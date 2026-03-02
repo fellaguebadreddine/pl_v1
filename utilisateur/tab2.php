@@ -51,9 +51,11 @@ require_once("composit/header.php");
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 $existe = Tableau2::existe_pour_societe_annee($current_user->id_societe, $annee);
 $existe_tab_2_1 = Tableau2_1::existe_pour_societe_annee($current_user->id_societe, $annee);
+$existe_tab_2_2 = Tableau2_2::existe_pour_societe_annee($current_user->id_societe, $annee);
 
 $tabls = Tableau2::trouve_tableau_2_par_id($societe->id_societe);
 $tabls_2_1 = Tableau2_1::trouve_tableau_2_par_id($societe->id_societe);
+$tabls_2_2 = Tableau2_2::trouve_tableau_2_par_id($societe->id_societe);
 
 if ($action == "add_tab2") {
 
@@ -80,6 +82,20 @@ if ($action == "add_tab2_1") {
     );
 
     if ($existe_tab_2_1) {
+        redirect_to("?action=list_tab2");
+        exit;
+    }
+}
+if ($action == "add_tab2_2") {
+
+    $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+    $existe_tab_2_2 = Tableau2_2::existe_pour_societe_annee(
+        $current_user->id_societe,
+        $annee
+    );
+
+    if ($existe_tab_2_2) {
         redirect_to("?action=list_tab2");
         exit;
     }
@@ -211,6 +227,8 @@ if ($action == "add_tab2_1") {
                         </div>
                     </div>
                 </div>
+                <!-- tableau 2-1 -->
+
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
@@ -275,7 +293,7 @@ if ($action == "add_tab2_1") {
                                                     <a href="edit_tableau.php?id=<?php echo $tabls_2_1->id; ?>" class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <button onclick="supprimerTableau(<?php echo $tabls_2_1->id; ?>)"
+                                                    <button onclick="supprimerTableau2_1(<?php echo $tabls_2_1->id; ?>)"
                                                         class="btn btn-sm btn-danger" title="حذف">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -296,6 +314,8 @@ if ($action == "add_tab2_1") {
                         </div>
                     </div>
                 </div>
+                <!-- tableau 2 -2 -->
+
                 <div class="card mb-4">
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
@@ -360,7 +380,7 @@ if ($action == "add_tab2_1") {
                                                     <a href="edit_tableau.php?id=<?php echo $tabls_2_2->id; ?>" class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <button onclick="supprimerTableau(<?php echo $tabls_2_2->id; ?>)"
+                                                    <button onclick="supprimerTableau2_2(<?php echo $tabls_2_2->id; ?>)"
                                                         class="btn btn-sm btn-danger" title="حذف">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -571,6 +591,7 @@ if ($action == "add_tab2_1") {
       <?php elseif ($action == "add_tab2_1" || $action == "edit_tab2_1"): ?>
                 <div class="row">
                     <div class="col-12">
+                        <h4> وضعية الحالات التأديبية</h4>
                         <!-- Overlay de chargement -->
                         <div id="loadingOverlay" class="loading-overlay" style="display: none;">
                             <div class="spinner"></div>
@@ -665,6 +686,114 @@ if ($action == "add_tab2_1") {
                             </div>
                             <div>
                                 <button type="button" class="btn btn-success" onclick="saveTableau2_1()">
+                                    <i class="fas fa-paper-plane me-1"></i> حفظ وتقديم
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+      <?php elseif ($action == "add_tab2_2" || $action == "edit_tab2_2"): ?>
+                <div class="row">
+                    <div class="col-12">
+                        <h4>   وضعية القضايا  المتنازع فيها</h4>
+                        <br>
+                        <!-- Overlay de chargement -->
+                        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                            <div class="spinner"></div>
+                            <div class="mt-3 text-primary fw-bold">جاري معالجة البيانات...</div>
+                        </div>
+
+                        <!-- Messages d'alerte -->
+                        <div id="alertContainer"></div>
+
+                        <?php
+                        // Récupérer les données existantes si en mode édition
+                        $tableau = null;
+                        $details = array();
+                        $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+                        if ($action == "edit_tab2_2" && $id > 0) {
+                            $tableau = Tableau2_2::trouve_par_id($id);
+                            if ($tableau) {
+                                $annee = $tableau->annee;
+                                $details = DetailTab2_2::trouve_par_tableau($tableau->id);
+                            }
+                        } else {
+                            // En mode ajout, vérifier s'il y a un brouillon
+                            $details = DetailTab2_2::trouve_tab_vide_par_admin($current_user->id, $current_user->id_societe);
+                        }
+
+                        // Récupérer tous les grades
+                        $grades = Grade::trouve_tous();
+                        ?>
+                        
+
+                        <div class="portlet-body table-responsive hauts_fonctionnaires">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                        <th > رقم الترتيب</th>
+                                        <th > تعيين طرف النزاع</th>
+                                        <th > طبيعة الخطأ</th>
+                                        <th > الوظيفة أو الرتبة</th>
+                                        <th >   أطراف أخرى في النزاع</th>
+                                        <th> موضوع المنازعة</th>
+                                        <th> الجهة القضائية المختصة</th>
+                                        <th>   طرف الدفاع عن مصالح الدولة (مذكرات، محامي) </th>
+                                        <th>  الحكم القضائي</th>
+                                        <th> حجية الشيئ</th>
+                                        <th>  الطعون القضائية</th>
+                                        <th>الملاحظات</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="existing_consiel">
+                                    <?php if (!empty($details)): ?>
+                                        <?php foreach ($details as $detail):
+                                        ?>
+                                            <tr id="noData">
+                                            <td colspan="11" class="text-center text-muted">
+                                            لا شيئ
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                                <tbody id="tbody_hauts">
+                                    <tr class="item-row">
+                                        <td>
+                                            <select name="observations" class="form-control" required>
+                                                <option value="">اختر </option>
+                                                <option value="لا شيئ" > لا شيئ</option>
+                                            </select>
+                                        </td>
+                                        <td  colspan="10"></td>
+
+                                        
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm add-etat-btn">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <!-- Boutons d'action -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a href="?action=list_tab2" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
+                                </a>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success" onclick="saveTableau2_2()">
                                     <i class="fas fa-paper-plane me-1"></i> حفظ وتقديم
                                 </button>
                             </div>

@@ -1019,7 +1019,7 @@ $(document).ready(function(){
         let id = tr.data('id');
 
         $.ajax({
-            url: 'ajax/traitement_tab2.php',
+            url: 'ajax/traitement_tab2_1.php',
             type: 'POST',
             data: {
                 action: 'delete_detail',
@@ -1048,6 +1048,123 @@ function saveTableau2_1(){
     $('#loadingOverlay').show();
 
     $.post('ajax/traitement_tab2_1.php', {
+
+        action: 'save_tableau',
+        statut: 'en_attente',
+        id_user: <?php echo $current_user->id; ?>,
+        id_societe: <?php echo $current_user->id_societe; ?>,
+        annee: <?php echo $annee; ?>
+
+    }, function(response){
+
+        $('#loadingOverlay').hide();
+
+        if(response.success){
+            alert(response.message);
+            window.location.href='?action=list_tab2';
+        }else{
+            alert(response.message);
+        }
+
+    }, 'json');
+}
+</script>
+    
+<?php }?>
+
+<!--begin TABLEAU 2 - 2 -->
+<?php if ($action == "add_tab2_2" || $action == "edit_tab2_2"){?>
+<script>
+$(document).ready(function(){
+
+
+    // ==============================
+    // AJOUT LIGNE AJAX
+    // ==============================
+    $(document).on('click','.add-etat-btn',function(){
+
+        let row = $(this).closest('tr');
+
+        let formData = {
+            action: 'add_detail',        
+            observations: row.find('[name="observations"]').val()
+        };
+
+        $.ajax({
+            url: 'ajax/traitement_tab2_2.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+
+                    // Supprimer message noData
+                    $('#noData').remove();
+
+                    // Ajouter ligne dans tableau
+                    let newRow = `
+                        <tr data-id="${response.id}">
+                            <td colspan="12" class="text-center text-muted">${formData.observations}</td>
+                            
+                        </tr>
+                    `;
+
+                    $('#existing_consiel').append(newRow);
+
+                    // Reset inputs
+                    row.find('input').val('');
+                    row.find('select').val('').trigger('change');
+
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    // ==============================
+    // SUPPRESSION AJAX
+    // ==============================
+    $(document).on('click','.delete-btn',function(){
+
+        if(!confirm("تأكيد الحذف ؟")) return;
+
+        let tr = $(this).closest('tr');
+        let id = tr.data('id');
+
+        $.ajax({
+            url: 'ajax/traitement_tab2_2.php',
+            type: 'POST',
+            data: {
+                action: 'delete_detail',
+                id: id
+            },
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+                    tr.remove();
+                }else{
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+});
+
+
+function saveTableau2_2(){
+
+    if(!confirm("تأكيد حفظ وتقديم الجدول ؟")) return;
+
+    $('#loadingOverlay').show();
+
+    $.post('ajax/traitement_tab2_2.php', {
 
         action: 'save_tableau',
         statut: 'en_attente',

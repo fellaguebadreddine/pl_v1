@@ -39,6 +39,8 @@ require_once(LIB_PATH . DS . 'tableau_2.php');
 require_once(LIB_PATH . DS . 'detailTab2.php');
 require_once(LIB_PATH . DS . 'tableau_2_1.php');
 require_once(LIB_PATH . DS . 'detailTab2_1.php');
+require_once(LIB_PATH . DS . 'tableau_2_2.php');
+require_once(LIB_PATH . DS . 'detailTab2_2.php');
 
 require_once(LIB_PATH . DS . 'tableau_3.php');
 require_once(LIB_PATH . DS . 'detailTab3.php');
