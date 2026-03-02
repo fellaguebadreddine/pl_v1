@@ -227,7 +227,7 @@ if ($existe_tab_1_1) {
                         </a>
                         <?php else: 
                             if ($tabl_1_1->statut != 'validé'):?>
-                        <a href="?action=edit_tab1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-warning">
+                        <a href="?action=edit_tab1_1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-warning">
                             <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
                         </a>
                         <?php endif; ?>
@@ -240,10 +240,10 @@ if ($existe_tab_1_1) {
                                 <thead class="table-light">
                                     <tr>
                                         <th>ID</th>
-                                        <th>الجدول 1 المرتبط</th>
                                         <th>السنة</th>
                                         <th>الحالة</th>
                                         <th>تاريخ التقديم</th>
+                                        <th width="10%" class="text-center">الملاحظات</th>
                                         <th>الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -323,8 +323,8 @@ if ($existe_tab_1_1) {
             $tableau = Tableau1::trouve_par_id($id);
             if ($tableau) {
                 $annee = $tableau->annee;
-                $details = DetailTab1::trouve_tab_vide_par_admin($id);
-                $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($id);
+                $details = DetailTab1::trouve_par_tableau($id);
+                $sup_details = DetailTab1_sup::trouve_par_tableau($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
@@ -755,7 +755,7 @@ if ($existe_tab_1_1) {
             $tableau = Tableau1_1::trouve_par_id($id);
             if ($tableau) {
                 $annee = $tableau->annee;
-                $details = DetailTab1_1::trouve_tab_vide_par_admin($id);
+                $details = DetailTab1_1::trouve_par_tableau($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
@@ -772,7 +772,7 @@ if ($existe_tab_1_1) {
         $total_hf_intirim = array_sum(array_column($details, 'poste_intirim'));
         $total_hf_femme = array_sum(array_column($details, 'poste_femme'));
         ?>
-        
+        <?php echo $id; ?>
         <div class="portlet-body table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">

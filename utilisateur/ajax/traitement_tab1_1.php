@@ -40,6 +40,7 @@ try {
         // Nettoyage sécurisé
         // ==============================
         $id_grade = intval($_POST['id_grade'] ?? 0);
+        $id_tableau = intval($_POST['id_tableau'] ?? 0); // RECUPRER ID TABLEAU
 
         $effectif_reel_31_dec  = intval($_POST['effectif_reel_31_dec'] ?? 0);
         $effectif_reel_annee_1 = intval($_POST['effectif_reel_annee_1'] ?? 0);
@@ -77,8 +78,16 @@ try {
         // ==============================
         // Création objet
         // ==============================
-        $detail = new DetailTab1_1();
+        // SI TABLEAU EXISITE AJOUTER id_tableau_1_1 AVEC LE ID 
+        if (!empty($id_tableau)){
+             $detail =  new DetailTab1_1();
+             $detail->id_tableau_1_1 = $id_tableau;
+        }else{
+            // SI NON CRER UN 
+$detail = new DetailTab1_1();
         $detail->id_tableau_1_1 = 0;
+        }
+        
         $detail->annee = $annee;
         $detail->id_user = $current_user->id;
         $detail->id_societe = $current_user->id_societe;
@@ -134,7 +143,7 @@ try {
     $response['success'] = true;
 }elseif ($action === 'save_tableau') {
 
-    
+    $id_tableau = intval($_POST['id_tableau'] ?? 0);
     // ==============================
     // Sécurité : toujours utiliser session
     // ==============================
@@ -147,10 +156,14 @@ try {
     // ==============================
     // Vérifier qu'il existe des détails brouillon
     // ==============================
+    if ($id_tableau == 0){
     $details = DetailTab1_1::trouve_tableeu_vide($id_societe, $id_user);
 
     if (empty($details)) {
         throw new Exception('لا توجد بيانات للحفظ');
+    }
+    }else{
+        $details = DetailTab1_1::trouve_tableeu_vide($id_tableau,$id_societe, $id_user);
     }
 
     // ==============================

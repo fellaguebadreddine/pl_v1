@@ -632,6 +632,7 @@ $(document).ready(function(){
 
         let formData = {
             action: 'add_detail',
+            id_tableau : <?php echo $id;?>,
             id_grade: row.find('[name="id_grade"]').val(),
             effectif_reel_31_dec: row.find('[name="effectif_reel_31_dec"]').val(),
             effectif_reel_annee_1: row.find('[name="effectif_reel_annee_1"]').val(),
@@ -792,7 +793,8 @@ function saveTableau_1_1(){
         statut: 'en_attente',
         id_user: <?php echo $current_user->id; ?>,
         id_societe: <?php echo $current_user->id_societe; ?>,
-        annee: <?php echo $annee; ?>
+        annee: <?php echo $annee; ?>,
+        id_tableau : <?php echo $id;?>
 
     }, function(response){
 
