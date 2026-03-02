@@ -217,7 +217,7 @@ if ($existe) {
                         'id' => $grade->id,
                         'code' => $grade->id,
                         'designation' => $grade->grade,
-                        'loi' => $grade->lois
+                        'loi' => $grade->loi
                     );
                 }
                 ?>

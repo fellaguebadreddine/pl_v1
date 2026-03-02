@@ -19,7 +19,7 @@ class Tableau4_1 {
 	public static function existe_pour_societe_annee($id_societe, $annee) {
 		global $bd;
 	
-		$sql = "SELECT id FROM tableau_4 
+		$sql = "SELECT id FROM tableau_4_1 
 				WHERE id_societe = $id_societe 
 				AND annee = $annee 
 				LIMIT 1";
@@ -65,7 +65,7 @@ class Tableau4_1 {
 
     public static function trouve_par_societe_annee($id_societe, $annee) {
         global $bd;
-        $sql = "SELECT * FROM tableau_4 WHERE id_societe = $id_societe AND annee = '{$annee}'";
+        $sql = "SELECT * FROM tableau_4_1 WHERE id_societe = $id_societe AND annee = '{$annee}'";
        $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
     }
@@ -77,7 +77,7 @@ public static function trouve_par_criteres($criteres = []) {
         $conditions[] = "`$champ` = '{$valeur}'";
         $params[] = $valeur;
     }
-    $sql = "SELECT * FROM tableau_4 " ;
+    $sql = "SELECT * FROM tableau_4_1 " ;
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(" AND ", $conditions);
     }
@@ -95,7 +95,7 @@ public static function trouve_par_criteres($criteres = []) {
   
     public static function get_annees_par_societe($id_societe) {
         global $bd;
-        $sql = "SELECT DISTINCT annee FROM tableau_4 WHERE id_societe = $id_societe ORDER BY annee DESC";
+        $sql = "SELECT DISTINCT annee FROM tableau_4_1 WHERE id_societe = $id_societe ORDER BY annee DESC";
         $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
     }

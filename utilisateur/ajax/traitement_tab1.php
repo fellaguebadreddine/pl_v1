@@ -30,7 +30,7 @@ try {
             
             if ($type === 'hf') {
                 // Récupérer les données
-           
+            $id_tab_1   =  intval($_POST['id_tableau']);
             $id_grade = isset($_POST['id_grade']) ? intval($_POST['id_grade']) : 0;
             $code = isset($_POST['code']) ? intval($_POST['code']) : 0;
             $postes_total = isset($_POST['postes_total']) ? intval($_POST['postes_total']) : 0;
@@ -57,7 +57,7 @@ try {
                 
                 // Créer le détail HF
                 $detail = new DetailTab1();
-                $detail->id_tab_1 = 0;
+                $detail->id_tab_1 = $id_tab_1;
                 $detail->annee = $annee;
                 $detail->code = $code;
                 $detail->id_user = $id_user;
@@ -90,6 +90,7 @@ try {
                 }
             } else {
             $type = isset($_POST['type']) ? $_POST['type'] : 'hp';
+             $id_tab_1   =  intval($_POST['id_tableau']);
             $id_grade_hp = isset($_POST['id_grade_hp']) ? intval($_POST['id_grade_hp']) : 0;
             $code_hp = isset($_POST['code_hp']) ? intval($_POST['code_hp']) : 0;
             $postes_total_hp = isset($_POST['postes_total_hp']) ? intval($_POST['postes_total_hp']) : 0;
@@ -110,7 +111,7 @@ try {
                 
                 // Créer le détail HP
                 $detail = new DetailTab1_hp();
-                $detail->id_tab_1 = 0;
+                $detail->id_tab_1 = $id_tab_1;
                 $detail->annee = $annee;
                 $detail->code = $code_hp;
                 $detail->id_user = $id_user;

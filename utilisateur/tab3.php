@@ -257,23 +257,24 @@ if ($existe) {
                                         <table class="table table-bordered table-striped">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th rowspan="2" class="text-center align-middle">الرمز</th>
-                                                    <th rowspan="2" class="text-center align-middle">السلك</th>
+                                                    <th rowspan="2" class="text-center align-middle"> السلك أو الرتبة</th>
                                                     <th colspan="2" class="text-center">الإلتحاق بالتكوين</th>
                                                     <th colspan="2" class="text-center">التوظيف الخارجي</th>
-                                                    <th colspan="2" class="text-center">الترقيبية</th>
-                                                    <th rowspan="2" class="text-center align-middle"> التثبيت</th>
-                                                    <th rowspan="2" class="text-center align-middle">إدماج</th>
+                                                    <th colspan="2" class="text-center">التوظيف الداخلي</th>
+                                                    <th colspan="" class="text-center align-middle"> التثبيت حسب</th>
+                                                    <th rowspan="2" class="text-center align-middle">الادماج حسب الاحكام الانتقالية</th>
                                                     <th rowspan="2" class="text-center align-middle">الملاحظات</th>
                                                     <th rowspan="2" class="text-center align-middle">الإجراءات</th>
                                                 </tr>
                                                 <tr>
                                                     <th class="text-center">داخلي</th>
                                                     <th class="text-center">خارجي</th>
-                                                    <th class="text-center">مسابقة على أساس الإختبارات والفحوص المبنية على الشهادة</th>
-                                                    <th class="text-center">مسابقة على أساس الإختبارات والفحوص</th>
-                                                    <th class="text-center">إمتحان</th>
-                                                    <th class="text-center">فحص</th>
+                                                    <th class="text-center">مسابقة على أساس الإختبارات   على الشهادة</th>
+                                                    <th class="text-center">مسابقة على أساس  الاختبار المهني</th>
+                                                    <th class="text-center">إمتحان مهني</th>
+                                                    <th class="text-center">فحص مهني </th>
+                                                    <th class="text-center"> القانون الاساسي </th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody id="tbody_details">
@@ -284,11 +285,11 @@ if ($existe) {
                                                         $grade = Grade::trouve_par_id($detail->id_grade);
                                                 ?>
                                                 <tr data-id-detail="<?php echo $detail->id; ?>">
-                                                    <td>
+                                                   
                                                         <input type="hidden" name="details[<?php echo $index; ?>][id]" value="<?php echo $detail->id; ?>">
                                                         <input type="hidden" name="details[<?php echo $index; ?>][id_grade]" value="<?php echo $grade->id; ?>">
-                                                        <input type="text" class="form-control text-center code-grade" value="<?php echo $grade->id; ?>" readonly>
-                                                    </td>
+                                                      
+                                                    
                                                     <td>
                                                         <select name="details[<?php echo $index; ?>][id_grade_select]" class="form-control select-grade" required>
                                                             <option value="">اختر السلك</option>

@@ -324,11 +324,13 @@ if ($existe_tab_1_1) {
             if ($tableau) {
                 $annee = $tableau->annee;
                 $details = DetailTab1::trouve_par_tableau($id);
+                $details_hp = DetailTab1_hp::trouve_par_tableau($id);
                 $sup_details = DetailTab1_sup::trouve_par_tableau($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
             $details = DetailTab1::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
+             $details_hp = DetailTab1_hp::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
             $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
         }
         
@@ -536,12 +538,7 @@ if ($existe_tab_1_1) {
 <!-- Section المناصب العليا -->
 <div class="row">
     <div class="col-12">
-        <?php
-        if ($action == "edit_tab1" && $id > 0) {
-            $details_hp = DetailTab1_hp::trouve_tab_vide_par_admin($id);
-        } else {
-            $details_hp = DetailTab1_hp::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
-        }
+        <?php       
         
         // Calculer les totaux HP
         $total_hp = array_sum(array_column($details_hp, 'postes_total_hp'));

@@ -50,9 +50,10 @@ require_once("composit/header.php");
 <?php
 $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 $existe = Tableau2::existe_pour_societe_annee($current_user->id_societe, $annee);
+$existe_tab_2_1 = Tableau2_1::existe_pour_societe_annee($current_user->id_societe, $annee);
 
 $tabls = Tableau2::trouve_tableau_2_par_id($societe->id_societe);
-
+$tabls_2_1 = Tableau2_1::trouve_tableau_2_par_id($societe->id_societe);
 
 if ($action == "add_tab2") {
 
@@ -64,6 +65,21 @@ if ($action == "add_tab2") {
     );
 
     if ($existe) {
+        redirect_to("?action=list_tab2");
+        exit;
+    }
+}
+
+if ($action == "add_tab2_1") {
+
+    $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+    $existe_tab_2_1 = Tableau2_1::existe_pour_societe_annee(
+        $current_user->id_societe,
+        $annee
+    );
+
+    if ($existe_tab_2_1) {
         redirect_to("?action=list_tab2");
         exit;
     }
@@ -155,7 +171,7 @@ if ($action == "add_tab2") {
                                         <tr>
                                             <td class="text-center">
 
-                                                <a href="print_tab1.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                                <a href="print_tab2.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
                                                     <i class="fa fa-print "></i> <?php echo $tabls->id; ?>
                                                 </a>
                                             </td>
@@ -175,6 +191,176 @@ if ($action == "add_tab2") {
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button onclick="supprimerTableau(<?php echo $tabls->id; ?>)"
+                                                        class="btn btn-sm btn-danger" title="حذف">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="10" class="text-center py-4">
+                                                <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                                لا توجد جداول مسجلة
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2 text-primary"></i>الجدول 2 مكرر 01: وضعية الحالات التأدبية  
+                        </h5>
+                        <?php if ($exercice_actif): ?>
+                            <?php if (!$existe_tab_2_1): ?>
+                                <a href="?action=add_tab2_1" class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i> إضافة جدول رقم 2
+                                </a>
+
+                                <?php else:
+                                if (isset($tabls_2_1->statut) && $tabls_2_1->statut != 'validé'): ?>
+
+                                    <a href="?action=edit_tab2_1&id=<?php echo $existe_tab_2_1; ?>" class="btn btn-warning">
+                                        <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                                    </a>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>
+                                        <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    if (!empty($tabls_2_1)):
+
+                                        $statut_badge = $tabls_2_1->statut == 'validé' ? 'success' : ($tabls_2_1->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
+                                        <tr>
+                                            <td class="text-center">
+
+                                                <a href="print_tab2_1.php?id=<?php echo $tabls_2_1->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                                    <i class="fa fa-print "></i> <?php echo $tabls_2_1->id; ?>
+                                                </a>
+                                            </td>
+                                            <td class="text-center"><?php echo $tabls_2_1->annee; ?></td>
+                                            <td class="text-center">
+                                                <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                    <?php echo $tabls_2_1->statut; ?>
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php echo $tabls_2_1->date_valide ? date('d/m/Y', strtotime($tabls_2_1->date_valide)) : '---'; ?>
+                                            </td>
+                                            <td class="text-center"><?php echo $tabls_2_1->commentaire_admin; ?></td>  
+                                            <td class="text-center">
+                                                <?php if ($exercice_actif && $tabls_2_1->statut != 'validé'): ?>
+                                                    <a href="edit_tableau.php?id=<?php echo $tabls_2_1->id; ?>" class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button onclick="supprimerTableau(<?php echo $tabls_2_1->id; ?>)"
+                                                        class="btn btn-sm btn-danger" title="حذف">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
+
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="10" class="text-center py-4">
+                                                <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                                لا توجد جداول مسجلة
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-list me-2 text-primary"></i>الجدول 2 مكرر 02 : وضعية القضايا المتنازع فيها    
+                        </h5>
+                        <?php if ($exercice_actif): ?>
+                            <?php if (!$existe_tab_2_2): ?>
+                                <a href="?action=add_tab2_2" class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i> إضافة جدول رقم 2_2
+                                </a>
+
+                                <?php else:
+                                if (isset($tabls_2_2->statut) && $tabls_2_2->statut != 'validé'): ?>
+
+                                    <a href="?action=edit_tab2_2&id=<?php echo $existe_tab_2_2; ?>" class="btn btn-warning">
+                                        <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
+                                    </a>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>
+                                        <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    if (!empty($tabls_2_2)):
+
+                                        $statut_badge = $tabls_2_2->statut == 'validé' ? 'success' : ($tabls_2_2->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
+                                        <tr>
+                                            <td class="text-center">
+
+                                                <a href="print_tab2_1.php?id=<?php echo $tabls_2_2->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                                    <i class="fa fa-print "></i> <?php echo $tabls_2_2->id; ?>
+                                                </a>
+                                            </td>
+                                            <td class="text-center"><?php echo $tabls_2_2->annee; ?></td>
+                                            <td class="text-center">
+                                                <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                    <?php echo $tabls_2_2->statut; ?>
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php echo $tabls_2_2->date_valide ? date('d/m/Y', strtotime($tabls_2_2->date_valide)) : '---'; ?>
+                                            </td>
+                                            <td class="text-center"><?php echo $tabls_2_2->commentaire_admin; ?></td>  
+                                            <td class="text-center">
+                                                <?php if ($exercice_actif && $tabls_2_2->statut != 'validé'): ?>
+                                                    <a href="edit_tableau.php?id=<?php echo $tabls_2_2->id; ?>" class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button onclick="supprimerTableau(<?php echo $tabls_2_2->id; ?>)"
                                                         class="btn btn-sm btn-danger" title="حذف">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
@@ -382,6 +568,112 @@ if ($action == "add_tab2") {
                 </div>
         </div>
     </div>
+      <?php elseif ($action == "add_tab2_1" || $action == "edit_tab2_1"): ?>
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Overlay de chargement -->
+                        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                            <div class="spinner"></div>
+                            <div class="mt-3 text-primary fw-bold">جاري معالجة البيانات...</div>
+                        </div>
+
+                        <!-- Messages d'alerte -->
+                        <div id="alertContainer"></div>
+
+                        <?php
+                        // Récupérer les données existantes si en mode édition
+                        $tableau = null;
+                        $details = array();
+                        $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+
+                        if ($action == "edit_tab2_1" && $id > 0) {
+                            $tableau = Tableau2_1::trouve_par_id($id);
+                            if ($tableau) {
+                                $annee = $tableau->annee;
+                                $details = DetailTab2_1::trouve_par_tableau($tableau->id);
+                            }
+                        } else {
+                            // En mode ajout, vérifier s'il y a un brouillon
+                            $details = DetailTab2_1::trouve_tab_vide_par_admin($current_user->id, $current_user->id_societe);
+                        }
+
+                        // Récupérer tous les grades
+                        $grades = Grade::trouve_tous();
+                        ?>
+                        
+
+                        <div class="portlet-body table-responsive hauts_fonctionnaires">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                        <th > رقم الترتيب</th>
+                                        <th > الاسم و اللقب</th>
+                                        <th > طبيعة الخطأ</th>
+                                        <th >تاريخ التوقف</th>
+                                        <th >تاريخ إجتماع لجنة التأديب</th>
+                                        <th>مضمون العقوبة</th>
+                                        <th>تاريخ الطعن</th>
+                                        <th>تاريخ إجتماع لجنة الطعن </th>
+                                        <th>قرار لجنة الطعن</th>
+                                        <th>تطبيق القرار</th>
+                                        <th>الملاحظات</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="existing_consiel">
+                                    <?php if (!empty($details)): ?>
+                                        <?php foreach ($details as $detail):
+                                        ?>
+                                            <tr id="noData">
+                                            <td colspan="11" class="text-center text-muted">
+                                            لا شيئ
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                                <tbody id="tbody_hauts">
+                                    <tr class="item-row">
+                                        <td>
+                                            <select name="observations" class="form-control" required>
+                                                <option value="">اختر </option>
+                                                <option value="لا شيئ" > لا شيئ</option>
+                                            </select>
+                                        </td>
+                                        <td  colspan="9"></td>
+
+                                        
+                                        <td>
+                                            <button type="button" class="btn btn-success btn-sm add-etat-consiel-btn">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <!-- Boutons d'action -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <a href="?action=list_tab2" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
+                                </a>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-success" onclick="saveTableau2_1()">
+                                    <i class="fas fa-paper-plane me-1"></i> حفظ وتقديم
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+
 
     <!-- JavaScript AJAX -->
 

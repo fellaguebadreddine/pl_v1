@@ -172,7 +172,7 @@ $(document).on('click', '.add-sup-btn', function () {
          id_user: <?php echo $current_user->id; ?>,
             id_societe: <?php echo $current_user->id_societe; ?>,
             annee: <?php echo $annee; ?>,
-        id_tableau: <?php echo $id ?? 0; ?>,
+            id_tableau: <?php echo $id ?? 0; ?>,
         code: $('#code').val(),
         poste_sup: $('#poste_sup').val(),
         postes_total_sup: $('#postes_total_sup').val(),
@@ -240,6 +240,7 @@ $(document).on('keyup change',
             id_user: <?php echo $current_user->id; ?>,
             id_societe: <?php echo $current_user->id_societe; ?>,
             annee: <?php echo $annee; ?>,
+             id_tableau: <?php echo $id ?? 0; ?>,
 
             id_grade: row.find('.grade-select').val(),
             postes_total: row.find('.postes-total').val(),
@@ -285,6 +286,7 @@ $(document).on('keyup change',
             id_user: <?php echo $current_user->id; ?>,
             id_societe: <?php echo $current_user->id_societe; ?>,
             annee: <?php echo $annee; ?>,
+            id_tableau: <?php echo $id ?? 0; ?>,
 
             id_grade_hp: row.find('.grade-select-hp').val(),
             postes_total_hp: row.find('.postes-total-hp').val(),
@@ -952,6 +954,124 @@ function saveTableau2(){
     
 <?php }?>
 
+
+<!--begin TABLEAU 2 - 1 -->
+<?php if ($action == "add_tab2_1" || $action == "edit_tab2_1"){?>
+<script>
+$(document).ready(function(){
+
+
+    // ==============================
+    // AJOUT LIGNE AJAX
+    // ==============================
+    $(document).on('click','.add-etat-consiel-btn',function(){
+
+        let row = $(this).closest('tr');
+
+        let formData = {
+            action: 'add_detail',        
+            observations: row.find('[name="observations"]').val()
+        };
+
+        $.ajax({
+            url: 'ajax/traitement_tab2_1.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+
+                    // Supprimer message noData
+                    $('#noData').remove();
+
+                    // Ajouter ligne dans tableau
+                    let newRow = `
+                        <tr data-id="${response.id}">
+                            <td colspan="11" class="text-center text-muted">${formData.observations}</td>
+                            
+                        </tr>
+                    `;
+
+                    $('#existing_consiel').append(newRow);
+
+                    // Reset inputs
+                    row.find('input').val('');
+                    row.find('select').val('').trigger('change');
+
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+
+    // ==============================
+    // SUPPRESSION AJAX
+    // ==============================
+    $(document).on('click','.delete-btn',function(){
+
+        if(!confirm("تأكيد الحذف ؟")) return;
+
+        let tr = $(this).closest('tr');
+        let id = tr.data('id');
+
+        $.ajax({
+            url: 'ajax/traitement_tab2.php',
+            type: 'POST',
+            data: {
+                action: 'delete_detail',
+                id: id
+            },
+            dataType: 'json',
+            success: function(response){
+
+                if(response.success){
+                    tr.remove();
+                }else{
+                    alert(response.message);
+                }
+            }
+        });
+
+    });
+
+});
+
+
+function saveTableau2_1(){
+
+    if(!confirm("تأكيد حفظ وتقديم الجدول ؟")) return;
+
+    $('#loadingOverlay').show();
+
+    $.post('ajax/traitement_tab2_1.php', {
+
+        action: 'save_tableau',
+        statut: 'en_attente',
+        id_user: <?php echo $current_user->id; ?>,
+        id_societe: <?php echo $current_user->id_societe; ?>,
+        annee: <?php echo $annee; ?>
+
+    }, function(response){
+
+        $('#loadingOverlay').hide();
+
+        if(response.success){
+            alert(response.message);
+            window.location.href='?action=list_tab2';
+        }else{
+            alert(response.message);
+        }
+
+    }, 'json');
+}
+</script>
+    
+<?php }?>
+
 <?php if ($action == "add_tab3" || $action == "edit_tab3" ){?>
 <!--begin::Script-->
    
@@ -998,11 +1118,10 @@ function ajouterLigne() {
     });
 
     nouvelleLigne.innerHTML = `
-        <td>
+        
             <input type="hidden" name="details[${compteurLignes}][id]" value="0">
             <input type="hidden" name="details[${compteurLignes}][id_grade]" value="">
-            <input type="text" class="form-control text-center code-grade" readonly>
-        </td>
+        
         <td>
             <select name="details[${compteurLignes}][id_grade_select]" class="form-control select-grade" required>
                 ${options}

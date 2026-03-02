@@ -13,7 +13,7 @@ if ($_POST['action'] === 'add_sup') {
 
     // Récupération et sécurisation des données
     $id_societe = intval($_POST['id_societe']);
-    $id_tab_1   =  0 ;
+    $id_tab_1   =  intval($_POST['id_tableau']);
     $annee      = intval($_POST['annee']);
     $id_user    = intval($_POST['id_user']);
     $code       =  0;

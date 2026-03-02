@@ -3,49 +3,26 @@
 require_once('bd.php');
 require_once('fonctions.php');
 // Tableau1.php
-class DetailTab1_1 {
-    protected static $nom_table="detail_tab_1_1";
-	protected static $champs = array( 'id','id_societe', 'id_tableau_1_1', 'annee', 'id_user', 'id_grade', 'loi', 'effectif_reel_31_dec',
-        'effectif_reel_annee_1', 'titulaires',
-        'stagaires', 'tol_titu_stag', 'femmes',
-        'difrence', 'titulaie_temps_complet', 'titulaie_femmes_complet', 'titulaie_temps_partiel',
-		'titulaie_femmes_partiel','contrat_temps_complet', 'contrat_femme_complet',
-		'contrat_temps_pratiel', 'contrat_femmes_pratiel', 'observations');
-    public $id;
+class DetailTab2_1 {
+    protected static $nom_table="detail_tab_2_1";
+	protected static $champs = array('id', 'id_societe', 'id_tab_2_1', 'annee', 'id_user', 'observations');
+	public $id;	
 	public $id_societe;
-    public $id_tableau_1_1;
+	public $id_tab_2_1;
 	public $annee;
-	public $id_user;
-    public $id_grade;
-    public $loi;
-    public $effectif_reel_31_dec;
-	public $effectif_reel_annee_1;
-	public $titulaires;
-	public $stagaires;
-	public $tol_titu_stag;
-	public $femmes;
-	public $difrence;
-	public $titulaie_temps_complet;
-	public $titulaie_femmes_complet;
-	public $titulaie_temps_partiel;
-	public $titulaie_femmes_partiel;
-	public $contrat_temps_complet;
-	public $contrat_femme_complet;
-	public $contrat_temps_pratiel;
-	public $contrat_femmes_pratiel;
-    public $observations;
-
+	public $id_user;	
+	public $observations;
    
-public static function trouve_par_tableau($id_tableau_1_1)
+public static function trouve_par_tableau($id_tab_2_1)
 {
     global $bd;
 
     $sql = "SELECT *
             FROM " . self::$nom_table . "
-            WHERE id_tableau_1_1 = $id_tableau_1_1
+            WHERE id_tab_2_1 = $id_tab_2_1
             ORDER BY id";
 
-    $result = $bd->requete($sql, [$id_tableau_1_1]);
+    $result = $bd->requete($sql, [$id_tab_2_1]);
 
     $details = [];
 
@@ -59,10 +36,10 @@ public static function trouve_par_tableau($id_tableau_1_1)
 }
 
     
-    public static function trouve_par_grade_tableau($id_grade, $id_tableau_1_1) {
+    public static function trouve_par_grade_tableau($id_grade, $id_tab_2_1) {
         global $bd;
-        $sql = "SELECT * FROM ".self::$nom_table." WHERE id_grade = id_grade AND id_tableau_1_1 = $id_tableau_1_1";
-        $result = $bd->requete($sql, array($id_grade, $id_tableau_1_1));
+        $sql = "SELECT * FROM ".self::$nom_table." WHERE id_grade = id_grade AND id_tab_2_1 = $id_tab_2_1";
+        $result = $bd->requete($sql, array($id_grade, $id_tab_2_1));
         if ($row = $bd->objet($result)) {
             return $row;
         }
@@ -71,11 +48,11 @@ public static function trouve_par_tableau($id_tableau_1_1)
     
     public static function creer($data) {
         global $bd;
-        $sql = "INSERT INTO ".self::$nom_table." (id_tableau_1_1, annee, id_user, code, id_societe, id_grade, 
+        $sql = "INSERT INTO ".self::$nom_table." (id_tab_2_1, annee, id_user, code, id_societe, id_grade, 
                 postes_total, postes_reel, poste_intirim, poste_femme, difference, observations, date_tabl) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $result = $bd->requete($sql, array(
-            $data['id_tableau_1_1'], $data['annee'], $data['id_user'], $data['code'], $data['id_societe'], 
+            $data['id_tab_2_1'], $data['annee'], $data['id_user'], $data['code'], $data['id_societe'], 
             $data['id_grade'], $data['postes_total'], $data['postes_reel'], $data['poste_intirim'], 
             $data['poste_femme'], $data['difference'], $data['observations'], $data['date_tabl']
         ));
@@ -105,23 +82,17 @@ public static function trouve_par_tableau($id_tableau_1_1)
 		$bd->requete($sql);
 		return($bd->affected_rows() == 1) ? true : false ;
 			}
-
+public static function trouve_tableeu_vide($id_societe,$id){
+	$q =  "SELECT * FROM ".self::$nom_table;
+	$q .= " WHERE id_tab_2_1 = 0 and id_societe = {$id_societe}   and id_user = {$id}";
+    return  self::trouve_par_sql($q);
+	}
 
 
    
     public static function trouve_par_societe($id){
 	$q =  "SELECT * FROM ".self::$nom_table;
 	$q .= " WHERE id_societe ={$id}";
-    return  self::trouve_par_sql($q);
-	}
-	public static function trouve_tableeu_vide($id_societe,$id){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE id_tableau_1_1 = 0 and id_societe = {$id_societe}   and id_user = {$id}";
-    return  self::trouve_par_sql($q);
-	}
-	public static function trouve_tableeu_par_admin_societe($id_societe,$id,$id_user){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE id_tableau_1_1 = {$id} and id_societe = {$id_societe}   and id_user = {$id_user}";
     return  self::trouve_par_sql($q);
 	}
 
@@ -131,7 +102,7 @@ public static function trouve_par_tableau($id_tableau_1_1)
 		return !empty($result_array) ? array_shift($result_array) : false;
   }
   public static function trouve_tab_vide_par_admin($id,$id_societe) {
-		return self::trouve_par_sql("SELECT * FROM ".self::$nom_table ." where id_tableau_1_1 = 0 and id_societe = {$id_societe}   and id_user = {$id} ");
+		return self::trouve_par_sql("SELECT * FROM ".self::$nom_table ." where id_tab_2_1 = 0 and id_societe = {$id_societe}   and id_user = {$id} ");
   }
 
 
