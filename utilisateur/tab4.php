@@ -11,6 +11,7 @@ $societe = Societe::trouve_par_id($current_user->id_societe);
 if (!$societe) redirect_to('../login.php');
 
 $exercice_actif = Exercice::get_exercice_actif();
+$annee = $exercice_actif ? $exercice_actif->annee : date('Y');
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab4';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -26,7 +27,7 @@ require_once("composit/header.php");
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">الجدول 4 - <?php echo $societe->raison_ar; ?></h3>
+                    <h3 class="mb-0">الجدول  رقم 04: المخطط التوقعي للتوظيف بعنوان سنة <?php echo $annee;?></h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -196,11 +197,7 @@ require_once("composit/header.php");
                 }
                 ?>
 
-                <div class="card mb-4 border-primary">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0"><i class="fas fa-edit me-2"></i><?php echo $action == "edit_tab4" ? 'تعديل الجدول رقم 4' : 'إضافة جدول رقم 4'; ?></h5>
-                        <div><span class="badge bg-warning me-2">السنة المالية: <?php echo $annee; ?></span><?php if ($tableau && $tableau->statut == 'brouillon'): ?><span class="badge bg-info">مسودة</span><?php endif; ?></div>
-                    </div>
+                
                     <div class="card-body">
                         <form id="formulaireTableau4" method="POST" action="ajax/traitement_tab4.php">
                             <input type="hidden" name="action" value="<?php echo $action == "edit_tab4" ? 'update_tab4' : 'add_tab4'; ?>">
@@ -219,11 +216,10 @@ require_once("composit/header.php");
                                         <table class="table table-bordered table-striped">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th rowspan="2" class="text-center align-middle">الرمز</th>
-                                                    <th rowspan="2" class="text-center align-middle">السلك</th>
-                                                    <th class="text-center">عدد المناصب الشاغرة (خارجي)</th>
-                                                    <th class="text-center">منتوج التكوين (شبه الطبيبي)</th>
-                                                    <th class="text-center">مسابقة على أساس الشهادة</th>
+                                                    <th rowspan="2" class="text-center align-middle">الوظائف السامة المناصب العليا الأسلاك أو الرتب</th>
+                                                    <th class="text-center">   المناصب المالية</th>
+                                                    <th class="text-center">  المناصب المشغولة</th>
+                                                    <th class="text-center">   المناصب الشاغرة</th>
                                                     <th class="text-center">المبتدئين المتعاقدين</th>
                                                     <th class="text-center">العمال المبنى المتعاقدين</th>
                                                     <th class="text-center">طريقة على أساس الشهادة</th>
@@ -312,7 +308,7 @@ require_once("composit/header.php");
                             </div>
                         </form>
                     </div>
-                </div>
+                
 
             <?php elseif ($action == "add_tab4_1" || $action == "edit_tab4_1"): ?>
                 <?php
