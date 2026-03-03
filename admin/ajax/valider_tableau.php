@@ -31,6 +31,10 @@ if ($id <= 0 || empty($type)) {
 // Mapping des types vers les classes
 $classMap = [
     'tab1' => 'Tableau1',
+    'tab1_1' => 'Tableau1_1',
+    'tab2' => 'Tableau2',
+    'tab2_1' => 'Tableau2_1',
+    'tab2_2' => 'Tableau2_2',
     'tab3' => 'Tableau3',
     'tab4' => 'Tableau4',
     // Ajouter d'autres types si nécessaire

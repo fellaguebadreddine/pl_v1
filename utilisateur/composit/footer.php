@@ -155,7 +155,7 @@ $(document).ready(function(){
         let row = $(this).closest('tr');
         let total = parseInt(row.find('.postes-total-hp').val()) || 0;
         let reel = parseInt(row.find('.postes-reel-hp').val()) || 0;
-        row.find('.difference-hp').val(reel - total);
+        row.find('.difference-hp').val(total - reel  );
     });
 
     /*================================
