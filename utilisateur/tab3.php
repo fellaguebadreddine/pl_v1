@@ -269,7 +269,7 @@ if ($existe) {
                                                 <tr>
                                                     <th class="text-center">داخلي</th>
                                                     <th class="text-center">خارجي</th>
-                                                    <th class="text-center">مسابقة على أساس الإختبارات   على الشهادة</th>
+                                                    <th class="text-center">مسابقة على أساس  على الشهادة</th>
                                                     <th class="text-center">مسابقة على أساس  الاختبار المهني</th>
                                                     <th class="text-center">إمتحان مهني</th>
                                                     <th class="text-center">فحص مهني </th>
