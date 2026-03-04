@@ -403,7 +403,7 @@ require_once("composit/header.php");
                                         <table class="table table-bordered table-striped">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th rowspan="2">تحديد منصب الشغل</th>
+                                                    <th rowspan="2"> منصب العمل</th>
                                                     <th rowspan="2" colspan="2" class="text-center align-middle">التصنيف</th>
                                                     <th colspan="4" class="text-center align-middle">التعــداد المالي لسنة <?php echo $annee;?></th>
                                                     <th colspan="4" class="text-center align-middle">التعداد الحقيقي الى غاية 31/12/<?php echo $annee-1;?></th>
@@ -423,7 +423,7 @@ require_once("composit/header.php");
                                                 </tr>
                                                 <tr>
                                                     <th rowspan="2" class="text-center align-middle">السلك</th>
-                                                    <th rowspan="2" class="text-center align-middle">التصنيف</th>
+                                                    <th rowspan="2" class="text-center align-middle">الصنف</th>
                                                     <th rowspan="2" class="text-center align-middle">رقم الإستدلالي</th>
                                                     <?php foreach ($numeric_fields as $field): ?>
                                                         <th class="text-center"><?php echo $field_labels[$field] ?? $field; ?></th>
