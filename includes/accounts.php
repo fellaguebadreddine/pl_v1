@@ -41,6 +41,10 @@ class Accounts{
     }
     return false;
 }
+ public static function trouve_responsable_societe($id_societe) {
+        $q = "SELECT * FROM accounts WHERE id_societe = $id_societe AND type = 'utilisateur' LIMIT 1";
+        return  self::trouve_par_sql($q);
+    }
 // Ajouter ces méthodes à la classe Accounts
 
 public static function compter_par_societe($id_societe) {

@@ -28,7 +28,12 @@ public static function trouve_par_societe(){
 	$q =  "SELECT * FROM societe ORDER BY raison_ar";
     return  self::trouve_par_sql($q);
 	}
+    public static function trouve_par_wilaya($wilaya_id) {
+        // Si table wilaya séparée
+        $q = "SELECT s.* FROM societe s JOIN wilayas w ON s.wilayas = w.id WHERE w.id = {$wilaya_id}";
+         return  self::trouve_par_sql($q);
 
+    }
 
 
 	public static function count_util(){

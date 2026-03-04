@@ -76,6 +76,42 @@ $(document).ready(function() {
    
     });
 </script>
+<script>
+$(document).ready(function() {
+
+
+    <?php if ($wilaya_filter == 0 && !empty($stats_wilayas)): ?>
+    // Graphique d'avancement
+    var ctx = document.getElementById('avancementChart').getContext('2d');
+    var wilayas = <?php echo json_encode(array_column($stats_wilayas, 'wilaya')); ?>;
+    var taux = <?php echo json_encode(array_column($stats_wilayas, 'taux_avancement')); ?>;
+    var couleurs = taux.map(function(t) {
+        if (t >= 80) return 'rgba(40, 167, 69, 0.7)';
+        if (t >= 50) return 'rgba(255, 193, 7, 0.7)';
+        return 'rgba(220, 53, 69, 0.7)';
+    });
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: wilayas,
+            datasets: [{
+                label: 'معدل الإنجاز (%)',
+                data: taux,
+                backgroundColor: couleurs,
+                borderColor: couleurs.map(c => c.replace('0.7', '1')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, max: 100 } },
+            plugins: { legend: { display: false } }
+        }
+    });
+    <?php endif; ?>
+});
+</script>
 <!--end::OverlayScrollbars Configure-->
 <!--end::Script-->
 </body>

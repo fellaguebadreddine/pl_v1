@@ -154,6 +154,62 @@ require_once('fonctions.php');
         
         return $bd->requete($sql);
     }
+
+    /**
+ * Prolonge un exercice en modifiant sa date de fin
+ * @param int $id_exercice ID de l'exercice à prolonger
+ * @param string $nouvelle_date_fin Nouvelle date de fin (format Y-m-d)
+ * @param int $id_user ID de l'utilisateur qui effectue la prolongation
+ * @param string $commentaire Commentaire optionnel
+ * @return array ['success' => bool, 'message' => string]
+ */
+public static function prolonger_exercice($id_exercice, $nouvelle_date_fin, $id_user, $commentaire = '') {
+    // Validation de base
+    if (empty($id_exercice) || empty($nouvelle_date_fin)) {
+        return ['success' => false, 'message' => 'بيانات ناقصة'];
+    }
+
+    // Récupérer l'exercice
+    $exercice = self::trouve_par_id($id_exercice);
+    if (!$exercice) {
+        return ['success' => false, 'message' => 'التمرين غير موجود'];
+    }
+
+    // Vérifier que l'exercice est ouvert ou déjà en prolongation
+    if ($exercice->statut != 'ouvert' && $exercice->statut != 'prolongation') {
+        return ['success' => false, 'message' => 'لا يمكن تمديد تمرين مغلق'];
+    }
+
+    // Vérifier que la nouvelle date est postérieure à la date de fin actuelle
+    $date_fin_actuelle = strtotime($exercice->date_fin);
+    $nouvelle_date = strtotime($nouvelle_date_fin);
+    if ($nouvelle_date <= $date_fin_actuelle) {
+        return ['success' => false, 'message' => 'التاريخ الجديد يجب أن يكون بعد التاريخ الحالي'];
+    }
+
+    // Mettre à jour les champs
+    $exercice->date_fin = $nouvelle_date_fin;
+    $exercice->statut = 'prolongation';
+    
+    // Si vous avez un champ pour le commentaire, vous pouvez l'ajouter ou le concaténer
+    if (!empty($commentaire)) {
+        $exercice->commentaire = (!empty($exercice->commentaire) ? $exercice->commentaire . "\n" : '') 
+                                 . 'تمديد بواسطة المستخدم ' . $id_user . ' في ' . date('Y-m-d H:i:s') . ' : ' . $commentaire;
+    } else {
+        $exercice->commentaire = (!empty($exercice->commentaire) ? $exercice->commentaire . "\n" : '') 
+                                 . 'تمديد بواسطة المستخدم ' . $id_user . ' في ' . date('Y-m-d H:i:s');
+    }
+
+    // Si vous avez un champ id_admin_validateur ou last_modified_by, mettez-le à jour
+    // $exercice->last_modified_by = $id_user;
+
+    // Sauvegarder
+    if ($exercice->save()) {
+        return ['success' => true, 'message' => 'تم تمديد السنة المالية بنجاح'];
+    } else {
+        return ['success' => false, 'message' => 'خطأ أثناء التمديد'];
+    }
+}
 	 public static function verifier_periode_saisie() {
         $exercice_actif = self::get_exercice_actif();
         

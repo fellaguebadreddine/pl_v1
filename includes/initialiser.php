@@ -27,6 +27,7 @@ require_once(LIB_PATH . DS . 'accounts.php');
 require_once(LIB_PATH . DS . 'societes.php');
 require_once(LIB_PATH . DS . 'exercice.php');
 require_once(LIB_PATH . DS . 'grade.php');
+require_once(LIB_PATH . DS . 'super_admin.php');
 
 require_once(LIB_PATH . DS . 'tableau_1.php');
 require_once(LIB_PATH . DS . 'tableau_1_1.php');
