@@ -41,7 +41,7 @@ $exercice_actif = Exercice::get_exercice_actif();
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab1';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 1  ";
+$titre = "الجدول 11  ";
 $active_menu = "tab_1";
 $active_submenu = "tabl_1";
 $header = array('select2');
