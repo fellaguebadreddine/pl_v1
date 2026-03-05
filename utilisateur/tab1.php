@@ -720,7 +720,7 @@ if ($existe_tab_1_1) {
                     </tr>
                     <tr class="table-light">
                         <th  class="text-center">القانون الأساسي</th>
-                        <th class="text-center">السلك و الرتبة </th>
+                        <th width="15%" class="text-center">السلك و الرتبة </th>
                         <th class="text-center">  التعداد الحقيقي </th>                        
                         <th  class="text-center"> التعداد المالي لسنة <?php echo $annee;?></th>
                         <th  class="text-center">المرسمون</th>
@@ -819,7 +819,7 @@ if ($existe_tab_1_1) {
                 <tbody id="body_tab_1_1">
                     <tr class="item-row">
                         <td class="loi"></td>
-                        <td >
+                        <td width="15%">
                             <select name="id_grade" class="form-control select2 grade-select" required>
                                 <option value="">اختر المنصب</option>
                                 <?php foreach ($grades as $g): ?>
