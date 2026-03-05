@@ -95,7 +95,7 @@ require_once("composit/header.php");
                                         <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
                                         <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
                                         <td class="text-center">
-                                            <a href="?action=edit_tab6&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
+                                            <a href="?action=edit_tab6&id=<?php echo $tab6_existant->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau6(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
@@ -112,115 +112,129 @@ require_once("composit/header.php");
                 </div>
 
             <?php elseif ($action == "add_tab6" || $action == "edit_tab6"): ?>
-                <?php
-                $tableau = null;
-                $details = array();
-                $annee = $annee_courante;
+    <?php
+    $tableau = null;
+    $details = array();
+    $annee = $annee_courante;
 
-                if ($action == "edit_tab6" && $id > 0) {
-                    $tableau = Tableau6::trouve_par_id($id);
-                    if ($tableau) {
-                        $annee = $tableau->annee;
-                        $details = DetailTab6::trouve_par_tableau($id);
-                    }
-                } else {
-                    // Pour l'ajout, on va créer un nouveau tableau et ses détails via AJAX, mais on peut aussi pré-remplir
-                    // On vérifie s'il y a un brouillon existant pour cette année
-                    $tableau_brouillon = Tableau6::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe, $annee);
-                    if ($tableau_brouillon) {
-                        $tableau = $tableau_brouillon;
-                        $details = DetailTab6::trouve_par_tableau($tableau->id);
-                    }
-                }
+    if ($action == "edit_tab6" && $id > 0) {
+        $tableau = Tableau6::trouve_par_id($id);
+        if ($tableau) {
+            $annee = $tableau->annee;
+            $details = DetailTab6::trouve_par_tableau($id);
+        }
+    } else {
+        // Mode ajout : récupérer les employés concernés
+        // On ne crée pas de tableau, on affiche directement les employés
+        $employes = Employees::trouve_retraite_par_societe($societe->id_societe, $annee);
+    }
+    ?>
 
-                // Si on est en mode ajout et qu'il n'y a pas de brouillon, on crée un nouveau tableau
-                // Mais cela devrait être fait via l'action POST, pas ici. On va simplement afficher un formulaire vide ou un message.
-                // En fait, on veut que le bouton "Créer" génère automatiquement la liste. Donc dans le cas add_tab6, on va rediriger vers edit avec un nouveau tableau créé.
-                // Pour simplifier, on va traiter l'ajout dans le script AJAX.
-                // Ici, on affiche le formulaire avec les détails existants ou un message si aucun.
-                ?>
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0"><i class="fas fa-edit me-2"></i><?php echo $action == "edit_tab6" ? 'تعديل جدول التقاعد' : 'إنشاء جدول التقاعد'; ?></h5>
+            <div><span class="badge bg-warning me-2">السنة: <?php echo $annee; ?></span><?php if ($tableau && $tableau->statut == 'brouillon'): ?><span class="badge bg-info">مسودة</span><?php endif; ?></div>
+        </div>
+        <div class="card-body">
+            <form id="formulaireTableau6" method="POST" action="ajax/traitement_tab6.php">
+                <input type="hidden" name="action" value="<?php echo $action == "edit_tab6" ? 'update_tab6' : 'add_tab6'; ?>">
+                <input type="hidden" name="id_tableau" value="<?php echo $tableau ? $tableau->id : '0'; ?>">
+                <input type="hidden" name="annee" value="<?php echo $annee; ?>">
+                <input type="hidden" name="id_societe" value="<?php echo $societe->id_societe; ?>">
+                <input type="hidden" name="id_user" value="<?php echo $current_user->id; ?>">
 
-                <div class="card mb-4 border-primary">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0"><i class="fas fa-edit me-2"></i><?php echo $action == "edit_tab6" ? 'تعديل جدول التقاعد' : 'إنشاء جدول التقاعد'; ?></h5>
-                        <div><span class="badge bg-warning me-2">السنة: <?php echo $annee; ?></span><?php if ($tableau && $tableau->statut == 'brouillon'): ?><span class="badge bg-info">مسودة</span><?php endif; ?></div>
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="card-title mb-0"><i class="fas fa-users me-2"></i> قائمة الموظفين في سن التقاعد</h5>
                     </div>
                     <div class="card-body">
-                        <form id="formulaireTableau6" method="POST" action="ajax/traitement_tab6.php">
-                            <input type="hidden" name="action" value="<?php echo $action == "edit_tab6" ? 'update_tab6' : 'add_tab6'; ?>">
-                            <input type="hidden" name="id_tableau" value="<?php echo $tableau ? $tableau->id : '0'; ?>">
-                            <input type="hidden" name="annee" value="<?php echo $annee; ?>">
-                            <input type="hidden" name="id_societe" value="<?php echo $societe->id_societe; ?>">
-                            <input type="hidden" name="id_user" value="<?php echo $current_user->id; ?>">
-
-                            <div class="card mb-4">
-                                <div class="card-header bg-secondary text-white">
-                                    <h5 class="card-title mb-0"><i class="fas fa-users me-2"></i> قائمة الموظفين في سن التقاعد</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>الاسم</th>
-                                                    <th>اللقب</th>
-                                                    <th>تاريخ الميلاد</th>
-                                                    <th>السلك أو الرتبة</th>
-                                                    <th>تاريخ التقاعد</th>
-                                                    <th>الملاحظات</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="tbody_details6">
-                                                <?php
-                                                if (!empty($details)):
-                                                    foreach ($details as $detail):
-                                                        $grade = Grade::trouve_par_id($detail->id_grade);
-                                                ?>
-                                                <tr data-id="<?php echo $detail->id; ?>">
-                                                    <td>
-                                                        <input type="hidden" name="details[<?php echo $detail->id; ?>][id]" value="<?php echo $detail->id; ?>">
-                                                        <input type="hidden" name="details[<?php echo $detail->id; ?>][id_grade]" value="<?php echo $detail->id_grade; ?>">
-                                                        <?php echo htmlspecialchars($detail->prenom); ?>
-                                                    </td>
-                                                    <td><?php echo htmlspecialchars($detail->nom); ?></td>
-                                                    <td><?php echo date('d/m/Y', strtotime($detail->date_naissance)); ?></td>
-                                                    <td><?php echo $grade ? $grade->grade : ''; ?></td>
-                                                    <td>
-                                                        <input type="date" name="details[<?php echo $detail->id; ?>][date_retraite]" class="form-control" value="<?php echo $detail->date_retraite; ?>">
-                                                    </td>
-                                                    <td>
-                                                        <textarea name="details[<?php echo $detail->id; ?>][observations]" class="form-control" rows="1"><?php echo htmlspecialchars($detail->observations); ?></textarea>
-                                                    </td>
-                                                </tr>
-                                                <?php endforeach; ?>
-                                                <?php else: ?>
-                                                <tr>
-                                                    <td colspan="6" class="text-center text-muted">
-                                                        لا يوجد موظفون في سن التقاعد لهذه السنة.
-                                                    </td>
-                                                </tr>
-                                                <?php endif; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <a href="?action=list_tab6" class="btn btn-secondary"><i class="fas fa-arrow-right me-1"></i> رجوع للقائمة</a>
-                                        <div>
-                                            <button type="button" class="btn btn-warning me-2" onclick="enregistrerBrouillon6()"><i class="fas fa-save me-1"></i> حفظ كمسودة</button>
-                                            <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-1"></i> <?php echo $action == "edit_tab6" ? 'تحديث الجدول' : 'إنشاء الجدول'; ?></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>اللقب</th>
+                                        <th>تاريخ الميلاد</th>
+                                        <th>الدرجة</th>
+                                        <th>تاريخ التقاعد</th>
+                                        <th>الملاحظات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_details6">
+                                    <?php if ($action == "edit_tab6"): ?>
+                                        <?php foreach ($details as $detail): 
+                                            $grade = Grade::trouve_par_id($detail->id_grade);
+                                        ?>
+                                        <tr data-id="<?php echo $detail->id; ?>">
+                                            <td>
+                                                <input type="hidden" name="details[<?php echo $detail->id; ?>][id]" value="<?php echo $detail->id; ?>">
+                                                <input type="hidden" name="details[<?php echo $detail->id; ?>][id_grade]" value="<?php echo $detail->id_grade; ?>">
+                                                <?php echo htmlspecialchars($detail->prenom); ?>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($detail->nom); ?></td>
+                                            <td><?php echo date('d/m/Y', strtotime($detail->date_naissance)); ?></td>
+                                            <td><?php echo $grade ? $grade->grade : ''; ?></td>
+                                            <td>
+                                                <input type="date" name="details[<?php echo $detail->id; ?>][date_retraite]" class="form-control" value="<?php echo $detail->date_retraite; ?>">
+                                            </td>
+                                            <td>
+                                                <textarea name="details[<?php echo $detail->id; ?>][observations]" class="form-control" rows="1"><?php echo htmlspecialchars($detail->observations); ?></textarea>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: // mode ajout ?>
+                                        <?php if (empty($employes)): ?>
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">
+                                                لا يوجد موظفون في سن التقاعد لهذه السنة.
+                                            </td>
+                                        </tr>
+                                        <?php else: ?>
+                                            <?php foreach ($employes as $emp): 
+                                                $grade = Grade::trouve_par_id($emp->id_grade);
+                                                // Calcul de la date de retraite (60 ans après naissance)
+                                                $date_retraite = date('Y-m-d', strtotime($emp->date_naissance . ' +60 years'));
+                                            ?>
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="employes[<?php echo $emp->id; ?>][id_employee]" value="<?php echo $emp->id; ?>">
+                                                    <input type="hidden" name="employes[<?php echo $emp->id; ?>][id_grade]" value="<?php echo $emp->id_grade; ?>">
+                                                    <?php echo htmlspecialchars($emp->prenom); ?>
+                                                </td>
+                                                <td><?php echo htmlspecialchars($emp->nom); ?></td>
+                                                <td><?php echo date('d/m/Y', strtotime($emp->date_naissance)); ?></td>
+                                                <td><?php echo $grade ? $grade->grade : ''; ?></td>
+                                                <td>
+                                                    <input type="date" name="employes[<?php echo $emp->id; ?>][date_retraite]" class="form-control" value="<?php echo $date_retraite; ?>">
+                                                </td>
+                                                <td>
+                                                    <textarea name="employes[<?php echo $emp->id; ?>][observations]" class="form-control" rows="1"></textarea>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            <?php endif; ?>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <a href="?action=list_tab6" class="btn btn-secondary"><i class="fas fa-arrow-right me-1"></i> رجوع للقائمة</a>
+                            <div>
+                                <button type="button" class="btn btn-warning me-2" onclick="enregistrerBrouillon6()"><i class="fas fa-save me-1"></i> حفظ كمسودة</button>
+                                <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-1"></i> <?php echo $action == "edit_tab6" ? 'تحديث الجدول' : 'إنشاء الجدول'; ?></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php endif; ?>
         </div>
     </div>
 </main>

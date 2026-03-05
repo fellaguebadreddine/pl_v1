@@ -160,7 +160,7 @@ if ($existe) {
                                             <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
                                         </td>
                                         <td class="text-center">
-                                            <a href="?action=edit_tab5&id=<?php echo $tabls->id; ?>" 
+                                            <a href="?action=edit_tab3&id=<?php echo $existe; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="تعديل">
                                                 <i class="fas fa-edit"></i>
                                             </a>

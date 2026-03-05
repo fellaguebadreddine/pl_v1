@@ -14,14 +14,15 @@ class Employees{
 	public $id_grade;
     public $id_societe;
 	
-    public static function trouve_retraite_par_societe($id_societe, $annee) {
-    $date_debut = $annee . '-01-01';
-    $date_fin = $annee . '-12-31';
-    $q = "SELECT *
-FROM employees
-WHERE DATE_ADD(date_naissance, INTERVAL 60 YEAR)
-      BETWEEN '$annee-01-01' AND '$annee-12-31'";
-      return  self::trouve_par_sql($q);
+public static function trouve_retraite_par_societe($id_societe, $annee) {
+    
+
+    $sql = "SELECT * FROM  employees
+                WHERE id_societe = {$id_societe} 
+                AND YEAR(date_naissance) <= $annee - 60 
+                ORDER BY nom, prenom";
+
+    return self::trouve_par_sql($sql);
 }
 
 	public static function trouver_par_login($username, $mot_passe) {
