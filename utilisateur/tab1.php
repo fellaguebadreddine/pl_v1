@@ -346,7 +346,7 @@ if ($existe_tab_1_1) {
         
         <div class="portlet-body table-responsive hauts_fonctionnaires">
             <table class="table table-bordered table-striped">
-                <thead class="table-primary">
+                <thead class="table-light">
                     
                     <tr>
                         <th colspan="3"></th>
