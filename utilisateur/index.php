@@ -458,10 +458,8 @@ require_once("composit/header.php");
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if (!$stat): ?>
-                                            <a href="<?php echo $t['lien_add']; ?>" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> إضافة</a>
-                                        <?php else: ?>
-                                            <a href="<?php echo $t['lien_edit'] . $stat['id']; ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> تعديل</a>
+                                        <?php if ($stat): ?>
+                                           
                                             <a href="print_<?php echo $code; ?>.php?id=<?php echo $stat['id']; ?>" class="btn btn-sm btn-info" target="_blank"><i class="fas fa-print"></i> طباعة</a>
                                         <?php endif; ?>
                                     </td>
