@@ -203,7 +203,7 @@ if ($action == "add_tab2_2") {
                                             <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>  
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
-                                                    <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
+                                                    <a href="?action=edit_tab2&id=<?php echo $existe; ?>" class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button onclick="supprimerTableau(<?php echo $tabls->id; ?>)"
@@ -424,7 +424,7 @@ if ($action == "add_tab2_2") {
                             $tableau = Tableau2::trouve_par_id($id);
                             if ($tableau) {
                                 $annee = $tableau->annee;
-                                $details = DetailTab2::trouve_tab_vide_par_admin($id);
+                                $details = DetailTab2::trouve_par_tableau($id);
                             }
                         } else {
                             // En mode ajout, vérifier s'il y a un brouillon
@@ -438,31 +438,31 @@ if ($action == "add_tab2_2") {
                         <div class="portlet-body table-responsive hauts_fonctionnaires">
                             <table class="table table-bordered table-striped">
                                 <thead>
-                                        <th width="15%" rowspan="3"> الأسلاك</th>
-                                        <th colspan="4">لجان الموظفين</th>
-                                        <th colspan="4">لجان الطعن</th>
-                                        <th rowspan="3">الملاحظات</th>
-                                        <th rowspan="3">الإجراءات</th>
+                                        <th width="15%" rowspan="3" class="text-center"> الأسلاك</th>
+                                        <th colspan="4" class="text-center">لجان الموظفين</th>
+                                        <th colspan="4" class="text-center">لجان الطعن</th>
+                                        <th width="10%" rowspan="3" class="text-center" >الملاحظات</th>
+                                        <th rowspan="3" class="text-center">الإجراءات</th>
                                     </tr>
                                     <!-- Niveau 2 -->
                                     <tr>
                                         <!-- لجان الموظفين -->
-                                        <th width="5%" rowspan="2">مرجع القرار المتعلق بالإنشاء</th>
-                                        <th rowspan="2">حدود الصلاحيات</th>
-                                        <th colspan="2">التمديد</th>
+                                        <th width="10%" rowspan="2"  class="text-center">مرجع القرار المتعلق بالإنشاء</th>
+                                        <th rowspan="2"  class="text-center">حدود الصلاحيات</th>
+                                        <th colspan="2"  class="text-center">التمديد</th>
                                         <!-- لجان الطعن -->
-                                        <th rowspan="2">المرجع</th>
-                                        <th rowspan="2">حدود الصلاحيات</th>
-                                        <th colspan="2">التمديد</th>
+                                        <th width="10%" rowspan="2"  class="text-center">المرجع</th>
+                                        <th rowspan="2"  class="text-center">حدود الصلاحيات</th>
+                                        <th colspan="2"  class="text-center">التمديد</th>
                                     </tr>
                                     <!-- Niveau 3 -->
                                     <tr>
                                         <!-- تمديد الموظفين -->
-                                        <th>المرجع</th>
-                                        <th>الحدود</th>
+                                        <th  width="10%" class="text-center">المرجع</th>
+                                        <th  class="text-center">الحدود</th>
                                         <!-- تمديد الطعن -->
-                                        <th>المرجع</th>
-                                        <th>الحدود</th>
+                                        <th  width="10%" class="text-center">المرجع</th>
+                                        <th  class="text-center">الحدود</th>
                                     </tr>
 
                                 </thead>
