@@ -18,7 +18,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
 $action = isset($_GET['action']) ? $_GET['action'] : 'list_tab6';
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$titre = "الجدول 6 -  في سن التقاعد";
+$titre = "الجدول 6 - الموظفون في سن التقاعد";
 $active_menu = "tab_6";
 $active_submenu = "tab_6";
 $header = array('select2');
