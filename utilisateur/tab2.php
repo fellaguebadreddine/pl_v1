@@ -290,7 +290,7 @@ if ($action == "add_tab2_2") {
                                             <td class="text-center"><?php echo $tabls_2_1->commentaire_admin; ?></td>  
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls_2_1->statut != 'validé'): ?>
-                                                    <a href="edit_tableau.php?id=<?php echo $tabls_2_1->id; ?>" class="btn btn-sm btn-warning">
+                                                    <a href="?action=edit_tab2_1&id=<?php echo $existe_tab_2_1; ?>" class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button onclick="supprimerTableau2_1(<?php echo $tabls_2_1->id; ?>)"
@@ -377,7 +377,7 @@ if ($action == "add_tab2_2") {
                                             <td class="text-center"><?php echo $tabls_2_2->commentaire_admin; ?></td>  
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls_2_2->statut != 'validé'): ?>
-                                                    <a href="edit_tableau.php?id=<?php echo $tabls_2_2->id; ?>" class="btn btn-sm btn-warning">
+                                                    <a href="?action=edit_tab2_2&id=<?php echo $existe_tab_2_2; ?>" class="btn btn-sm btn-warning">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <button onclick="supprimerTableau2_2(<?php echo $tabls_2_2->id; ?>)"
