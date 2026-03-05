@@ -192,7 +192,7 @@ if ($existe_tab_1_1) {
                                         <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabls->statut != 'validé'):?>
-                                            <a href="edit_tableau.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-warning">
+                                            <a href="?action=edit_tab1&id=<?php echo $existe; ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button onclick=" (<?php echo $tabls->id; ?>)" 
@@ -274,7 +274,7 @@ if ($existe_tab_1_1) {
                                         <td class="text-center"><?php echo $tabl_1_1->commentaire_admin; ?></td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabl_1_1->statut != 'validé'):?>
-                                            <a href="edit_tableau.php?id=<?php echo $tabl_1_1->id; ?>" class="btn btn-sm btn-warning">
+                                            <a href="?action=edit_tab1_1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-sm btn-warning">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button onclick=" (<?php echo $tabl_1_1->id; ?>)" 
