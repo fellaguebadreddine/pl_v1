@@ -316,7 +316,7 @@ if ($existe_tab_1_1) {
         // Récupérer les données existantes si en mode édition
         $tableau = null;
         $details = array();
-        $sup_details = array();
+        //$sup_details = array();
         $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
         
         if ($action == "edit_tab1" && $id > 0) {
@@ -325,13 +325,13 @@ if ($existe_tab_1_1) {
                 $annee = $tableau->annee;
                 $details = DetailTab1::trouve_par_tableau($id);
                 $details_hp = DetailTab1_hp::trouve_par_tableau($id);
-                $sup_details = DetailTab1_sup::trouve_par_tableau($id);
+                //$sup_details = DetailTab1_sup::trouve_par_tableau($id);
             }
         } else {
             // En mode ajout, vérifier s'il y a un brouillon
             $details = DetailTab1::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
              $details_hp = DetailTab1_hp::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
-            $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
+           // $sup_details = DetailTab1_sup::trouve_tab_vide_par_admin($current_user->id,$current_user->id_societe);
         }
         
         // Récupérer tous les grades
@@ -366,68 +366,6 @@ if ($existe_tab_1_1) {
                         <th width="10%" class="text-center">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody id="existing_hauts_fonctionnaires">
-                    <?php if (!empty($sup_details)): ?>
-                        <?php foreach ($sup_details as $detail): ?>
-                                                    
-                       <tr data-id="<?php echo $detail->id; ?>">
-                            <td>
-                                
-                            </td>
-                            <td>
-                                <?php echo $detail->poste_sup; ?>
-                            </td>
-                            <td>
-                                <?php echo $detail->postes_total_sup; ?>
-                            </td>
-                            <td>
-                                <?php echo $detail->postes_reel_sup ?>
-                            </td>
-                            <td>
-                                <?php echo $detail->poste_intirim_sup; ?>
-                            </td>
-                            <td>
-                                <?php echo $detail->poste_femme_sup; ?>
-                            </td>
-                            <td>
-                                <?php echo $detail->difference_sup; ?>
-                            </td>
-                            <td>
-                                <?php echo htmlspecialchars($detail->observations_sup); ?>
-                            </td>
-                            <td class="text-center">
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteDetailSup(<?php echo $detail->id; ?>)">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr id="noDataSup">
-                            <td colspan="9" class="text-center text-muted">
-                                لا توجد بيانات مسجلة
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-                <tbody id="body_sup_body">
-                    <tr class="item-row"> 
-                        <td>1</td>
-                        <td><input type="number" name="poste_sup" id="poste_sup" class="form-control"></td>
-                        <td><input type="number" name="postes_total_sup" id="postes_total_sup" class="form-control"></td>
-                        <td><input type="number" name="postes_reel_sup" id="postes_reel_sup" class="form-control"></td>
-                        <td><input type="number" name="poste_intirim_sup" id="poste_intirim_sup" class="form-control"></td>
-                        <td><input type="number" name="poste_femme_sup" id="poste_femme_sup" class="form-control"></td>
-                        <td><input type="number" name="difference_sup" id="difference_sup" class="form-control"></td>
-                        <td><input type="number" name="observations_sup" id="observations_sup" class="form-control"></td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-success btn-sm add-sup-btn">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </td>
-
-                    </tr>
-                </tbody>
                 <tr>
                         <th colspan="9" class="fw-bold text-center bg-primary text-white">الوظائف العليا</th>
                     </tr>
