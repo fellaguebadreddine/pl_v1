@@ -707,7 +707,7 @@ if ($existe_tab_1_1) {
         $total_hf_intirim = array_sum(array_column($details, 'poste_intirim'));
         $total_hf_femme = array_sum(array_column($details, 'poste_femme'));
         ?>
-        <?php echo $id; ?>
+        
         <div class="portlet-body table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
@@ -750,7 +750,7 @@ if ($existe_tab_1_1) {
                             <td>
                                 <?php echo $grade->loi; ?>
                             </td>
-                            <td>
+                            <td width="15%">
                                  <?php echo $grade ? $grade->grade : ''; ?>
                             </td>
                             <td>
@@ -819,8 +819,8 @@ if ($existe_tab_1_1) {
                 <tbody id="body_tab_1_1">
                     <tr class="item-row">
                         <td class="loi"></td>
-                        <td width="15%">
-                            <select name="id_grade" class="form-control select2 grade-select" required>
+                        <td>
+                            <select name="id_grade" class="form-control  grade-select" required>
                                 <option value="">اختر المنصب</option>
                                 <?php foreach ($grades as $g): ?>
                                     <option value="<?php echo $g->id; ?>" data-code="<?php echo $g->id; ?>">
