@@ -362,6 +362,16 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="employee.php?action=list" <?php if ($active_menu == 'employee') {
+                                          echo 'class="nav-link active"';
+                                        } else {
+                                          echo 'class="nav-link"';
+                                        } ?>>
+                  <i class="nav-icon fa fa-users"></i>
+                  <p>   المستخدمين</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="tab6.php?action=list_tab6" <?php if ($active_menu == 'tab_6') {
                                           echo 'class="nav-link active"';
                                         } else {
