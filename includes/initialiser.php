@@ -55,6 +55,9 @@ require_once(LIB_PATH . DS . 'tableau_5.php');
 
 require_once(LIB_PATH . DS . 'tableau_6.php');
 require_once(LIB_PATH . DS . 'detailTab6.php');
+require_once(LIB_PATH . DS . 'tableau_6_1.php');
+require_once(LIB_PATH . DS . 'tableau_6_2.php');
+require_once(LIB_PATH . DS . 'detailTab6_2.php');
 
 require_once(LIB_PATH . DS . 'wilayas.php');
 require_once(LIB_PATH . DS . 'employees.php');

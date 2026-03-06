@@ -20,7 +20,8 @@ $id_tableau = isset($_POST['id_tableau']) ? intval($_POST['id_tableau']) : 0;
 $id_societe = isset($_POST['id_societe']) ? intval($_POST['id_societe']) : 0;
 $id_user = isset($_POST['id_user']) ? intval($_POST['id_user']) : 0;
 $annee = isset($_POST['annee']) ? intval($_POST['annee']) : date('Y');
-$statut = isset($_POST['statut']) ? trim($_POST['statut']) : 'brouillon';
+$statut = isset($_POST['statut']) ? trim($_POST['statut']) : 'validé';
+$nbr_annee = isset($_POST['nbr_annee']) ? intval($_POST['nbr_annee']) : 0;
 
 $response = ['success' => false, 'message' => ''];
 
@@ -32,15 +33,15 @@ try {
 
     switch ($action) {
         
-case 'add_tab6':
+case 'add_tab6_2':
     // Vérifier existence
-    $existant = Tableau6::existe_pour_societe_annee($id_societe, $annee);
+    $existant = Tableau6_2::existe_pour_societe_annee($id_societe, $annee);
     if ($existant) {
         throw new Exception('يوجد جدول لهذه السنة بالفعل');
     }
 
     // Créer le tableau principal
-    $tableau = new Tableau6();
+    $tableau = new Tableau6_2();
     $tableau->id_societe = $id_societe;
     $tableau->id_user = $id_user;
     $tableau->annee = $annee;
@@ -60,8 +61,8 @@ case 'add_tab6':
             $employe = Employees::trouve_par_id($emp_data['id_employee']);
             if (!$employe) continue;
 
-            $detail = new DetailTab6();
-            $detail->id_tab_6 = $id_tableau;
+            $detail = new DetailTab6_2();
+            $detail->id_tab_6_2 = $id_tableau;
             $detail->id_grade = $emp_data['id_grade'];
             $detail->id_societe = $id_societe;
             $detail->id_user = $id_user;
@@ -69,8 +70,9 @@ case 'add_tab6':
             $detail->nom = $employe->nom;
             $detail->prenom = $employe->prenom;
             $detail->date_naissance = $employe->date_naissance;
-            $detail->date_retraite = $emp_data['date_retraite'];
+            $detail->nbr_annee = $emp_data['nbr_annee'];
             $detail->observations = $emp_data['observations'] ?? '';
+            $detail->date_valide = date('Y-m-d H:i:s');
             $detail->save();
         }
     }
@@ -80,8 +82,8 @@ case 'add_tab6':
     $response['id_tableau'] = $id_tableau;
     break;
 
-        case 'update_tab6':
-            $tableau = Tableau6::trouve_par_id($id_tableau);
+        case 'update_tab6_2':
+            $tableau = Tableau6_2::trouve_par_id($id_tableau);
             if (!$tableau) throw new Exception('الجدول غير موجود');
             if ($tableau->id_societe != $id_societe) throw new Exception('غير مصرح');
 
@@ -93,10 +95,10 @@ case 'add_tab6':
 
             if (isset($_POST['details'])) {
                 foreach ($_POST['details'] as $id_detail => $data) {
-                    $detail = DetailTab6::trouve_par_id($id_detail);
-                    if ($detail && $detail->id_tab_6 == $id_tableau) {
-                        if (isset($data['date_retraite'])) {
-                            $detail->date_retraite = $data['date_retraite'];
+                    $detail = DetailTab6_2::trouve_par_id($id_detail);
+                    if ($detail && $detail->id_tab_6_2 == $id_tableau) {
+                        if (isset($data['nbr_annee'])) {
+                            $detail->nbr_annee = $data['nbr_annee'];
                         }
                         if (isset($data['observations'])) {
                             $detail->observations = trim($data['observations']);
@@ -113,16 +115,16 @@ case 'add_tab6':
         case 'delete_tab6':
             $id = intval($_POST['id'] ?? 0);
             if ($id <= 0) throw new Exception('معرف غير صالح');
-            $tableau = Tableau6::trouve_par_id($id);
+            $tableau = Tableau6_2::trouve_par_id($id);
             if (!$tableau) throw new Exception('الجدول غير موجود');
             if ($tableau->id_societe != $current_user->id_societe && $current_user->type == 'utilisateur') {
                 throw new Exception('غير مصرح بالحذف');
             }
-            $details = DetailTab6::trouve_par_tableau($id);
+            $details = DetailTab6_2::trouve_par_tableau($id);
             foreach ($details as $d) {
                 $d->delete();
             }
-            if ($tableau->delete()) {
+            if ($tableau->supprime()) {
                 $response['success'] = true;
                 $response['message'] = 'تم حذف الجدول';
             } else {

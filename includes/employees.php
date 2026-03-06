@@ -6,16 +6,17 @@ require_once('fonctions.php');
 class Employees{
 
 	protected static $nom_table="employees"; 
-	protected static $champs = array('id', 'nom','prenom','date_naissance','id_grade', 'id_societe');
+	protected static $champs = array('id', 'nom','prenom','date_naissance','id_grade', 'id_societe', 'nbr_annee', 'date_debut_emplois');
 	public $id;
 	public $nom;
 	public $prenom;
 	public $date_naissance;	
 	public $id_grade;
     public $id_societe;
+	public $nbr_annee;
+	public $date_debut_emplois;
 	
-public static function trouve_retraite_par_societe($id_societe, $annee) {
-    
+public static function trouve_retraite_par_societe($id_societe, $annee) {    
 
     $sql = "SELECT * FROM  employees
                 WHERE id_societe = {$id_societe} 
@@ -25,20 +26,23 @@ public static function trouve_retraite_par_societe($id_societe, $annee) {
     return self::trouve_par_sql($sql);
 }
 
-	public static function trouver_par_login($username, $mot_passe) {
-    global $bd;
-    $username = $bd->escape_value($username);
+public static function trouve_retraite_par_age_par_societe($id_societe, $annee) {    
 
-    $sql = "SELECT * FROM accounts WHERE user = '{$username}' LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-    if (!empty($result_array)) {
-        $user = array_shift($result_array);
-        if (password_verify($mot_passe, $user->mot_passe)) {
-            return $user;
-        }
-    }
-    return false;
+    $sql = "SELECT 
+    id,
+    nom,
+    prenom,
+    date_naissance,
+	id_grade,
+     ($annee - YEAR(date_debut_emplois)) AS nbr_annee
+FROM employees
+WHERE id_societe = {$id_societe}
+AND YEAR(date_naissance) <= $annee - 60
+ORDER BY nom, prenom";
+
+    return self::trouve_par_sql($sql);
 }
+
  public static function trouve_responsable_societe($id_societe) {
         $q = "SELECT * FROM accounts WHERE id_societe = $id_societe AND type = 'utilisateur' LIMIT 1";
         return  self::trouve_par_sql($q);
@@ -83,17 +87,7 @@ public static function redirection_par_role($user) {
 }
 // Ajoutez ces méthodes à votre classe Accounts existante
 
-public static function trouver_par_login_simple($username) {
-    global $bd;
-    $username = $bd->escape_value($username);
 
-    $sql = "SELECT * FROM accounts WHERE user = '{$username}' LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-    if (!empty($result_array)) {
-        return array_shift($result_array);
-    }
-    return false;
-}
   public function nom_compler() {
     if(isset($this->nom) && isset($this->prenom)) {
       return $this->nom . " " . $this->prenom;
@@ -101,67 +95,10 @@ public static function trouver_par_login_simple($username) {
       return "";
     }
   }
-	public static function count_util(){
-		global $bd;
-		$q =  "SELECT count(*) FROM ".self::$nom_table;
-		$q .= " WHERE type !='administrateur' "; 
-		
-		$result_array = $bd->requete($q);
-		return !empty($result_array) ? $bd->num_rows($result_array): false;
-	}
-		public static function count_not_active(){
-		global $bd;
-		$q =  "SELECT * FROM ".self::$nom_table;
-		$q .= " WHERE active ='0' "; 
-		
-		$result_array = $bd->requete($q);
-		return !empty($result_array) ? $bd->num_rows($result_array): false;
-	}
+
 	
-	public static function  trouve_par_login($login){
-		global $bd;
-		$sql  = "SELECT * FROM ".self::$nom_table." ";
-	    $sql .= "WHERE user = '".$login."' ";
-	    $sql .= "or  mobile = '".$login."' ";
-	    $sql .= "LIMIT 1";
-	    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
-	public static function  trouve_par_login_admin($login){
-		global $bd;
-		$sql  = "SELECT * FROM ".self::$nom_table." ";
-	    $sql .= "WHERE type  = 'administrateur' ";
-	    $sql .= "and ( user = '".$login."' ";
-	    $sql .= " or mobile = '".$login."' )";
-	    $sql .= "AND active = '1' ";
-	    $sql .= "LIMIT 1";
-	    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
 
 
-	public static function valider($login="", $mot_passe="") {
-    global $bd;
-
-    $sql  = "SELECT * FROM ".self::$nom_table." ";
-    $sql .= "WHERE password = '".SHA1($mot_passe)."' ";
-    $sql .= "AND ( user= '{$login}' ";
-    $sql .= "OR mobile = '".$login."') ";
-    $sql .= "LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
-	
-	public function date_der(){
-	global $bd;
-     $sql  = "UPDATE ".self::$nom_table." SET ";
-     $sql .= "date_der  = '".mysql_datetime()."' ";
-	 $sql .= " WHERE id =".$this->id." ";
-	 $sql .= "LIMIT 1 ";
-	
-	 $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
 	
 		public  function  existe(){
 	 global $bd;
@@ -172,25 +109,8 @@ public static function trouver_par_login_simple($username) {
     $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
 	}
-	
-	public  function  login_euser_existe(){
-	 global $bd;
-	 $sql  = "SELECT * FROM ".self::$nom_table." ";
-    $sql .= "WHERE user = '".$this->user."' ";
-	$sql .= "AND mobile = '".$this->mobile."' ";
-    $sql .= "LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
-	
-	public  function  login_existe(){
-	 global $bd;
-	 $sql  = "SELECT * FROM ".self::$nom_table." ";
-    $sql .= "WHERE user = '".$this->user."' ";
-    $sql .= "LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
+
+
 	public static function recherche($nom,$euser,$tel){
 	global $bd ;
 	
@@ -198,26 +118,8 @@ public static function trouver_par_login_simple($username) {
 	return  self::trouve_par_sql($q);
 		
 	}
-   
-	
-	public  function  mot_passe_existe(){
-	 global $bd;
-	 $sql  = "SELECT * FROM ".self::$nom_table." ";
-    $sql .= "WHERE mot_passe = '".$this->mot_passe."' ";
-    $sql .= "LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
-	
-	public  function  euser_existe(){
-	 global $bd;
-	 $sql  = "SELECT * FROM ".self::$nom_table." ";
-    $sql .= "WHERE user = '".$this->user."' ";
-    $sql .= "LIMIT 1";
-    $result_array = self::trouve_par_sql($sql);
-		return !empty($result_array) ? array_shift($result_array) : false;
-	}
-	
+  
+
 
 	public static function count(){
 	
@@ -225,50 +127,13 @@ public static function trouver_par_login_simple($username) {
 	return count($users);
 	}
 	
-	public static function not_sup_admin(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type !='super_administrateur'";
-    return  self::trouve_par_sql($q);
-	}
-	public static function ens(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type ='Enseignant'";
-    return  self::trouve_par_sql($q);
-	}
-	public static function eleve(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type ='eleve'";
-    return  self::trouve_par_sql($q);
-	}
+
 	
 	
-	public static function select_par_ordre1($order,$crois,$start,$display){
+
+	public static function trouve_par_societe($societe){
 	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type !='administrateur'";
-	$q .= " ORDER BY {$order} {$crois} ";
-	$q .= " LIMIT {$start}, {$display} "; 
-	return  self::trouve_par_sql($q);
-	}
-	
-	public static function not_admin(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type !='administrateur'";
-    return  self::trouve_par_sql($q);
-	}
-	
-	public static function admin(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type ='administrateur'";
-    return  self::trouve_par_sql($q);
-	}
-	public static function Agence(){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type ='Agence'";
-    return  self::trouve_par_sql($q);
-	}
-	public static function trouve_par_type($type){
-	$q =  "SELECT * FROM ".self::$nom_table;
-	$q .= " WHERE type ='{$type}'";
+	$q .= " WHERE id_societe ='{$societe}'";
     return  self::trouve_par_sql($q);
 	}
 	
