@@ -162,6 +162,7 @@ if ($existe_tab_1_1) {
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>                                        
                                         <th width="10%" class="text-center">الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -190,6 +191,26 @@ if ($existe_tab_1_1) {
                                             <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                         </td>
                                         <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>
+                                       
+
+
+<td class="text-center">
+    <?php if (!empty($tabls->attachment)): ?>
+        <a href="<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab1', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab1', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab1', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabls->statut != 'validé'):?>
                                             <a href="?action=edit_tab1&id=<?php echo $existe; ?>" class="btn btn-sm btn-warning">
@@ -244,6 +265,7 @@ if ($existe_tab_1_1) {
                                         <th>الحالة</th>
                                         <th>تاريخ التقديم</th>
                                         <th width="10%" class="text-center">الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th>الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -272,6 +294,23 @@ if ($existe_tab_1_1) {
                                             <?php echo $tabl_1_1->date_valide ? date('d/m/Y', strtotime($tabl_1_1->date_valide)) : '---'; ?>
                                         </td>
                                         <td class="text-center"><?php echo $tabl_1_1->commentaire_admin; ?></td>
+                                        <td class="text-center">
+    <?php if (!empty($tabl_1_1->attachment)): ?>
+        <a href="<?php echo htmlspecialchars($tabl_1_1->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tabl_1_1', <?php echo $tabl_1_1->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tabl_1_1', <?php echo $tabl_1_1->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tabl_1_1', <?php echo $tabl_1_1->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
                                         <td class="text-center">
                                         <?php if ($exercice_actif && $tabl_1_1->statut != 'validé'):?>
                                             <a href="?action=edit_tab1_1&id=<?php echo $existe_tab_1_1; ?>" class="btn btn-sm btn-warning">
@@ -899,6 +938,8 @@ if ($existe_tab_1_1) {
              
 
 <!-- JavaScript AJAX -->
+
+
 
 
 <style>

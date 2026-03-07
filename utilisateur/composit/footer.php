@@ -36,7 +36,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-    <script>
+
+    <!-- Modal d'upload (à placer dans le footer de la page) -->
+
+<script>
+       
       const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
       const Default = {
         scrollbarTheme: 'os-theme-light',
@@ -106,6 +110,91 @@ function showAlert(message, type = 'success') {
 } 
 
 </script>
+
+<?php if ($action == "list_tab1"){?>
+<!-- Modal d'upload (à placer dans le footer de la page) -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-upload me-2"></i> رفع مرفق</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="hidden" name="table_type" id="upload_table_type">
+                    <input type="hidden" name="record_id" id="upload_record_id">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">اختر ملفاً</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                </form>
+                <div id="uploadProgress" class="progress d-none">
+                    <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="uploadSubmit"><i class="fas fa-upload me-1"></i> رفع</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Fonctions JavaScript (à ajouter dans la balise script)
+function uploadAttachment(table_type, record_id) {
+    $('#upload_table_type').val(table_type);
+    $('#upload_record_id').val(record_id);
+    $('#uploadModal').modal('show');
+}
+
+$('#uploadSubmit').click(function() {
+    var formData = new FormData($('#uploadForm')[0]);
+    $.ajax({
+        url: 'ajax/upload_attachment.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    var percent = Math.round((e.loaded / e.total) * 100);
+                    $('#uploadProgress').removeClass('d-none');
+                    $('#uploadProgress .progress-bar').css('width', percent + '%').text(percent + '%');
+                }
+            }, false);
+            return xhr;
+        },
+        success: function(response) {
+            if (response.success) {
+                $('#uploadModal').modal('hide');
+                location.reload(); // Recharger la page pour afficher le nouveau lien
+            } else {
+                alert(response.message || 'Erreur lors de l\'upload');
+            }
+        },
+        error: function() {
+            alert('Erreur de connexion');
+        }
+    });
+});
+
+function deleteAttachment(table_type, record_id) {
+    if (confirm('هل أنت متأكد من حذف هذا المرفق؟')) {
+        $.post('ajax/delete_attachment.php', { table_type: table_type, record_id: record_id }, function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                alert(response.message);
+            }
+        }, 'json');
+    }
+}
+    </script>
+<?php } ?>
+
 <?php if ($action == "add_tab1" || $action == "edit_tab1"){?>
 <script>
     function deleteDetailSup(id) {
