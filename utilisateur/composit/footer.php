@@ -1866,6 +1866,164 @@ function supprimerTableau4_1(id) {
 </script>
 <?php }?>
 
+ <?php if ($action == "add_tab7" || $action == "edit_tab7"){ ?>
+<script>
+let compteurLignes = <?php echo isset($index) ? $index : 0; ?>;
+let tousLesGrades = <?php echo json_encode($grades_js); ?>;
+
+$(document).ready(function() {
+    $('.select-grade').select2({ placeholder: "اختر الدرجة", allowClear: true, width: '100%', dir: "rtl" });
+    $(document).on('change', '.select-grade', function() {
+        const row = $(this).closest('tr');
+        const selected = $(this).find('option:selected');
+        const code = selected.data('code') || '';
+        const idGrade = selected.val();
+        row.find('input[name*="[id_grade]"]').val(idGrade);
+    });
+    // Calcul automatique du total (à implémenter si nécessaire)
+});
+
+function ajouterLigne() {
+    const tbody = $('#tbody_details7');
+    const index = compteurLignes++;
+    let options = '<option value="">اختر الدرجة</option>';
+    tousLesGrades.forEach(g => options += `<option value="${g.id}" data-code="${g.code}">${g.designation}</option>`);
+    const row = `
+        <tr>
+            <td>
+                <input type="hidden" name="details[${index}][id]" value="0">
+                <input type="hidden" name="details[${index}][id_grade]" value="">
+                <select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select>
+            </td>
+            <td><input type="number" name="details[${index}][nbr_agent_formation_initiale]" class="form-control" value="0" min="0"></td>
+            <td><input type="date" name="details[${index}][date_agent_formation_initiale]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][duree_agent_formation_initiale]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][nbr_agent_formation_supplementaire]" class="form-control" value="0" min="0"></td>
+            <td><input type="date" name="details[${index}][date_agent_formation_supplementaire]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][duree_agent_formation_supplementaire]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][nbr_agent_formation_mise_niveau]" class="form-control" value="0" min="0"></td>
+            <td><input type="date" name="details[${index}][date_agent_formation_mise_niveau]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][duree_agent_formation_mise_niveau]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][nbr_agent_formation_recyclage]" class="form-control" value="0" min="0"></td>
+            <td><input type="date" name="details[${index}][date_agent_formation_recyclage]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][duree_agent_formation_recyclage]" class="form-control" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][total]" class="form-control" value="0" readonly></td>
+            <td><textarea name="details[${index}][observations]" class="form-control" rows="1"></textarea></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `;
+    tbody.append(row);
+    tbody.find('tr:last .select-grade').select2({ placeholder: "اختر الدرجة", allowClear: true, width: '100%', dir: "rtl" });
+}
+
+function supprimerLigne(btn) {
+    const row = $(btn).closest('tr');
+    const idDetail = row.data('id-detail');
+    if (idDetail && idDetail > 0) {
+        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
+            $('<input>').attr({ type: 'hidden', name: 'supprimer_details[]', value: idDetail }).appendTo(row.parent());
+            row.hide();
+        }
+    } else {
+        row.remove();
+    }
+}
+
+function enregistrerBrouillon() {
+    const form = $('#formulaireTableau7')[0];
+    const input = $('<input>').attr({ type: 'hidden', name: 'statut', value: 'brouillon' });
+    $(form).append(input);
+    if (confirm('هل تريد حفظ الجدول كمسودة؟')) {
+        soumettreFormulaire(form, 'brouillon');
+    } else {
+        input.remove();
+    }
+}
+
+// Gestion de la soumission
+document.getElementById('formulaireTableau7')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
+        const selects = this.querySelectorAll('.select-grade');
+        selects.forEach(select => {
+            const row = select.closest('tr');
+            const hidden = row.querySelector('input[name*="[id_grade]"]');
+            if (hidden) hidden.value = select.value;
+        });
+        soumettreFormulaire(this, 'validé');
+    }
+});
+
+function soumettreFormulaire(form, statut) {
+    const formData = new FormData(form);
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...').prop('disabled', true);
+    fetch('ajax/traitement_tab7.php', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                setTimeout(() => {
+                    if (statut == 'brouillon') window.location.reload();
+                    else window.location.href = '?action=list_tab7&success=1';
+                }, 1500);
+            } else {
+                showMessage(data.message, 'danger');
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        })
+        .catch(() => {
+            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
+            submitBtn.html(originalText).prop('disabled', false);
+        });
+}
+
+function showMessage(msg, type) {
+    const alert = $('<div class="alert alert-'+type+' alert-dismissible fade show">'+msg+'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+    $('.app-content .container-fluid').prepend(alert);
+    setTimeout(() => alert.alert('close'), 5000);
+}
+
+function supprimerTableau(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
+        fetch('ajax/traitement_tab7.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab7&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ في الاتصال', 'danger'));
+    }
+}
+// Dans le script de tab7.php, après la déclaration de compteurLignes, ajoutez :
+
+function calculerTotalLigne(row) {
+    let total = 0;
+    total += parseInt(row.find('input[name*="[nbr_agent_formation_initiale]"]').val()) || 0;
+    total += parseInt(row.find('input[name*="[nbr_agent_formation_supplementaire]"]').val()) || 0;
+    total += parseInt(row.find('input[name*="[nbr_agent_formation_mise_niveau]"]').val()) || 0;
+    total += parseInt(row.find('input[name*="[nbr_agent_formation_recyclage]"]').val()) || 0;
+    row.find('input[name*="[total]"]').val(total);
+}
+
+// Dans $(document).ready, après l'initialisation Select2 :
+$('#tbody_details7 tr').each(function() {
+    calculerTotalLigne($(this));
+});
+
+// Événement sur les champs de nombre
+$(document).on('input', 'input[name*="nbr_agent_formation_initiale"], input[name*="nbr_agent_formation_supplementaire"], input[name*="nbr_agent_formation_mise_niveau"], input[name*="nbr_agent_formation_recyclage"]', function() {
+    calculerTotalLigne($(this).closest('tr'));
+});
+
+// Dans la fonction ajouterLigne, après avoir ajouté la ligne, appelez :
+calculerTotalLigne(tbody.find('tr:last'));
+
+</script>
+
+<?php }?>
+
 
     <!--end::Script-->
   </body>
