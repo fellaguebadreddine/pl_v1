@@ -6,7 +6,7 @@ require_once('fonctions.php');
 class Tableau6_2 {
     protected static $nom_table="tableau_6_2";
 	protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user',
-     'date_creation', 'commentaire_admin','id_admin_validateur');
+     'date_creation', 'commentaire_admin','id_admin_validateur', 'attachment');
 	public $id;	
 	public $id_societe;
 	public $statut;
@@ -16,6 +16,7 @@ class Tableau6_2 {
     public $date_creation;
 	public $commentaire_admin;
 	public $id_admin_validateur;
+	public $attachment;
    
 	public static function existe_pour_societe_annee($id_societe, $annee) {
 		global $bd;
