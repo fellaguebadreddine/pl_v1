@@ -38,6 +38,33 @@
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
 
     <!-- Modal d'upload (à placer dans le footer de la page) -->
+     <div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="fas fa-upload me-2"></i> رفع مرفق</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="hidden" name="table_type" id="upload_table_type">
+                    <input type="hidden" name="record_id" id="upload_record_id">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">اختر ملفاً</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                </form>
+                <div id="uploadProgress" class="progress d-none">
+                    <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="uploadSubmit"><i class="fas fa-upload me-1"></i> رفع</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
        
@@ -111,35 +138,9 @@ function showAlert(message, type = 'success') {
 
 </script>
 
-<?php if ($action == "list_tab1"){?>
+
 <!-- Modal d'upload (à placer dans le footer de la page) -->
-<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" dir="rtl">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="fas fa-upload me-2"></i> رفع مرفق</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="uploadForm" enctype="multipart/form-data">
-                    <input type="hidden" name="table_type" id="upload_table_type">
-                    <input type="hidden" name="record_id" id="upload_record_id">
-                    <div class="mb-3">
-                        <label for="file" class="form-label">اختر ملفاً</label>
-                        <input type="file" class="form-control" id="file" name="file" required>
-                    </div>
-                </form>
-                <div id="uploadProgress" class="progress d-none">
-                    <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                <button type="button" class="btn btn-primary" id="uploadSubmit"><i class="fas fa-upload me-1"></i> رفع</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <script>
     // Fonctions JavaScript (à ajouter dans la balise script)
 function uploadAttachment(table_type, record_id) {
@@ -193,7 +194,6 @@ function deleteAttachment(table_type, record_id) {
     }
 }
     </script>
-<?php } ?>
 
 <?php if ($action == "add_tab1" || $action == "edit_tab1"){?>
 <script>

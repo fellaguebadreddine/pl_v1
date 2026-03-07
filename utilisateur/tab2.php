@@ -174,6 +174,7 @@ if ($action == "add_tab2_2") {
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>
                                         <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -201,6 +202,23 @@ if ($action == "add_tab2_2") {
                                                 <?php echo $tabls->date_valide ? date('d/m/Y', strtotime($tabls->date_valide)) : '---'; ?>
                                             </td>
                                             <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>  
+                                            <td class="text-center">
+    <?php if (!empty($tabls->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
                                                     <a href="?action=edit_tab2&id=<?php echo $existe; ?>" class="btn btn-sm btn-warning">
@@ -261,6 +279,7 @@ if ($action == "add_tab2_2") {
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>
                                         <th width="10%" class="text-center">  الملاحظات</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -288,6 +307,23 @@ if ($action == "add_tab2_2") {
                                                 <?php echo $tabls_2_1->date_valide ? date('d/m/Y', strtotime($tabls_2_1->date_valide)) : '---'; ?>
                                             </td>
                                             <td class="text-center"><?php echo $tabls_2_1->commentaire_admin; ?></td>  
+                                                                                        <td class="text-center">
+    <?php if (!empty($tabls_2_1->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($tabls_2_1->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2_1', <?php echo $tabls_2_1->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2_1', <?php echo $tabls_2_1->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2_1', <?php echo $tabls_2_1->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls_2_1->statut != 'validé'): ?>
                                                     <a href="?action=edit_tab2_1&id=<?php echo $existe_tab_2_1; ?>" class="btn btn-sm btn-warning">
@@ -348,6 +384,7 @@ if ($action == "add_tab2_2") {
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>
                                         <th width="10%" class="text-center">  الملاحظات</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -375,6 +412,23 @@ if ($action == "add_tab2_2") {
                                                 <?php echo $tabls_2_2->date_valide ? date('d/m/Y', strtotime($tabls_2_2->date_valide)) : '---'; ?>
                                             </td>
                                             <td class="text-center"><?php echo $tabls_2_2->commentaire_admin; ?></td>  
+                                            <td class="text-center">
+    <?php if (!empty($tabls_2_2->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($tabls_2_2->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab1', <?php echo $tabls_2_2->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab1', <?php echo $tabls_2_2->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab1', <?php echo $tabls_2_2->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
                                             <td class="text-center">
                                                 <?php if ($exercice_actif && $tabls_2_2->statut != 'validé'): ?>
                                                     <a href="?action=edit_tab2_2&id=<?php echo $existe_tab_2_2; ?>" class="btn btn-sm btn-warning">

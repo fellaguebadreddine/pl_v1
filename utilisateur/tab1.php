@@ -196,7 +196,7 @@ if ($existe_tab_1_1) {
 
 <td class="text-center">
     <?php if (!empty($tabls->attachment)): ?>
-        <a href="<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+        <a href="../<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
             <i class="fas fa-file-download"></i>
         </a>
         <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab1', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
@@ -296,7 +296,7 @@ if ($existe_tab_1_1) {
                                         <td class="text-center"><?php echo $tabl_1_1->commentaire_admin; ?></td>
                                         <td class="text-center">
     <?php if (!empty($tabl_1_1->attachment)): ?>
-        <a href="<?php echo htmlspecialchars($tabl_1_1->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+        <a href="../<?php echo htmlspecialchars($tabl_1_1->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
             <i class="fas fa-file-download"></i>
         </a>
         <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tabl_1_1', <?php echo $tabl_1_1->id; ?>)" title="تغيير المرفق">
