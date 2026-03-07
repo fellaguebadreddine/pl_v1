@@ -30,6 +30,7 @@ $class_map = [
     'tabl_1_1'  => 'Tableau1_1',
     'tab2'    => 'Tableau2',
     'tab2_1'    => 'Tableau2_1',
+    'tab2_2'    => 'Tableau2_2',
     'tab3'    => 'Tableau3',
     'tab4'    => 'Tableau4',
     'tab4_1'  => 'Tableau4_1',
