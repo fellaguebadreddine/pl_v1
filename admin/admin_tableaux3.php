@@ -80,6 +80,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>                                        
                                         <th width="10%" class="text-center">الملاحظة</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -110,6 +111,12 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                             <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
                                         </td>
                                         <td><?php echo $tabls->commentaire_admin; ?></td>
+                                         <td class="text-center">
+                                            <?php if (!empty($tabls->attachment)): ?>
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i></a>
+                                            <?php endif;?>
+                                        </td>
                                         <td class="text-center">
                                       
                                             <a href="details_tableau3.php?action=affchier_detail&id=<?php echo $tabls->id; ?>" 

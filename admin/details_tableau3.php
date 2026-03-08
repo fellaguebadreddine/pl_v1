@@ -169,10 +169,7 @@ require_once("composit/header.php");
             </div>
 
             <!-- Tableau des détails -->
-            <div class="card mb-4">
-                <div class="card-header bg-info text-white">
-                    <h5 class="card-title mb-0">بيانات الحركة</h5>
-                </div>
+            <div class="col-md-12 mb-4">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped mb-0">
@@ -285,6 +282,9 @@ require_once("composit/header.php");
                                 هذا الجدول مسودة. يمكنك المصادقة عليه مباشرة أو إضافة ملاحظة لطلب تعديل.
                             <?php endif; ?>
                         </div>
+
+                        <script> var tableauType = 'tab3'; // exemple </script>
+
                         <div class="d-flex justify-content-center gap-3">
                             <!-- Bouton de validation -->
                             <button type="button" class="btn btn-success btn-lg" onclick="validerTableau(<?php echo $id; ?>)">
@@ -321,5 +321,5 @@ require_once("composit/header.php");
         </div>
     </div>
 </main>
-<script> var tableauType = 'tab4'; // exemple </script>
+
 <?php require_once("composit/footer.php"); ?>

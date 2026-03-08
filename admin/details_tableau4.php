@@ -84,8 +84,7 @@ require_once("composit/header.php");
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header bg-info text-white">بيانات الجدول</div>
+            <div class="col-md-12 mb-4">
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped mb-0">

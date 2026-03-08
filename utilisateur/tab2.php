@@ -786,6 +786,7 @@ if ($action == "add_tab2_2") {
                         <div class="portlet-body table-responsive hauts_fonctionnaires">
                             <table class="table table-bordered table-striped">
                                 <thead>
+                                    <tr>
                                         <th > رقم الترتيب</th>
                                         <th > تعيين طرف النزاع</th>
                                         <th > طبيعة الخطأ</th>

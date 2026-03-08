@@ -107,8 +107,11 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         </td>                                        
                                         <td><?php echo $row->commentaire_admin; ?></td>
                                          <td class="text-center">
+                                            <?php if (!empty($tabls->attachment)): ?>
                                             <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
                                             <i class="fas fa-file-download"></i>
+                                            </a>
+                                            <?php endif; ?>
                                         </td>
                                         <td class="text-center">
                                       

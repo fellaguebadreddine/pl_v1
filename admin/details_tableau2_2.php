@@ -18,7 +18,7 @@ if ($id <= 0) {
     redirect_to('admin_tableaux2.php?error=معرف غير صالح');
 }
 
-$tableau = Tableau2_1::trouve_par_id($id);
+$tableau = Tableau2_2::trouve_par_id($id);
 if (!$tableau) {
     redirect_to('admin_tableaux2.php?error=الجدول غير موجود');
 }
@@ -26,7 +26,7 @@ if (!$tableau) {
 // Récupération des détails
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $admin_createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab2_1::trouve_par_tableau($id);
+$details = DetailTab2_2::trouve_par_tableau($id);
 
 $annee = $tableau->annee;
 $date_fin = '31/12/' . $annee;
@@ -100,7 +100,7 @@ require_once("composit/header.php");
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal">
                         <i class="fas fa-comment me-1"></i> إضافة ملاحظة
                     </button>
-                    <a href="../utilisateur/print_tab_2_1.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
+                    <a href="../utilisateur/print_tab_2_2.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
                         <i class="fas fa-print me-1"></i> طباعة
                     </a>
                 </div>
@@ -167,15 +167,16 @@ require_once("composit/header.php");
                            <thead>
                                       <tr>
                                         <th > رقم الترتيب</th>
-                                        <th > الاسم و اللقب</th>
+                                        <th > تعيين طرف النزاع</th>
                                         <th > طبيعة الخطأ</th>
-                                        <th >تاريخ التوقف</th>
-                                        <th >تاريخ إجتماع لجنة التأديب</th>
-                                        <th>مضمون العقوبة</th>
-                                        <th>تاريخ الطعن</th>
-                                        <th>تاريخ إجتماع لجنة الطعن </th>
-                                        <th>قرار لجنة الطعن</th>
-                                        <th>تطبيق القرار</th>
+                                        <th > الوظيفة أو الرتبة</th>
+                                        <th >   أطراف أخرى في النزاع</th>
+                                        <th> موضوع المنازعة</th>
+                                        <th> الجهة القضائية المختصة</th>
+                                        <th>   طرف الدفاع عن مصالح الدولة (مذكرات، محامي) </th>
+                                        <th>  الحكم القضائي</th>
+                                        <th> حجية الشيئ</th>
+                                        <th>  الطعون القضائية</th>
                                         <th>الملاحظات</th>
                                     </tr>
 
@@ -216,7 +217,7 @@ require_once("composit/header.php");
                         <?php endif; ?>
                     </div>
 
-                    <script> var tableauType = 'tab2_1'; // exemple </script>
+                    <script> var tableauType = 'tab2_2'; // exemple </script>
 
                     <div class="d-flex justify-content-center gap-3">
                         <!-- Bouton de validation -->
