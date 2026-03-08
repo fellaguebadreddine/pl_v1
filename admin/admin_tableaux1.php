@@ -77,6 +77,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>                                       
                                         <th width="10%" class="text-center">الملاحظة</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -105,6 +106,10 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                             <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
                                         </td>                                        
                                         <td><?php echo $row->commentaire_admin; ?></td>
+                                         <td class="text-center">
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i>
+                                        </td>
                                         <td class="text-center">
                                       
                                             <a href="details_tableau.php?action=affchier_detail&id=<?php echo $row->id; ?>" 
@@ -152,6 +157,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>                                       
                                         <th width="10%" class="text-center">الملاحظة</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -180,6 +186,10 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                             <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
                                         </td>                                        
                                         <td><?php echo $row->commentaire_admin; ?></td>
+                                        <td class="text-center">
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i>
+                                        </td>
                                         <td class="text-center">
                                       
                                             <a href="details_tableau1_1.php?action=affchier_detail&id=<?php echo $row->id; ?>" 

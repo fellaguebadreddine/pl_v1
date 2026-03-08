@@ -15,25 +15,25 @@ if (!$current_user) {
 // Récupération de l'ID du tableau
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) {
-    redirect_to('admin_tableaux1.php?error=معرف غير صالح');
+    redirect_to('admin_tableaux2.php?error=معرف غير صالح');
 }
 
-$tableau = Tableau1_1::trouve_par_id($id);
+$tableau = Tableau2_1::trouve_par_id($id);
 if (!$tableau) {
-    redirect_to('admin_tableaux1.php?error=الجدول غير موجود');
+    redirect_to('admin_tableaux2.php?error=الجدول غير موجود');
 }
 
 // Récupération des détails
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $admin_createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab1_1::trouve_par_tableau($id);
+$details = DetailTab2_1::trouve_par_tableau($id);
 
 $annee = $tableau->annee;
 $date_fin = '31/12/' . $annee;
 
 $titre = "تفاصيل الجدول رقم " . $id;
-$active_menu = "tab_1";
-$active_submenu = "tab_1";
+$active_menu = "tab_2";
+$active_submenu = "tab_2";
 
 require_once("composit/header.php");
 ?>
@@ -100,7 +100,7 @@ require_once("composit/header.php");
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal">
                         <i class="fas fa-comment me-1"></i> إضافة ملاحظة
                     </button>
-                    <a href="print_tab_1.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
+                    <a href="print_tab_2_2.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
                         <i class="fas fa-print me-1"></i> طباعة
                     </a>
                 </div>
@@ -161,116 +161,45 @@ require_once("composit/header.php");
                 </div>
             </div>
 
-            <!-- Section الوظائف العليا -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead class="table-light">                    
-                                <tr>
-                                    <th colspan="4"></th>
-                                    <th colspan="5">  التعداد الحقيقي إلى غاية 31-12 <?php echo $annee;?></th>
-                                    <th colspan="4">عقد غير محدد المدة</th>
-                                    <th colspan="6">عقد محدد المدة</th>
-                                </tr>
-                                <tr class="table-light">
-                                    <th  class="text-center">القانون الأساسي</th>
-                                    <th class="text-center">السلك و الرتبة </th>
-                                    <th class="text-center">  التعداد الحقيقي </th>                        
-                                    <th  class="text-center"> التعداد المالي لسنة <?php echo $annee;?></th>
-                                    <th  class="text-center">المرسمون</th>
-                                    <th  class="text-center">المتربصون</th>
-                                    <th  class="text-center">المجموع </th>
-                                    <th class="text-center">من بينهم نساء</th>
-                                    <th class="text-center">الفرق</th>
-                                    <th>التوقيت الكامل</th>
-                                    <th>من بينهم نساء </th>
-                                    <th>التوقيت الجزئي</th>
-                                    <th>من بينهم نساء </th>
-                                    <th>التوقيت الكامل</th>
-                                    <th>من بينهم نساء </th>
-                                    <th>التوقيت الجزئي</th>
-                                    <th>من بينهم نساء </th>
-                                    <th>الملاحظة</th>
-                                </tr>
-                            </thead>
-                            <tbody id="existing_hauts_fonctionnaires">
-                                <?php if (!empty($details)): ?>
-                                    <?php foreach ($details as $detail): 
-                                    $grade = Grade::trouve_par_id($detail->id_grade);
-                                        ?>
-                                                                
-                                <tr data-id="<?php echo $detail->id; ?>">
-                                        <td>
-                                            <?php echo $grade->loi; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $grade ? $grade->grade : ''; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->effectif_reel_31_dec; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->effectif_reel_annee_1 ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->titulaires; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->stagaires; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->tol_titu_stag; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->femmes; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->difrence; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->titulaie_temps_complet; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->titulaie_femmes_complet; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->titulaie_temps_partiel; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->titulaie_femmes_partiel; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->contrat_temps_complet; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->contrat_femme_complet; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->contrat_temps_pratiel; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo $detail->contrat_femmes_pratiel; ?>
-                                        </td>
-                                        <td>
-                                            <?php echo htmlspecialchars($detail->observations); ?>
-                                        </td>
+            <div class="row mb-4">
+                   <div class="portlet-body ">
+                     <table class="table table-bordered table-striped">
+                           <thead>
+                                      <tr>
+                                        <th > رقم الترتيب</th>
+                                        <th > الاسم و اللقب</th>
+                                        <th > طبيعة الخطأ</th>
+                                        <th >تاريخ التوقف</th>
+                                        <th >تاريخ إجتماع لجنة التأديب</th>
+                                        <th>مضمون العقوبة</th>
+                                        <th>تاريخ الطعن</th>
+                                        <th>تاريخ إجتماع لجنة الطعن </th>
+                                        <th>قرار لجنة الطعن</th>
+                                        <th>تطبيق القرار</th>
+                                        <th>الملاحظات</th>
                                     </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr id="noData">
-                                        <td colspan="19" class="text-center text-muted">
-                                            لا توجد بيانات مسجلة
-                                        </td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                            <tfoot>
-                        </table>
-                    </div>
-                </div>
+
+                                </thead>
+                                <tbody>
+                               <?php if (!empty($details)): ?>
+                                        
+                                       
+                                            <tr id="noData">
+                                            <td colspan="11" class="text-center text-muted">
+                                            لا شيئ
+                                            </td>
+                                        </tr>
+                                       
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+
             </div>
-            <br>
+
+            
+
+
             <!-- Actions d'administration (validation/rejet) -->
             <?php if ($tableau->statut != 'validé'): ?>
             <div class="card mb-4 border-danger">
@@ -286,7 +215,7 @@ require_once("composit/header.php");
                             هذا الجدول مسودة. يمكنك المصادقة عليه مباشرة أو إضافة ملاحظة لطلب تعديل.
                         <?php endif; ?>
                     </div>
-                    <script> var tableauType = 'tab1_1'; // exemple </script>
+                    <script> var tableauType = 'tab2'; // exemple </script>
                     <div class="d-flex justify-content-center gap-3">
                         <!-- Bouton de validation -->
                         <button type="button" class="btn btn-success btn-lg" onclick="validerTableau(<?php echo $id; ?>)">

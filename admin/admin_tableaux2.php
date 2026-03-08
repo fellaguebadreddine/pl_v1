@@ -156,9 +156,9 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    $tab_1tabls = Tableau2_1::trouve_par_societe($nav_societe->id_societe);
-                                    if (!empty($tab_1tabls)): 
-                                        foreach ($tab_1tabls as $row): 
+                                    $tab_2_1tabls = Tableau2_1::trouve_par_societe($nav_societe->id_societe);
+                                    if (!empty($tab_2_1tabls)): 
+                                        foreach ($tab_2_1tabls as $row): 
                                             $statut_badge = $row->statut == 'validé' ? 'success' : 
                                                           ($row->statut == 'en_attente' ? 'warning' : 'secondary');
                                     ?>

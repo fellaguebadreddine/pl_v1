@@ -680,6 +680,7 @@ if ($action == "add_tab2_2") {
                         <div class="portlet-body table-responsive hauts_fonctionnaires">
                             <table class="table table-bordered table-striped">
                                 <thead>
+                                    <tr>
                                         <th > رقم الترتيب</th>
                                         <th > الاسم و اللقب</th>
                                         <th > طبيعة الخطأ</th>
@@ -696,14 +697,12 @@ if ($action == "add_tab2_2") {
                                 </thead>
                                 <tbody id="existing_consiel">
                                     <?php if (!empty($details)): ?>
-                                        <?php foreach ($details as $detail):
                                         ?>
                                             <tr id="noData">
                                             <td colspan="11" class="text-center text-muted">
                                             لا شيئ
                                             </td>
                                         </tr>
-                                        <?php endforeach; ?>
                                     <?php endif; ?>
                                 </tbody>
                                 <tbody id="tbody_hauts">
