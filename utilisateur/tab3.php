@@ -132,6 +132,8 @@ if ($existe) {
                                         <th width="10%" class="text-center">السنة</th>
                                         <th width="10%" class="text-center">الحالة</th>
                                         <th width="15%" class="text-center">تاريخ التقديم</th>
+                                         <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th width="15%" class="text-center">الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -145,7 +147,7 @@ if ($existe) {
                                     ?>
                                     <tr>
                                         <td class="text-center">
-                                            <a href="print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                            <a href="print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-primary" target="_blank">
                                                 <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
@@ -159,7 +161,26 @@ if ($existe) {
                                         <td class="text-center">
                                             <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
                                         </td>
+                                          <td class="text-center"><?php echo $tabls->commentaire_admin; ?></td>  
                                         <td class="text-center">
+    <?php if (!empty($tabls->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
+                                        <td class="text-center">
+                                             <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
                                             <a href="?action=edit_tab3&id=<?php echo $tabls->id; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="تعديل">
                                                 <i class="fas fa-edit"></i>
@@ -168,6 +189,7 @@ if ($existe) {
                                                     class="btn btn-sm btn-danger" title="حذف">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                     <?php else: ?>

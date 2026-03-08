@@ -37,6 +37,8 @@ switch ($type) {
         break;
     case 'tab4':
         $classe = 'Tableau4';
+         case 'tab4_1':
+        $classe = 'Tableau4_1';
         break;
     // Ajouter d'autres cas si nécessaire
     default:

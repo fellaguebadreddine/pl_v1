@@ -76,6 +76,8 @@ require_once("composit/header.php");
                                         <th>السنة</th>
                                         <th>الحالة</th>
                                         <th>تاريخ التقديم</th>
+                                        <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th>الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -87,14 +89,34 @@ require_once("composit/header.php");
                                         $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
                                 ?>
                                     <tr>
-                                        <td class="text-center"><a href="print_tab4.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
+                                        <td class="text-center"><a href="print_tab4.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
                                         <td class="text-center"><?php echo $societe->raison_ar; ?></td>
                                         <td class="text-center"><?php echo $row->annee; ?></td>
                                         <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
                                         <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
+                                         <td class="text-center"><?php echo $row->commentaire_admin; ?></td>  
                                         <td class="text-center">
+    <?php if (!empty($row->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
+                                        <td class="text-center">
+                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab4&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau4(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php
@@ -136,6 +158,8 @@ require_once("composit/header.php");
                                         <th>السنة</th>
                                         <th>الحالة</th>
                                         <th>تاريخ التقديم</th>
+                                         <th width="10%" class="text-center">  الملاحظات</th>
+                                        <th width="10%" class="text-center">المرفقات</th>
                                         <th>الإجراءات</th>
                                     </tr>
                                 </thead>
@@ -147,14 +171,34 @@ require_once("composit/header.php");
                                         $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
                                 ?>
                                     <tr>
-                                        <td class="text-center"><a href="print_tab4_1.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
+                                        <td class="text-center"><a href="print_tab4_1.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
                                         <td class="text-center"><?php echo $societe->raison_ar; ?></td>
                                         <td class="text-center"><?php echo $row->annee; ?></td>
                                         <td class="text-center"><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>
                                         <td class="text-center"><?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?></td>
+                                         <td class="text-center"><?php echo $row->commentaire_admin; ?></td>  
                                         <td class="text-center">
+    <?php if (!empty($row->attachment)): ?>
+        <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+            <i class="fas fa-upload"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+            <i class="fas fa-trash"></i>
+        </button>
+    <?php else: ?>
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+            <i class="fas fa-upload"></i> إضافة
+        </button>
+    <?php endif; ?>
+</td>
+                                        <td class="text-center">
+                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab4_1&id=<?php echo $tab4_1_existant->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau4_1(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php

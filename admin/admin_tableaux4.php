@@ -53,7 +53,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول 4 </h3>
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>    المخطط التوقعي للتوظيف بعنوان سنة 2026 </h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -70,6 +70,11 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
             <?php if ($action == 'liste'): ?>
                 <!-- Onglets de navigation -->
                  <div class="card">
+                 <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول رقم 04      
+</h3>
+                </div>
+
                <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
@@ -97,7 +102,7 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                     ?>
                                     <tr>
                                        <td class="text-center">
-                                            <a href="../utilisateur/print_tab3.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                            <a href="../utilisateur/print_tab4.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-primary" target="_blank">
                                                 <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>
@@ -120,6 +125,82 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                                         <td class="text-center">
                                       
                                             <a href="details_tableau4.php?action=affchier_detail&id=<?php echo $tabls->id; ?>" 
+                                               class="btn btn-sm btn-warning me-1" title="التفاصيل">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            
+                                        </td>
+                                    </tr>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" class="text-center py-4">
+                                            <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                            لا توجد جداول مسجلة
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
+                        </tbody>
+                    </table>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <br>
+                                      <!-- Onglets de navigation -->
+                 <div class="card">
+                    <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول رقم 04 مكرر      
+</h3>
+                </div>
+               <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                     <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                        
+                                        <th width="10%" class="text-center">الملاحظة</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $tabls = Tableau4_1::trouve_tableau_4_par_id($nav_societe->id_societe);
+                                    ?>
+                                    <?php 
+                                   
+                                    if (!empty($tabls)): 
+                                       
+                                            $statut_badge = $tabls->statut == 'validé' ? 'success' : 
+                                                          ($tabls->statut == 'brouillon' ? 'warning' : 'secondary');
+                                    ?>
+                                    <tr>
+                                       <td class="text-center">
+                                            <a href="../utilisateur/print_tab4_1.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-primary" target="_blank">
+                                                <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-center"><?php echo $tabls->annee; ?></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                <?php echo $tabls->statut; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $tabls->date_creation ? date('d/m/Y', strtotime($tabls->date_creation)) : '---'; ?>
+                                        </td>
+                                        <td><?php echo $tabls->commentaire_admin; ?></td>
+                                         <td class="text-center">
+                                            <?php if (!empty($tabls->attachment)): ?>
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i></a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td class="text-center">
+                                      
+                                            <a href="details_tableau4_1.php?action=affchier_detail&id=<?php echo $tabls->id; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="التفاصيل">
                                                 <i class="fas fa-eye"></i>
                                             </a>

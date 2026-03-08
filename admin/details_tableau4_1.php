@@ -15,25 +15,66 @@ if (!$current_user) {
 // Récupération de l'ID du tableau
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) {
-    redirect_to('admin_tableaux2.php?error=معرف غير صالح');
+    redirect_to('admin_tableaux4.php?error=معرف غير صالح');
 }
 
-$tableau = Tableau2_1::trouve_par_id($id);
+$tableau = Tableau4_1::trouve_par_id($id);
 if (!$tableau) {
-    redirect_to('admin_tableaux2.php?error=الجدول غير موجود');
+    redirect_to('admin_tableaux4.php?error=الجدول غير موجود');
 }
 
 // Récupération des détails
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $admin_createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab2_1::trouve_par_tableau($id);
+$details = DetailTab4_1::trouve_par_tableau($id);
 
 $annee = $tableau->annee;
 $date_fin = '31/12/' . $annee;
 
+// Liste des champs numériques pour l'affichage et les totaux
+$numeric_fields = [
+    'temps_complete_contrat_annee',
+    'temps_partiel_contrat_annee',
+    'temps_complete_permanente_annee',
+    'temps_partiel_permanente_annee',
+    'temps_complete_contrat_annee_1',
+    'temps_partiel_contrat_annee_1',
+    'temps_complete_permanente_annee_1',
+    'temps_partiel_permanente_annee_1',
+    'temps_complete_contrat_vacant',
+    'temps_partiel_contrat_vacant',
+    'temps_complete_permanente_vacant',
+    'temps_partiel_permanente_vacant'
+];
+
+// Libellés en arabe pour les colonnes (adaptés)
+$field_labels = [
+    'temps_complete_contrat_annee' => 'دوام كامل (عقد)',
+    'temps_partiel_contrat_annee' => 'دوام جزئي (عقد)',
+    'temps_complete_permanente_annee' => 'دوام كامل (دائم)',
+    'temps_partiel_permanente_annee' => 'دوام جزئي (دائم)',
+    'temps_complete_contrat_annee_1' => 'دوام كامل (عقد - سنة 1)',
+    'temps_partiel_contrat_annee_1' => 'دوام جزئي (عقد - سنة 1)',
+    'temps_complete_permanente_annee_1' => 'دوام كامل (دائم - سنة 1)',
+    'temps_partiel_permanente_annee_1' => 'دوام جزئي (دائم - سنة 1)',
+    'temps_complete_contrat_vacant' => 'دوام كامل (عقد - شاغر)',
+    'temps_partiel_contrat_vacant' => 'دوام جزئي (عقد - شاغر)',
+    'temps_complete_permanente_vacant' => 'دوام كامل (دائم - شاغر)',
+    'temps_partiel_permanente_vacant' => 'دوام جزئي (دائم - شاغر)'
+];
+
+// Calcul des totaux
+$totals = array_fill_keys($numeric_fields, 0);
+foreach ($details as $d) {
+    foreach ($numeric_fields as $field) {
+        $totals[$field] += $d->$field ?? 0;
+    }
+}
+
+
 $titre = "تفاصيل الجدول رقم " . $id;
-$active_menu = "tab_2";
-$active_submenu = "tab_2";
+$active_menu = "tab_4";
+$active_submenu = "tab_4";
 
 require_once("composit/header.php");
 ?>
@@ -74,7 +115,7 @@ require_once("composit/header.php");
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
-                    <h3 class="mb-0"><i class="fas fa-file-alt me-2"></i> تفاصيل الجدول رقم <?php echo $id; ?></h3>
+                    <h3 class="mb-0"><i class="fas fa-file-alt me-2"></i> تفاصيل الجدول رقم 4 مكرر</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end">
@@ -100,7 +141,7 @@ require_once("composit/header.php");
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal">
                         <i class="fas fa-comment me-1"></i> إضافة ملاحظة
                     </button>
-                    <a href="../utilisateur/print_tab_2_1.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
+                    <a href="../utilisateur/print_tab_4_1.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank">
                         <i class="fas fa-print me-1"></i> طباعة
                     </a>
                 </div>
@@ -166,33 +207,67 @@ require_once("composit/header.php");
                      <table class="table table-bordered table-striped">
                            <thead>
                                       <tr>
-                                        <th > رقم الترتيب</th>
-                                        <th > الاسم و اللقب</th>
-                                        <th > طبيعة الخطأ</th>
-                                        <th >تاريخ التوقف</th>
-                                        <th >تاريخ إجتماع لجنة التأديب</th>
-                                        <th>مضمون العقوبة</th>
-                                        <th>تاريخ الطعن</th>
-                                        <th>تاريخ إجتماع لجنة الطعن </th>
-                                        <th>قرار لجنة الطعن</th>
-                                        <th>تطبيق القرار</th>
-                                        <th>الملاحظات</th>
-                                    </tr>
-
-                                </thead>
-                                <tbody>
-                               <?php if (!empty($details)): ?>
-                                        
-                                       
-                                            <tr id="noData">
-                                            <td colspan="11" class="text-center text-muted">
-                                            لا شيئ
-                                            </td>
-                                        </tr>
-                                       
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                                                    <th rowspan="2">تحديد منصب الشغل</th>
+                                                    <th rowspan="2" colspan="2" class="text-center align-middle">التصنيف</th>
+                                                    <th colspan="4" class="text-center align-middle">التعــداد المالي لسنة <?php echo $annee;?></th>
+                                                    <th colspan="4" class="text-center align-middle">التعداد الحقيقي الى غاية 31/12/<?php echo $annee-1;?></th>
+                                                    <th colspan="4" class="text-center align-middle">مناصـــب شـــاغرة</th>
+                                                    <th rowspan="4"   class="text-center align-middle">الملاحظات</th>
+                                                    <th rowspan="4"  class="text-center align-middle">الإجراءات</th>
+                                                </tr>
+                                                <tr>
+                                                    
+                                                 
+                                                    <th colspan="2" class="text-center align-middle">عقد محدد المدة   </th>
+                                                    <th colspan="2" class="text-center align-middle">عقد غير محدد المدة</th>
+                                                     <th colspan="2" class="text-center align-middle">عقد محدد المدة   </th>
+                                                    <th colspan="2" class="text-center align-middle">عقد غير محدد المدة</th>
+                                                     <th colspan="2" class="text-center align-middle">عقد محدد المدة   </th>
+                                                    <th colspan="2" class="text-center align-middle">عقد غير محدد المدة</th>
+                                                </tr>
+                    <tr>
+                                                    <th rowspan="2" class="text-center align-middle">السلك</th>
+                                                    <th rowspan="2" class="text-center align-middle">التصنيف</th>
+                                                    <th rowspan="2" class="text-center align-middle">رقم الإستدلالي</th>
+                                                    <?php foreach ($numeric_fields as $field): ?>
+                                                        <th class="text-center"><?php echo $field_labels[$field] ?? $field; ?></th>
+                                                    <?php endforeach; ?>
+                                                    
+                                                </tr>
+                    <tr>
+                        <!-- deuxième ligne vide -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($details)): ?>
+                        <?php foreach ($details as $d): 
+                            $grade = Grade::trouve_par_id($d->id_grade);
+                        ?>
+                        <tr>
+                            <td><?php echo $grade ? $grade->id : ''; ?></td>
+                            <td><?php echo $grade ? $grade->grade : ''; ?></td>
+                            <td><?php echo htmlspecialchars($d->categorie); ?></td>
+                            <td><?php echo $d->num_categorie; ?></td>
+                            <?php foreach ($numeric_fields as $field): ?>
+                                <td><?php echo $d->$field ?? 0; ?></td>
+                            <?php endforeach; ?>
+                            <td><?php echo htmlspecialchars($d->observation); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="<?php echo 4 + count($numeric_fields) + 1; ?>" class="text-center">لا توجد بيانات</td></tr>
+                    <?php endif; ?>
+                </tbody>
+                <tfoot class="table-secondary">
+                    <tr>
+                        <td colspan="4" class="fw-bold text-end">المجموع</td>
+                        <?php foreach ($numeric_fields as $field): ?>
+                            <td class="fw-bold"><?php echo $totals[$field]; ?></td>
+                        <?php endforeach; ?>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
                         </div>
 
             </div>
@@ -216,7 +291,7 @@ require_once("composit/header.php");
                         <?php endif; ?>
                     </div>
 
-                    <script> var tableauType = 'tab2_1'; // exemple </script>
+                    <script> var tableauType = 'tab4_1'; // exemple </script>
 
                     <div class="d-flex justify-content-center gap-3">
                         <!-- Bouton de validation -->
