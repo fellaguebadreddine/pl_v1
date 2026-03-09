@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="card-header bg-primary text-white py-4 border-0">
                         <div class="text-center">
                             <i class="fas fa-landmark fa-3x mb-3"></i>
-                            <h1 class="h3 mb-2">خطة الإدارة للقطاع العام</h1>
+                            <h1 class="h3 mb-2">المخطط السنوي لتسيير الموارد البشرية </h1>
                         </div>
                     </div>
                     <div class="card-body p-5">
