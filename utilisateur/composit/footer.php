@@ -1866,6 +1866,136 @@ function supprimerTableau4_1(id) {
 </script>
 <?php }?>
 
+ <?php if ($action == "add_tab5" || $action == "edit_tab5"){ ?>
+<script>
+let compteurLignes = <?php echo isset($index) ? $index : 0; ?>;
+let tousLesGrades = <?php echo json_encode($grades_js); ?>;
+
+$(document).ready(function() {
+    $('.select-grade').select2({ placeholder: "اختر السلك", allowClear: true, width: '100%', dir: "rtl" });
+    $(document).on('change', '.select-grade', function() {
+        const row = $(this).closest('tr');
+        const selected = $(this).find('option:selected');
+        const code = selected.data('code') || '';
+        const idGrade = selected.val();
+        row.find('input[name*="[id_grade]"]').val(idGrade);
+    });
+});
+
+function ajouterLigne() {
+    const tbody = $('#tbody_details5');
+    const index = compteurLignes++;
+    let options = '<option value="">اختر الدرجة</option>';
+    tousLesGrades.forEach(g => options += `<option value="${g.id}" data-code="${g.code}">${g.designation}</option>`);
+    const row = `
+        <tr>
+            <td>
+                <input type="hidden" name="details[${index}][id]" value="0">
+                <input type="hidden" name="details[${index}][id_grade]" value="">
+                <select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select>
+            </td>
+            <td><input type="date" name="details[${index}][date_externe_concour_examen]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_externe_concour_diplome]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_externe_concour_recyclage]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_interne_concours_profi]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_interne_examen_profi]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_interne_preparation_list]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_concour_qualification]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][tabl_mise_niveau]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][comite_installation]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][date_concour_formation]" class="form-control"></td>
+            <td><input type="date" name="details[${index}][autre]" class="form-control"></td>
+            <td><textarea name="details[${index}][observations]" class="form-control" rows="1"></textarea></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `;
+    tbody.append(row);
+    tbody.find('tr:last .select-grade').select2({ placeholder: "اختر الدرجة", allowClear: true, width: '100%', dir: "rtl" });
+}
+
+function supprimerLigne(btn) {
+    const row = $(btn).closest('tr');
+    const idDetail = row.data('id-detail');
+    if (idDetail && idDetail > 0) {
+        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
+            $('<input>').attr({ type: 'hidden', name: 'supprimer_details[]', value: idDetail }).appendTo(row.parent());
+            row.hide();
+        }
+    } else {
+        row.remove();
+    }
+}
+
+function enregistrerBrouillon() {
+    const form = $('#formulaireTableau5')[0];
+    const input = $('<input>').attr({ type: 'hidden', name: 'statut', value: 'brouillon' });
+    $(form).append(input);
+    if (confirm('هل تريد حفظ الجدول كمسودة؟')) {
+        soumettreFormulaire(form, 'brouillon');
+    } else {
+        input.remove();
+    }
+}
+
+document.getElementById('formulaireTableau5')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
+        const selects = this.querySelectorAll('.select-grade');
+        selects.forEach(select => {
+            const row = select.closest('tr');
+            const hidden = row.querySelector('input[name*="[id_grade]"]');
+            if (hidden) hidden.value = select.value;
+        });
+        soumettreFormulaire(this, 'validé');
+    }
+});
+
+function soumettreFormulaire(form, statut) {
+    const formData = new FormData(form);
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...').prop('disabled', true);
+    fetch('ajax/traitement_tab5.php', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                setTimeout(() => {
+                    if (statut == 'brouillon') window.location.reload();
+                    else window.location.href = '?action=list_tab5&success=1';
+                }, 1500);
+            } else {
+                showMessage(data.message, 'danger');
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        })
+        .catch(() => {
+            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
+            submitBtn.html(originalText).prop('disabled', false);
+        });
+}
+
+function showMessage(msg, type) {
+    const alert = $('<div class="alert alert-'+type+' alert-dismissible fade show">'+msg+'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+    $('.app-content .container-fluid').prepend(alert);
+    setTimeout(() => alert.alert('close'), 5000);
+}
+
+function supprimerTableau(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
+        fetch('ajax/traitement_tab5.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab5&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ في الاتصال', 'danger'));
+    }
+}
+</script>
+
+<?php }?>
+
  <?php if ($action == "add_tab7" || $action == "edit_tab7"){ ?>
 <script>
 let compteurLignes = <?php echo isset($index) ? $index : 0; ?>;

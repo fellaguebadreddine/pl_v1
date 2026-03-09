@@ -179,7 +179,7 @@ if ($existe) {
     <?php endif; ?>
 </td>
                                         <td class="text-center">
-                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
+                                             <?php if ($exercice_actif && $tabls->statut != 'validé'): ?>
                                             <a href="?action=edit_tab5&id=<?php echo $existe; ?>" 
                                                class="btn btn-sm btn-warning me-1" title="تعديل">
                                                 <i class="fas fa-edit"></i>
@@ -193,7 +193,7 @@ if ($existe) {
                                     </tr>
                                     <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
+                                        <td colspan="8" class="text-center py-4">
                                             <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
                                             لا توجد جداول مسجلة
                                         </td>
@@ -205,13 +205,12 @@ if ($existe) {
                     </div>
                 </div>
 
+
             <?php elseif ($action == "add_tab5" || $action == "edit_tab5"): ?>
-                <!-- Formulaire d'ajout ou modification -->
                 <?php
-                // Récupérer les données existantes si en mode édition
                 $tableau = null;
                 $details = array();
-                $annee = $exercice_actif ? $exercice_actif->annee : date('Y');
+                $annee = $annee;
 
                 if ($action == "edit_tab5" && $id > 0) {
                     $tableau = Tableau5::trouve_par_id($id);
@@ -220,41 +219,24 @@ if ($existe) {
                         $details = DetailTab5::trouve_par_tableau($id);
                     }
                 } else {
-                    // En mode ajout, vérifier s'il y a un brouillon
-                    $tableau_brouillon = Tableau5::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe);
+                    $tableau_brouillon = Tableau5::trouve_tab_vide_par_admin($current_user->id, $societe->id_societe, $annee);
                     if ($tableau_brouillon) {
                         $tableau = $tableau_brouillon;
                         $details = DetailTab5::trouve_par_tableau($tableau->id);
                     }
                 }
 
-                // Récupérer tous les grades
                 $grades = Grade::trouve_tous();
-
-                // Créer un tableau JavaScript avec tous les grades
                 $grades_js = array();
                 foreach ($grades as $grade) {
-                    $grades_js[] = array(
-                        'id' => $grade->id,
-                        'code' => $grade->id,
-                        'designation' => $grade->grade,
-                        'loi' => $grade->loi
-                    );
+                    $grades_js[] = array('id' => $grade->id, 'code' => $grade->id, 'designation' => $grade->grade);
                 }
                 ?>
 
                 <div class="card mb-4 border-primary">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">
-                            <i class="fas fa-edit me-2"></i>
-                            <?php echo $action == "edit_tab5" ? 'تعديل الجدول رقم 5' : 'إضافة جدول رقم 5'; ?>
-                        </h5>
-                        <div>
-                            <span class="badge bg-warning me-2">السنة المالية: <?php echo $annee; ?></span>
-                            <?php if ($tableau && $tableau->statut == 'brouillon'): ?>
-                                <span class="badge bg-info">مسودة</span>
-                            <?php endif; ?>
-                        </div>
+                        <h5 class="card-title mb-0"><i class="fas fa-edit me-2"></i><?php echo $action == "edit_tab5" ? 'تعديل الجدول 5' : 'إضافة جدول 5'; ?></h5>
+                        <div><span class="badge bg-warning me-2">السنة: <?php echo $annee; ?></span><?php if ($tableau && $tableau->statut == 'brouillon'): ?><span class="badge bg-info">مسودة</span><?php endif; ?></div>
                     </div>
                     <div class="card-body">
                         <form id="formulaireTableau5" method="POST" action="ajax/traitement_tab5.php">
@@ -265,38 +247,32 @@ if ($existe) {
                             <input type="hidden" name="id_user" value="<?php echo $current_user->id; ?>">
 
                             <div class="card mb-4">
-                                <div class="card-header bg-secondary text-white">
-                                    <h5 class="card-title mb-0">
-                                        <i class="fas fa-table me-2"></i>بيانات الحركة
-                                    </h5>
-                                    <button type="button" class="btn btn-light btn-sm" onclick="ajouterLigne()">
-                                        <i class="fas fa-plus me-1"></i> إضافة سطر
-                                    </button>
+                                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0"><i class="fas fa-table me-2"></i>جدول تواريخ المسابقات والامتحانات</h5>
+                                    <button type="button" class="btn btn-light btn-sm" onclick="ajouterLigne()"><i class="fas fa-plus me-1"></i> إضافة سطر</button>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered table-striped">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th rowspan="2" class="text-center align-middle">السلك أو الرتبة</th>
-                                                    <th colspan="2" class="text-center"> </th>
-                                                    <th colspan="2" class="text-center">التوظيف الخارجي</th>
-                                                    <th colspan="2" class="text-center">الترقيبية</th>
-                                                    <th rowspan="2" class="text-center align-middle"> التثبيت</th>
-                                                    <th rowspan="2" class="text-center align-middle">إدماج</th>
-                                                    <th rowspan="2" class="text-center align-middle">الملاحظات</th>
-                                                    <th rowspan="2" class="text-center align-middle">الإجراءات</th>
+                                                    <th rowspan="2" class="align-middle">السلك أو الرتبة</th>
+                                                    <th colspan="3" class="text-center">التوظيف الخارجي</th>
+                                                    <th colspan="3" class="text-center">التوظيف الداخلي</th>
+                                                    <th rowspan="2" class="align-middle"> الترقية عن طريق التأهيل المهني</th>
+                                                    <th rowspan="2" class="align-middle">جدول  الترقية</th>
+                                                    <th rowspan="2" class="align-middle">لجنة التثبيت</th>
+                                                    <th rowspan="2" class="align-middle">مسابقة التكوين</th>
+                                                    <th rowspan="2" class="align-middle">أخرى</th>
+                                                    <th rowspan="2" class="align-middle">الملاحظات</th>
+                                                    <th rowspan="2" class="align-middle">الإجراءات</th>
                                                 </tr>
                                                 <tr>
-                                                    <th class="text-center">داخلي</th>
-                                                    <th class="text-center">خارجي</th>
-                                                    <th class="text-center">مسابقة على أساس الإختبارات والفحوص المبنية على الشهادة</th>
-                                                    <th class="text-center">مسابقة على أساس الإختبارات والفحوص</th>
-                                                    <th class="text-center">إمتحان</th>
-                                                    <th class="text-center">فحص</th>
+                                                    <th>مسابقة على أساس الاختبار</th><th>مسابقة على أساس الشهادة</th><th>  توظيف على أساس التأهيل</th>
+                                                    <th> إختبار مهني</th><th>امتحان مهني</th><th> إعداد قائمة الترقية الاختيارية</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="tbody_details">
+                                            <tbody id="tbody_details5">
                                                 <?php
                                                 $index = 0;
                                                 if (!empty($details)):
@@ -307,50 +283,26 @@ if ($existe) {
                                                     <td>
                                                         <input type="hidden" name="details[<?php echo $index; ?>][id]" value="<?php echo $detail->id; ?>">
                                                         <input type="hidden" name="details[<?php echo $index; ?>][id_grade]" value="<?php echo $grade->id; ?>">
-                                                        <input type="text" class="form-control text-center code-grade" value="<?php echo $grade->id; ?>" readonly>
-                                                    </td>
-                                                    <td>
                                                         <select name="details[<?php echo $index; ?>][id_grade_select]" class="form-control select-grade" required>
-                                                            <option value="">اختر السلك</option>
+                                                            <option value="">اختر الدرجة</option>
                                                             <?php foreach ($grades as $g): ?>
-                                                                <option value="<?php echo $g->id; ?>" data-code="<?php echo $g->id; ?>" <?php echo $g->id == $grade->id ? 'selected' : ''; ?>>
-                                                                    <?php echo $g->grade; ?>
-                                                                </option>
+                                                                <option value="<?php echo $g->id; ?>" data-code="<?php echo $g->id; ?>" <?php echo $g->id == $grade->id ? 'selected' : ''; ?>><?php echo $g->grade; ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][interne]" value="1" <?php echo $detail->interne ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][externe]" value="1" <?php echo $detail->externe ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][diplome]" value="1" <?php echo $detail->diplome ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][concour]" value="1" <?php echo $detail->concour ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][examen_pro]" value="1" <?php echo $detail->examen_pro ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="checkbox" name="details[<?php echo $index; ?>][test_pro]" value="1" <?php echo $detail->test_pro ? 'checked' : ''; ?>>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="details[<?php echo $index; ?>][loi]" class="form-control" value="<?php echo htmlspecialchars($detail->loi); ?>">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" name="details[<?php echo $index; ?>][nomination]" class="form-control" value="<?php echo $detail->nomination; ?>">
-                                                    </td>
-                                                    <td>
-                                                        <textarea name="details[<?php echo $index; ?>][observation]" class="form-control" rows="1"><?php echo htmlspecialchars($detail->observation); ?></textarea>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_externe_concour_examen]" class="form-control" value="<?php echo $detail->date_externe_concour_examen; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_externe_concour_diplome]" class="form-control" value="<?php echo $detail->date_externe_concour_diplome; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_externe_concour_recyclage]" class="form-control" value="<?php echo $detail->date_externe_concour_recyclage; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_interne_concours_profi]" class="form-control" value="<?php echo $detail->date_interne_concours_profi; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_interne_examen_profi]" class="form-control" value="<?php echo $detail->date_interne_examen_profi; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_interne_preparation_list]" class="form-control" value="<?php echo $detail->date_interne_preparation_list; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_concour_qualification]" class="form-control" value="<?php echo $detail->date_concour_qualification; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][tabl_mise_niveau]" class="form-control" value="<?php echo $detail->tabl_mise_niveau; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][comite_installation]" class="form-control" value="<?php echo $detail->comite_installation; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][date_concour_formation]" class="form-control" value="<?php echo $detail->date_concour_formation; ?>"></td>
+                                                    <td><input type="date" name="details[<?php echo $index; ?>][autre]" class="form-control" value="<?php echo $detail->autre; ?>"></td>
+                                                    <td><textarea name="details[<?php echo $index; ?>][observations]" class="form-control" rows="1"><?php echo htmlspecialchars($detail->observations); ?></textarea></td>
+                                                    <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
                                                 </tr>
                                                 <?php
                                                         $index++;
@@ -363,21 +315,13 @@ if ($existe) {
                                 </div>
                             </div>
 
-                            <!-- Boutons d'action -->
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between">
-                                        <a href="?action=list_tab5" class="btn btn-secondary">
-                                            <i class="fas fa-arrow-right me-1"></i> رجوع للقائمة
-                                        </a>
+                                        <a href="?action=list_tab5" class="btn btn-secondary"><i class="fas fa-arrow-right me-1"></i> رجوع</a>
                                         <div>
-                                            <button type="button" class="btn btn-warning me-2" onclick="enregistrerBrouillon()">
-                                                <i class="fas fa-save me-1"></i> حفظ كمسودة
-                                            </button>
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="fas fa-paper-plane me-1"></i>
-                                                <?php echo $action == "edit_tab5" ? 'تحديث الجدول' : 'تقديم الجدول'; ?>
-                                            </button>
+                                            <button type="button" class="btn btn-warning me-2" onclick="enregistrerBrouillon()"><i class="fas fa-save me-1"></i> حفظ كمسودة</button>
+                                            <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-1"></i> <?php echo $action == "edit_tab5" ? 'تحديث' : 'تقديم'; ?></button>
                                         </div>
                                     </div>
                                 </div>
@@ -388,9 +332,7 @@ if ($existe) {
             <?php endif; ?>
         </div>
     </div>
-    <!--end::App Content-->
 </main>
-<!--end::App Main-->
 
 
 <style>
@@ -408,5 +350,7 @@ if ($existe) {
     border-bottom: 2px solid rgba(0,0,0,.125);
 }
 </style>
+
+
 
 <?php require_once("composit/footer.php"); ?>
