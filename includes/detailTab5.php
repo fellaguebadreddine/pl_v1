@@ -12,7 +12,7 @@ class DetailTab5 {
         'date_concour_formation', 'autre', 'observations');
 
     public $id;
-    public $id_tableau5;
+    public $id_tableau_5;
     public $id_grade;
     public $id_societe;
     public $id_user;

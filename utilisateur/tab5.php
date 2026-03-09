@@ -146,7 +146,7 @@ if ($existe) {
                                     ?>
                                     <tr>
                                         <td class="text-center">
-                                            <a href="print_tab5.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-info" target="_blank">
+                                            <a href="print_tab5.php?id=<?php echo $tabls->id; ?>" class="btn btn-sm btn-primary" target="_blank">
                                                 <i class="fa fa-print"></i> <?php echo $tabls->id; ?>
                                             </a>
                                         </td>

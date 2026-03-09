@@ -61,7 +61,7 @@ try {
             // Supprimer les détails marqués
             foreach ($details_to_delete as $id_det) {
                 $det = DetailTab5::trouve_par_id(intval($id_det));
-                if ($det && $det->id_tableau5 == $id_tableau) $det->delete();
+                if ($det && $det->id_tableau_5 == $id_tableau) $det->supprime();
             }
 
             // Traitement des détails
@@ -96,14 +96,14 @@ try {
 
                 if ($id_detail > 0) {
                     $obj = DetailTab5::trouve_par_id($id_detail);
-                    if ($obj && $obj->id_tableau5 == $id_tableau) {
+                    if ($obj && $obj->id_tableau_5 == $id_tableau) {
                         $obj->id_grade = $id_grade;
                         foreach ($data_detail as $k=>$v) $obj->$k = $v;
                         $obj->save();
                     }
                 } else {
                     $obj = new DetailTab5();
-                    $obj->id_tableau5 = $id_tableau;
+                    $obj->id_tableau_5 = $id_tableau;
                     $obj->id_grade = $id_grade;
                     $obj->id_societe = $id_societe;
                     $obj->id_user = $id_user;
@@ -124,7 +124,7 @@ try {
                 throw new Exception('غير مصرح');
             $details = DetailTab5::trouve_par_tableau($id);
             foreach ($details as $d) $d->delete();
-            if ($tableau->delete()) {
+            if ($tableau->supprime()) {
                 $response['success'] = true;
                 $response['message'] = 'تم حذف الجدول';
             } else throw new Exception('خطأ في الحذف');

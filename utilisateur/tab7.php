@@ -107,8 +107,10 @@ if ($action == "add_tab7") {
                                             <?php endif; ?>
                                         </td>
                                         <td>
+                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab7&id=<?php echo $row->id; ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php endforeach; else: ?>

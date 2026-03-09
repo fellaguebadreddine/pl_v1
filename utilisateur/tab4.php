@@ -55,11 +55,11 @@ require_once("composit/header.php");
                     <div class="card-header bg-white d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i> الجدول 4</h5>
                         <?php 
-                        $existe_tab4 = Tableau4::existe_pour_societe_annee($societe->id_societe, $exercice_actif->annee);
+                        $existe_tab4 = Tableau4::existe_pour_societe_annee($societe->id_societe, $annee);
                         if ($exercice_actif && !$existe_tab4): ?>
                             <a href="?action=add_tab4" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة جدول رقم 4</a>
                         <?php elseif ($existe_tab4): 
-                            $tab4_existant = Tableau4::trouve_par_societe_annee($societe->id_societe, $exercice_actif->annee);
+                            $tab4_existant = Tableau4::trouve_par_societe_annee($societe->id_societe, $annee);
                             if ($tab4_existant && $tab4_existant->statut != 'validé'): ?>
                             <a href="?action=edit_tab4&id=<?php echo $tab4_existant->id; ?>" class="btn btn-warning">
                                 <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي
@@ -100,14 +100,14 @@ require_once("composit/header.php");
         <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
             <i class="fas fa-file-download"></i>
         </a>
-        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $row->id; ?>)" title="تغيير المرفق">
             <i class="fas fa-upload"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $row->id; ?>)" title="حذف المرفق">
             <i class="fas fa-trash"></i>
         </button>
     <?php else: ?>
-        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $row->id; ?>)" title="إضافة مرفق">
             <i class="fas fa-upload"></i> إضافة
         </button>
     <?php endif; ?>
@@ -137,11 +137,11 @@ require_once("composit/header.php");
                         <h5 class="card-title mb-0"><i class="fas fa-list me-2 text-primary"></i> مكرر 4/1</h5>
                         
                         <?php 
-                        $existe_tab4_1 = Tableau4_1::existe_pour_societe_annee($societe->id_societe, $exercice_actif->annee);
+                        $existe_tab4_1 = Tableau4_1::existe_pour_societe_annee($societe->id_societe, $annee);
                         if ($exercice_actif && !$existe_tab4_1): ?>
                             <a href="?action=add_tab4_1" class="btn btn-primary"><i class="fas fa-plus me-1"></i> إضافة جدول رقم 4/1</a>
                         <?php elseif ($existe_tab4_1): 
-                            $tab4_1_existant = Tableau4_1::trouve_par_societe_annee($societe->id_societe, $exercice_actif->annee);
+                            $tab4_1_existant = Tableau4_1::trouve_par_societe_annee($societe->id_societe, $annee);
                             if ($tab4_1_existant && $tab4_1_existant->statut != 'validé'): ?>
                             <a href="?action=edit_tab4_1&id=<?php echo $tab4_1_existant->id; ?>" class="btn btn-warning">
                                 <i class="fas fa-edit me-1"></i> تعديل الجدول الحالي

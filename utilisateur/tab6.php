@@ -116,8 +116,10 @@ require_once("composit/header.php");
     <?php endif; ?>
 </td>
                                         <td class="text-center">
+                                            <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab6&id=<?php echo $tab6_existant->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau6(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php
@@ -201,8 +203,10 @@ require_once("composit/header.php");
     <?php endif; ?>
 </td>
                                         <td class="text-center">
+                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab6&id=<?php echo $tab6_existant->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau6(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php
@@ -285,8 +289,10 @@ require_once("composit/header.php");
     <?php endif; ?>
 </td>
                                         <td class="text-center">
+                                             <?php if ($exercice_actif && $row->statut != 'validé'): ?>
                                             <a href="?action=edit_tab6_2&id=<?php echo $tab6_existant->id; ?>" class="btn btn-sm btn-warning me-1" title="تعديل"><i class="fas fa-edit"></i></a>
                                             <button onclick="supprimerTableau6(<?php echo $row->id; ?>)" class="btn btn-sm btn-danger" title="حذف"><i class="fas fa-trash"></i></button>
+                                            <?php endif;?>
                                         </td>
                                     </tr>
                                 <?php
