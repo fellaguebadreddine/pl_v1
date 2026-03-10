@@ -2154,6 +2154,203 @@ calculerTotalLigne(tbody.find('tr:last'));
 
 <?php }?>
 
+<?php if ($action == "add_tab9" || $action == "edit_tab9"){ ?>
+<script>
+let compteurLignes = <?php echo isset($index) ? $index : 0; ?>;
+let tousLesGrades = <?php echo json_encode($grades_js); ?>;
+
+$(document).ready(function() {
+    $('.select-grade').select2({ placeholder: "اختر الرتبة", allowClear: true, width: '100%', dir: "rtl" });
+    $(document).on('change', '.select-grade', function() {
+        const row = $(this).closest('tr');
+        const selected = $(this).find('option:selected');
+        const code = selected.data('code') || '';
+        const idGrade = selected.val();
+        row.find('input[name*="[id_grade]"]').val(idGrade);
+    });
+    // Calculer les totaux initiaux
+    calculerTotaux();
+});
+
+function ajouterLigne() {
+    const tbody = $('#tbody_details9');
+    const index = compteurLignes++;
+    let options = '<option value="">اختر الرتبة</option>';
+    tousLesGrades.forEach(g => options += `<option value="${g.id}" data-code="${g.code}">${g.designation}</option>`);
+    const row = `
+        <tr>
+            <td>
+                <input type="hidden" name="details[${index}][id]" value="0">
+                <input type="hidden" name="details[${index}][id_grade]" value="">
+                <select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select>
+            </td>
+            <td><input type="text" name="details[${index}][poste]" class="form-control"></td>
+            <td><input type="text" name="details[${index}][classification]" class="form-control"></td>
+            <td><input type="text" name="details[${index}][cadre_juridique]" class="form-control"></td>
+            <td><input type="number" name="details[${index}][temps_plein_1]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_partiel_1]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_plein_2]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_partiel_2]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_plein_3]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_partiel_3]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><textarea name="details[${index}][observations]" class="form-control" rows="1"></textarea></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `;
+    tbody.append(row);
+    tbody.find('tr:last .select-grade').select2({ placeholder: "اختر الرتبة", allowClear: true, width: '100%', dir: "rtl" });
+    calculerTotaux();
+}
+
+function supprimerLigne(btn) {
+    const row = $(btn).closest('tr');
+    const idDetail = row.data('id-detail');
+    if (idDetail && idDetail > 0) {
+        if (confirm('هل أنت متأكد من حذف هذا السطر؟')) {
+            $('<input>').attr({ type: 'hidden', name: 'supprimer_details[]', value: idDetail }).appendTo(row.parent());
+            row.hide();
+        }
+    } else {
+        row.remove();
+    }
+    calculerTotaux();
+}
+
+function calculerTotaux() {
+    let totals = {
+        temps_plein_1: 0,
+        temps_partiel_1: 0,
+        temps_plein_2: 0,
+        temps_partiel_2: 0,
+        temps_plein_3: 0,
+        temps_partiel_3: 0
+    };
+    $('#tbody_details9 tr:visible').each(function() {
+        totals.temps_plein_1 += parseFloat($(this).find('input[name*="[temps_plein_1]"]').val()) || 0;
+        totals.temps_partiel_1 += parseFloat($(this).find('input[name*="[temps_partiel_1]"]').val()) || 0;
+        totals.temps_plein_2 += parseFloat($(this).find('input[name*="[temps_plein_2]"]').val()) || 0;
+        totals.temps_partiel_2 += parseFloat($(this).find('input[name*="[temps_partiel_2]"]').val()) || 0;
+        totals.temps_plein_3 += parseFloat($(this).find('input[name*="[temps_plein_3]"]').val()) || 0;
+        totals.temps_partiel_3 += parseFloat($(this).find('input[name*="[temps_partiel_3]"]').val()) || 0;
+    });
+    $('#total_temps_plein_1').text(totals.temps_plein_1);
+    $('#total_temps_partiel_1').text(totals.temps_partiel_1);
+    $('#total_temps_plein_2').text(totals.temps_plein_2);
+    $('#total_temps_partiel_2').text(totals.temps_partiel_2);
+    $('#total_temps_plein_3').text(totals.temps_plein_3);
+    $('#total_temps_partiel_3').text(totals.temps_partiel_3);
+}
+
+function enregistrerBrouillon() {
+    const form = $('#formulaireTableau9')[0];
+    const input = $('<input>').attr({ type: 'hidden', name: 'statut', value: 'brouillon' });
+    $(form).append(input);
+    if (confirm('هل تريد حفظ الجدول كمسودة؟')) {
+        soumettreFormulaire(form, 'brouillon');
+    } else {
+        input.remove();
+    }
+}
+
+document.getElementById('formulaireTableau9')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (confirm('هل أنت متأكد من رغبتك في حفظ الجدول؟')) {
+        const selects = this.querySelectorAll('.select-grade');
+        selects.forEach(select => {
+            const row = select.closest('tr');
+            const hidden = row.querySelector('input[name*="[id_grade]"]');
+            if (hidden) hidden.value = select.value;
+        });
+        soumettreFormulaire(this, 'validé');
+    }
+});
+
+function soumettreFormulaire(form, statut) {
+    const formData = new FormData(form);
+    const submitBtn = $(form).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> جاري الحفظ...').prop('disabled', true);
+    fetch('ajax/traitement_tab9.php', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                setTimeout(() => {
+                    if (statut == 'brouillon') window.location.reload();
+                    else window.location.href = '?action=list_tab9&success=1';
+                }, 1500);
+            } else {
+                showMessage(data.message, 'danger');
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        })
+        .catch(() => {
+            showMessage('حدث خطأ أثناء الاتصال بالخادم', 'danger');
+            submitBtn.html(originalText).prop('disabled', false);
+        });
+}
+
+function showMessage(msg, type) {
+    const alert = $('<div class="alert alert-'+type+' alert-dismissible fade show">'+msg+'<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+    $('.app-content .container-fluid').prepend(alert);
+    setTimeout(() => alert.alert('close'), 5000);
+}
+
+function supprimerTableau(id) {
+    if (confirm('هل أنت متأكد من حذف هذا الجدول؟')) {
+        fetch('ajax/traitement_tab9.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=delete_tab9&id='+id })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) { showMessage(data.message, 'success'); setTimeout(() => location.reload(), 1500); }
+                else showMessage(data.message, 'danger');
+            })
+            .catch(() => showMessage('حدث خطأ في الاتصال', 'danger'));
+    }
+}
+
+// Upload functions
+function uploadAttachment(table_type, record_id) {
+    $('#upload_table_type').val(table_type);
+    $('#upload_record_id').val(record_id);
+    $('#uploadModal').modal('show');
+}
+$('#uploadSubmit').click(function() {
+    var formData = new FormData($('#uploadForm')[0]);
+    $.ajax({
+        url: 'ajax/upload_attachment.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener('progress', function(e) {
+                if (e.lengthComputable) {
+                    var percent = Math.round((e.loaded / e.total) * 100);
+                    $('#uploadProgress').removeClass('d-none');
+                    $('#uploadProgress .progress-bar').css('width', percent + '%').text(percent + '%');
+                }
+            });
+            return xhr;
+        },
+        success: function(response) {
+            if (response.success) { $('#uploadModal').modal('hide'); location.reload(); }
+            else alert(response.message);
+        },
+        error: function() { alert('Erreur de connexion'); }
+    });
+});
+function deleteAttachment(table_type, record_id) {
+    if (confirm('هل أنت متأكد من حذف هذا المرفق؟')) {
+        $.post('ajax/delete_attachment.php', { table_type: table_type, record_id: record_id }, function(res) {
+            if (res.success) location.reload();
+            else alert(res.message);
+        }, 'json');
+    }
+}
+</script>
+<?php }?>
+
 
     <!--end::Script-->
   </body>

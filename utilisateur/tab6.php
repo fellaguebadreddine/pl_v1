@@ -351,7 +351,7 @@ require_once("composit/header.php");
                                         <th>الاسم</th>
                                         <th>اللقب</th>
                                         <th>تاريخ الميلاد</th>
-                                        <th>الدرجة</th>
+                                        <th>السلك او الرتبة</th>
                                         <th>تاريخ التقاعد</th>
                                         <th>الملاحظات</th>
                                     </tr>

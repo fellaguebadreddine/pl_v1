@@ -92,7 +92,7 @@ if ($action == "add_tab7") {
                                     $statut_badge = $row->statut == 'validé' ? 'success' : ($row->statut == 'brouillon' ? 'warning' : 'secondary');
                                 ?>
                                     <tr>
-                                        <td class="text-center"><a href="print_tab7.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
+                                        <td class="text-center"><a href="print_tab7.php?id=<?php echo $row->id; ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> <?php echo $row->id; ?></a></td>
                                         <td><?php echo $societe->raison_ar; ?></td>
                                         <td><?php echo $row->annee; ?></td>
                                         <td><span class="badge bg-<?php echo $statut_badge; ?>"><?php echo $row->statut; ?></span></td>

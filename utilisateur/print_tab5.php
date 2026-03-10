@@ -244,5 +244,9 @@ $titre = "طباعة الجدول 5 - " . $societe->raison_ar . " - " . $annee;
             تمت الطباعة في: <?php echo date('d/m/Y H:i'); ?>
         </div>
     </div>
+    <script>
+        // Lancement automatique de l'impression (optionnel, décommentez si souhaité)
+         window.onload = function() { window.print(); };
+    </script>
 </body>
 </html>

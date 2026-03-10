@@ -38,6 +38,8 @@ $classMap = [
     'tab3' => 'Tableau3',
     'tab4' => 'Tableau4',
     'tab4_1' => 'Tableau4_1',
+    'tab5' => 'Tableau5',
+    'tab6' => 'Tableau6',
     // Ajouter d'autres types si nécessaire
 ];
 
