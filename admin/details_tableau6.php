@@ -90,36 +90,32 @@ require_once("composit/header.php");
                         <table class="table table-bordered table-striped mb-0">
                             <thead>
                                   <tr>
-                                        <th>الاسم</th>
+                                      <th>الاسم</th>
                                         <th>اللقب</th>
                                         <th>تاريخ الميلاد</th>
-                                        <th>الدرجة</th>
+                                        <th>السلك</th>
                                         <th>تاريخ التقاعد</th>
                                         <th>الملاحظات</th>
                                     </tr>
                             </thead>
-                            <tbody>
-                                <?php if (!empty($details)): foreach ($details as $detail): $grade = Grade::trouve_par_id($detail->id_grade); ?>
-                                <tr>
-                            <td><?php echo $grade ? $grade->grade : '---'; ?></td>
-                            <td><?php echo $detail->date_externe_concour_examen ? date('d/m/Y', strtotime($detail->date_externe_concour_examen)) : '---'; ?></td>
-                            <td><?php echo $detail->date_externe_concour_diplome ? date('d/m/Y', strtotime($detail->date_externe_concour_diplome)) : '---'; ?></td>
-                            <td><?php echo $detail->date_externe_concour_recyclage ? date('d/m/Y', strtotime($detail->date_externe_concour_recyclage)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_concours_profi ? date('d/m/Y', strtotime($detail->date_interne_concours_profi)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_examen_profi ? date('d/m/Y', strtotime($detail->date_interne_examen_profi)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_preparation_list ? date('d/m/Y', strtotime($detail->date_interne_preparation_list)) : '---'; ?></td>
-                            <td><?php echo $detail->date_concour_qualification ? date('d/m/Y', strtotime($detail->date_concour_qualification)) : '---'; ?></td>
-                            <td><?php echo $detail->tabl_mise_niveau ? date('d/m/Y', strtotime($detail->tabl_mise_niveau)) : '---'; ?></td>
-                            <td><?php echo $detail->comite_installation ? date('d/m/Y', strtotime($detail->comite_installation)) : '---'; ?></td>
-                            <td><?php echo $detail->date_concour_formation ? date('d/m/Y', strtotime($detail->date_concour_formation)) : '---'; ?></td>
-                            <td><?php echo $detail->autre ? date('d/m/Y', strtotime($detail->autre)) : '---'; ?></td>
-                            <td><?php echo htmlspecialchars($detail->observations); ?></td>
+                           <tbody>
+                    <?php if (!empty($details)): ?>
+                        <?php foreach ($details as $detail): 
+                            $grade = Grade::trouve_par_id($detail->id_grade);
+                        ?>
+                        <tr>                          
+                            <td><?php echo $detail->nom; ?></td>
+                            <td><?php echo $detail->prenom; ?></td>
+                            <td><?php echo $detail->date_naissance; ?></td>
+                            <td><?php echo $grade ? $grade->grade : ''; ?></td>
+                            <td><?php echo $detail->date_retraite; ?></td>
+                            <td><?php echo $detail->observations; ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="14" class="text-center">لا توجد بيانات</td></tr>
+                        <tr><td colspan="6" class="text-center">لا توجد بيانات</td></tr>
                     <?php endif; ?>
-                            </tbody>
+                </tbody>
                         </table>
                     </div>
                 </div>

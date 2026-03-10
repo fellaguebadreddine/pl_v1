@@ -206,19 +206,13 @@ $titre = "طباعة الجدول 6 - " . $societe->raison_ar . " - " . $annee;
                         <?php foreach ($details as $detail): 
                             $grade = Grade::trouve_par_id($detail->id_grade);
                         ?>
-                        <tr>
-                            <td><?php echo $detail->date_externe_concour_examen ? date('d/m/Y', strtotime($detail->date_externe_concour_examen)) : '---'; ?></td>
-                            <td><?php echo $detail->date_externe_concour_diplome ? date('d/m/Y', strtotime($detail->date_externe_concour_diplome)) : '---'; ?></td>
-                            <td><?php echo $detail->date_externe_concour_recyclage ? date('d/m/Y', strtotime($detail->date_externe_concour_recyclage)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_concours_profi ? date('d/m/Y', strtotime($detail->date_interne_concours_profi)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_examen_profi ? date('d/m/Y', strtotime($detail->date_interne_examen_profi)) : '---'; ?></td>
-                            <td><?php echo $detail->date_interne_preparation_list ? date('d/m/Y', strtotime($detail->date_interne_preparation_list)) : '---'; ?></td>
-                            <td><?php echo $detail->date_concour_qualification ? date('d/m/Y', strtotime($detail->date_concour_qualification)) : '---'; ?></td>
-                            <td><?php echo $detail->tabl_mise_niveau ? date('d/m/Y', strtotime($detail->tabl_mise_niveau)) : '---'; ?></td>
-                            <td><?php echo $detail->comite_installation ? date('d/m/Y', strtotime($detail->comite_installation)) : '---'; ?></td>
-                            <td><?php echo $detail->date_concour_formation ? date('d/m/Y', strtotime($detail->date_concour_formation)) : '---'; ?></td>
-                            <td><?php echo $detail->autre ? date('d/m/Y', strtotime($detail->autre)) : '---'; ?></td>
-                            <td><?php echo htmlspecialchars($detail->observations); ?></td>
+                        <tr>                          
+                            <td><?php echo $detail->nom; ?></td>
+                            <td><?php echo $detail->prenom; ?></td>
+                            <td><?php echo $detail->date_naissance; ?></td>
+                            <td><?php echo $grade ? $grade->grade : ''; ?></td>
+                            <td><?php echo $detail->date_retraite; ?></td>
+                            <td><?php echo $detail->observations; ?></td>
                         </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
