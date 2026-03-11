@@ -37,7 +37,7 @@ if ($wilaya_filter == 0) {
 }
 
 $titre = "تتبع التقدم حسب الولايات";
-$active_menu = "super_admin";
+$active_menu = "avancement_wilayas";
 $active_submenu = "avancement";
 $header = array('chart.js', 'select2');
 require_once("composit/header.php");
@@ -111,59 +111,7 @@ require_once("composit/header.php");
             </div>
 
             <?php if ($wilaya_filter == 0): ?>
-                <!-- Vue globale par wilayas -->
-                <!-- Cartes des indicateurs globaux -->
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3><?php echo $stats_globales['total_societes']; ?></h3>
-                                <p>إجمالي المؤسسات</p>
-                            </div>
-                            <div class="icon"><i class="fas fa-building"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3><?php echo $stats_globales['tableaux_valides']; ?> / <?php echo $stats_globales['total_tableaux']; ?></h3>
-                                <p>جداول مصادق عليها</p>
-                            </div>
-                            <div class="icon"><i class="fas fa-check-circle"></i></div>
-                            <div class="small-box-footer">
-                                <span class="badge bg-white text-success p-2 mt-1"><?php echo $stats_globales['taux_validation_global']; ?>%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3><?php echo $stats_globales['societes_actives']; ?></h3>
-                                <p>مؤسسات نشطة</p>
-                            </div>
-                            <div class="icon"><i class="fas fa-chart-pie"></i></div>
-                            <div class="small-box-footer">
-                                <span class="badge bg-white text-warning p-2 mt-1"><?php echo $stats_globales['taux_participation']; ?>%</span>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- Graphique d'avancement par wilaya -->
-                <div class="row mt-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-gradient-dark text-white">
-                                <h5 class="card-title mb-0"><i class="fas fa-chart-bar me-2"></i> معدل الإنجاز حسب الولايات</h5>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="avancementChart" style="height: 400px; width: 100%;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                               
                 <!-- Tableau détaillé par wilaya -->
                 <div class="row mt-4">
                     <div class="col-md-12">
@@ -268,7 +216,7 @@ require_once("composit/header.php");
                                             <span class="badge bg-<?php echo $badge; ?>"><?php echo $texte; ?></span>
                                         </td>
                                         <td>
-                                            <a href="admin_societe_details.php?id_societe=<?php echo $soc->id_societe; ?>&annee=<?php echo $annee_filter; ?>" class="btn btn-sm btn-primary">
+                                            <a href="#?id_societe=<?php echo $soc->id_societe; ?>&annee=<?php echo $annee_filter; ?>" class="btn btn-sm btn-primary">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                         </td>
