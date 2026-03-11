@@ -193,7 +193,6 @@ require_once("composit/header.php");
                                                 </th>
                                                 <th>الرتبة</th>
                                                 <th>القانون الأساسي</th>
-                                                <th>الحالة</th>
                                                 <th class="text-center">الإجراءات</th>
                                             </tr>
                                         </thead>
