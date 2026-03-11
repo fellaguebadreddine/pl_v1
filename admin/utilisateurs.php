@@ -272,7 +272,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                         </div>
                                                     </div>
                                                 </td>
-                                                 <td><?php echo $societe->raison_ar ?: '---'; ?></td>
+                                                 <td> <i class="fas fa-building me-2 text-muted"></i><?php echo $societe->raison_ar ?: '---'; ?></td>
                                                 <td>
                                                     <?php echo $utilisateur->prenom . ' ' . $utilisateur->nom; ?>
                                                 </td>
