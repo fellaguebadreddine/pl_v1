@@ -21,7 +21,7 @@ if ($current_user->type !== 'administrateur') {
 }
 
 // Récupérer tous les utilisateurs
-$utilisateurs = Accounts::trouve_tous();
+$utilisateurs = Accounts::not_sup_admin();
 ?>
 
 <?php
