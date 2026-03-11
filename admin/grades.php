@@ -221,7 +221,7 @@ require_once("composit/header.php");
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <?php echo $grade->lois ?: '---'; ?>
+                                                    <?php echo $grade->loi ?: '---'; ?>
                                                 </td>
                                                 <td>
                                                     <?php echo $grade->badge_etat_simple(); ?>
