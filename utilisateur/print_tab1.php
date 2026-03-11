@@ -50,7 +50,7 @@ $admin = Accounts::trouve_par_id($current_user->id);
 
 // Année
 $annee = $tableau->annee;
-$date_fin = '31/12/' . $annee - 1;
+$date_fin = '31/12/2025';
 
 // Titre de la page
 $titre = "الجدول رقم 01 - " . $societe->raison_ar . " - " . $annee;
