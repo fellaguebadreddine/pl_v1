@@ -143,6 +143,9 @@ public static function trouve_par_criteres($criteres = []) {
 		return self::trouve_par_sql("SELECT * FROM ".self::$nom_table ." where  id_societe = {$id_societe}   and id_user = {$id} ");
   }
 
+  	public static function trouve_tous() {
+		return self::trouve_par_sql("SELECT * FROM ".self::$nom_table);
+  }
 
 /////////////////end update ////////////////////////////////
 /////////////////////////////////////////////////////////

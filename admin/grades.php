@@ -193,7 +193,6 @@ require_once("composit/header.php");
                                                 </th>
                                                 <th>الرتبة</th>
                                                 <th>القانون الأساسي</th>
-                                                <th>الحالة</th>
                                                 <th class="text-center">الإجراءات</th>
                                             </tr>
                                         </thead>
@@ -221,10 +220,7 @@ require_once("composit/header.php");
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <?php echo $grade->lois ?: '---'; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $grade->badge_etat_simple(); ?>
+                                                    <?php echo $grade->loi ?: '---'; ?>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="btn-group btn-group-sm" role="group">

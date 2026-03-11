@@ -21,7 +21,7 @@ if ($current_user->type !== 'administrateur') {
 }
 
 // Récupérer tous les utilisateurs
-$utilisateurs = Accounts::trouve_tous();
+$utilisateurs = Accounts::not_sup_admin();
 ?>
 
 <?php
@@ -219,6 +219,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                     </div>
                                                 </th>
                                                 <th>المستخدم</th>
+                                                <th>المؤسسة</th>
                                                 <th>الاسم الكامل</th>
                                                 <th>البريد الإلكتروني</th>
                                                 <th>الهاتف</th>
@@ -238,6 +239,8 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                 // Déterminer les classes pour الحالة
                                                 $activeClass = $utilisateur->active == '1' ? 'success' : 'danger';
                                                 $activeText = $utilisateur->active == '1' ? 'نشط' : 'غير نشط';
+
+                                                $societe = Societe::trouve_par_id($utilisateur->id_societe);
                                                 
                                                 // Formater التاريخ
                                                 $date_creation = date('d/m/Y', strtotime($utilisateur->date_creation));
@@ -248,6 +251,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                         <input class="form-check-input row-checkbox" type="checkbox" value="<?php echo $utilisateur->id; ?>">
                                                     </div>
                                                 </td>
+                                               
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar avatar-sm me-3">
@@ -268,6 +272,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                         </div>
                                                     </div>
                                                 </td>
+                                                 <td> <i class="fas fa-building me-2 text-muted"></i><?php echo $societe->raison_ar ?: '---'; ?></td>
                                                 <td>
                                                     <?php echo $utilisateur->prenom . ' ' . $utilisateur->nom; ?>
                                                 </td>

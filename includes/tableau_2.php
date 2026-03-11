@@ -18,6 +18,10 @@ class Tableau2
     public $id_admin_validateur;
     public $attachment;
 
+    	public static function trouve_tous() {
+		return self::trouve_par_sql("SELECT * FROM ".self::$nom_table);
+  }
+
     public static function existe_pour_societe_annee($id_societe, $annee)
     {
         global $bd;

@@ -15,8 +15,11 @@ class SuperAdmin {
 
         // Liste des tables à prendre en compte (12 tables)
         $tables = [
-            'tableau_1', 'tableau_1_1', 'tableau_2', 'tableau_3', 
-            'tableau_4', 'tableau_4_1', 'tableau_5'
+            'tableau_1', 'tableau_1_1', 'tableau_2', 'tableau_2_1', 'tableau_2_2',
+             'tableau_3', 
+            'tableau_4', 'tableau_4_1', 'tableau_5', 'tableau_6', 'tableau_6_1', 'tableau_6_2',
+            'tableau_7',
+            'tableau_8' , 'tableau_9', 'tableau_10', 'tableau_11' , 'tableau_12'
         ]; // adaptez selon vos noms réels
 
         // Total sociétés
@@ -195,4 +198,36 @@ class SuperAdmin {
 
         return $stats;
     }
+
+public static function get_monthly_stats($annee) {
+
+    global $bd;
+
+    $tables = ['tableau_1','tableau_1_1','tableau_2','tableau_3','tableau_4','tableau_4_1','tableau_5','tableau_6','tableau_7','tableau_9'];
+
+    $stats = array_fill(0, 12, 0);
+
+    $annee = intval($annee);
+
+    foreach ($tables as $table) {
+
+        $sql = "SELECT MONTH(date_creation) AS mois, COUNT(*) AS total
+                FROM `$table`
+                WHERE annee = $annee
+                GROUP BY mois";
+
+        $result = $bd->requete($sql);
+
+        while ($row = $bd->fetch_array($result)) {
+
+            $mois = intval($row['mois']) - 1;
+
+            $stats[$mois] += $row['total'];
+
+        }
+
+    }
+
+    return $stats;
+}
 }

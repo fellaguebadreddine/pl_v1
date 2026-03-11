@@ -34,7 +34,7 @@ class Grade {
 public static function compter_actives() {
     global $bd;
     
-    $sql = "SELECT COUNT(*) FROM " . self::$nom_table . " WHERE actif =1 ";
+    $sql = "SELECT COUNT(*) FROM " . self::$nom_table . " ";
     
     $result_array = $bd->requete($sql);
 		return !empty($result_array) ? $bd->num_rows($result_array): false;
