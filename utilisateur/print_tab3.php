@@ -46,7 +46,8 @@ $details = DetailTab3::trouve_par_tableau($id); // méthode à implémenter dans
 $createur = Accounts::trouve_par_id($tableau->id_user);
 
 $annee = $tableau->annee;
-$date_fin = '31/12/' . $annee;
+$date_fin = '31/12/2025';
+
 
 // Titre de la page
 $titre = "طباعة الجدول رقم 3 - " . $societe->raison_ar . " - " . $annee;
