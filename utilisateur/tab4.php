@@ -123,7 +123,7 @@ require_once("composit/header.php");
                                     endforeach;
                                 else:
                                 ?>
-                                    <tr><td colspan="6" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد جداول مسجلة</td></tr>
+                                    <tr><td colspan="8" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد جداول مسجلة</td></tr>
                                 <?php endif; ?>
                                 </tbody>
                             </table>
@@ -205,7 +205,7 @@ require_once("composit/header.php");
                                     endforeach;
                                 else:
                                 ?>
-                                    <tr><td colspan="6" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد ملحقات مسجلة</td></tr>
+                                    <tr><td colspan="8" class="text-center py-4"><i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>لا توجد ملحقات مسجلة</td></tr>
                                 <?php endif; ?>
                                 </tbody>
                             </table>

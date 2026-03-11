@@ -200,7 +200,7 @@ require_once("composit/header.php");
                                     else:
                                     ?>
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
+                                        <td colspan="7" class="text-center py-4">
                                             <i class="fas fa-users fa-2x text-muted mb-3 d-block"></i>
                                             لا يوجد موظفون مسجلون
                                         </td>

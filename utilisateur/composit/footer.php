@@ -2172,6 +2172,38 @@ $(document).ready(function() {
     calculerTotaux();
 });
 
+function calculerTotalLigne(row) {
+    let plein1 = parseFloat(row.find('.temps-plein-1').val()) || 0;
+    let partiel1 = parseFloat(row.find('.temps-partiel-1').val()) || 0;
+    let plein2 = parseFloat(row.find('.temps-plein-2').val()) || 0;
+    let partiel2 = parseFloat(row.find('.temps-partiel-2').val()) || 0;
+    let total = plein1 + partiel1 + plein2 + partiel2;
+    row.find('.total-ligne').val(total);
+    return total;
+}
+
+function calculerTotaux() {
+    let totPlein1 = 0, totPartiel1 = 0, totPlein2 = 0, totPartiel2 = 0, totGeneral = 0;
+    $('#tbody_details9 tr:visible').each(function() {
+        let row = $(this);
+        totPlein1 += parseFloat(row.find('.temps-plein-1').val()) || 0;
+        totPartiel1 += parseFloat(row.find('.temps-partiel-1').val()) || 0;
+        totPlein2 += parseFloat(row.find('.temps-plein-2').val()) || 0;
+        totPartiel2 += parseFloat(row.find('.temps-partiel-2').val()) || 0;
+        totGeneral += calculerTotalLigne(row);
+    });
+    $('#total_temps_plein_1').text(totPlein1);
+    $('#total_temps_partiel_1').text(totPartiel1);
+    $('#total_temps_plein_2').text(totPlein2);
+    $('#total_temps_partiel_2').text(totPartiel2);
+    $('#total_general').text(totGeneral);
+}
+
+// Événements sur les champs de nombres
+$(document).on('input', '.temps-plein-1, .temps-partiel-1, .temps-plein-2, .temps-partiel-2', function() {
+    calculerTotaux();
+});
+
 function ajouterLigne() {
     const tbody = $('#tbody_details9');
     const index = compteurLignes++;
@@ -2184,15 +2216,12 @@ function ajouterLigne() {
                 <input type="hidden" name="details[${index}][id_grade]" value="">
                 <select name="details[${index}][id_grade_select]" class="form-control select-grade" required>${options}</select>
             </td>
-            <td><input type="text" name="details[${index}][poste]" class="form-control"></td>
             <td><input type="text" name="details[${index}][classification]" class="form-control"></td>
-            <td><input type="text" name="details[${index}][cadre_juridique]" class="form-control"></td>
-            <td><input type="number" name="details[${index}][temps_plein_1]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
-            <td><input type="number" name="details[${index}][temps_partiel_1]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
-            <td><input type="number" name="details[${index}][temps_plein_2]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
-            <td><input type="number" name="details[${index}][temps_partiel_2]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
-            <td><input type="number" name="details[${index}][temps_plein_3]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
-            <td><input type="number" name="details[${index}][temps_partiel_3]" class="form-control" value="0" min="0" oninput="calculerTotaux()"></td>
+            <td><input type="number" name="details[${index}][temps_plein_1]" class="form-control temps-plein-1" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][temps_partiel_1]" class="form-control temps-partiel-1" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][temps_plein_2]" class="form-control temps-plein-2" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][temps_partiel_2]" class="form-control temps-partiel-2" value="0" min="0"></td>
+            <td><input type="number" name="details[${index}][total]" class="form-control total-ligne" value="0" readonly></td>
             <td><textarea name="details[${index}][observations]" class="form-control" rows="1"></textarea></td>
             <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
         </tr>
@@ -2214,31 +2243,6 @@ function supprimerLigne(btn) {
         row.remove();
     }
     calculerTotaux();
-}
-
-function calculerTotaux() {
-    let totals = {
-        temps_plein_1: 0,
-        temps_partiel_1: 0,
-        temps_plein_2: 0,
-        temps_partiel_2: 0,
-        temps_plein_3: 0,
-        temps_partiel_3: 0
-    };
-    $('#tbody_details9 tr:visible').each(function() {
-        totals.temps_plein_1 += parseFloat($(this).find('input[name*="[temps_plein_1]"]').val()) || 0;
-        totals.temps_partiel_1 += parseFloat($(this).find('input[name*="[temps_partiel_1]"]').val()) || 0;
-        totals.temps_plein_2 += parseFloat($(this).find('input[name*="[temps_plein_2]"]').val()) || 0;
-        totals.temps_partiel_2 += parseFloat($(this).find('input[name*="[temps_partiel_2]"]').val()) || 0;
-        totals.temps_plein_3 += parseFloat($(this).find('input[name*="[temps_plein_3]"]').val()) || 0;
-        totals.temps_partiel_3 += parseFloat($(this).find('input[name*="[temps_partiel_3]"]').val()) || 0;
-    });
-    $('#total_temps_plein_1').text(totals.temps_plein_1);
-    $('#total_temps_partiel_1').text(totals.temps_partiel_1);
-    $('#total_temps_plein_2').text(totals.temps_plein_2);
-    $('#total_temps_partiel_2').text(totals.temps_partiel_2);
-    $('#total_temps_plein_3').text(totals.temps_plein_3);
-    $('#total_temps_partiel_3').text(totals.temps_partiel_3);
 }
 
 function enregistrerBrouillon() {
@@ -2308,7 +2312,7 @@ function supprimerTableau(id) {
     }
 }
 
-// Upload functions
+// Upload functions (identiques)
 function uploadAttachment(table_type, record_id) {
     $('#upload_table_type').val(table_type);
     $('#upload_record_id').val(record_id);

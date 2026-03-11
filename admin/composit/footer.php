@@ -286,6 +286,25 @@ function demanderModification(id) {
 }
     </script>
 
+    <script>
+    function calculerTotaux() {
+    let totPlein1 = 0, totPartiel1 = 0, totPlein2 = 0, totPartiel2 = 0, totGeneral = 0;
+    $('#tbody_details9 tr:visible').each(function() {
+        let row = $(this);
+        totPlein1 += parseFloat(row.find('.temps-plein-1').val()) || 0;
+        totPartiel1 += parseFloat(row.find('.temps-partiel-1').val()) || 0;
+        totPlein2 += parseFloat(row.find('.temps-plein-2').val()) || 0;
+        totPartiel2 += parseFloat(row.find('.temps-partiel-2').val()) || 0;
+        totGeneral += calculerTotalLigne(row);
+    });
+    $('#total_temps_plein_1').text(totPlein1);
+    $('#total_temps_partiel_1').text(totPartiel1);
+    $('#total_temps_plein_2').text(totPlein2);
+    $('#total_temps_partiel_2').text(totPartiel2);
+    $('#total_general').text(totGeneral);
+}
+</script>
+
     <!--end::Script-->
   </body>
   <!--end::Body-->

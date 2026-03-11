@@ -7,7 +7,7 @@ class DetailTab9 {
       protected static $nom_table="detail_tab_9";
 	protected static $champs = array('id', 'id_tableau9', 'id_grade', 'classification', 'cadre_juridique',
         'temps_plein_1', 'temps_partiel_1', 'temps_plein_2', 'temps_partiel_2',
-        'temps_plein_3', 'temps_partiel_3', 'observations');
+        'temps_plein_3', 'temps_partiel_3', 'total', 'observations');
    public $id;
     public $id_tableau9;
     public $id_grade;
@@ -19,6 +19,7 @@ class DetailTab9 {
     public $temps_partiel_2 = 0;
     public $temps_plein_3 = 0;
     public $temps_partiel_3 = 0;
+	public $total;
     public $observations;
    
 public static function trouve_par_tableau($id_tableau9)

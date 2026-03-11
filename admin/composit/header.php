@@ -380,43 +380,43 @@ if (!isset($action)) {
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_6'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux6.php" <?php if ($active_menu == 'tab_6'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 6 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_7'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux7.php" <?php if ($active_menu == 'tab_7'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 7 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_8'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux8.php" <?php if ($active_menu == 'tab_8'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 8 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_9'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux9.php" <?php if ($active_menu == 'tab_9'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 9 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_10'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux10.php" <?php if ($active_menu == 'tab_10'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 10 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_11'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux11.php" <?php if ($active_menu == 'tab_11'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول 11 </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="admin_tableaux3.php" <?php if ($active_menu == 'tab_12'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
+                <a href="admin_tableaux12.php" <?php if ($active_menu == 'tab_12'){echo 'class="nav-link active"';}else{echo 'class="nav-link"';}?>>
                   <i class="nav-icon fa fa-bars"></i>
                   <p> الجدول  12 </p>
                 </a>

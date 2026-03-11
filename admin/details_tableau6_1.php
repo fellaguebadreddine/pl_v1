@@ -6,11 +6,11 @@ $current_user = Accounts::trouve_par_id($session->id_utilisateur);
 if (!$current_user) { $session->logout(); redirect_to('../login.php'); }
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) redirect_to('tab4.php?action=list_tab4&error=معرف غير صالح');
-$tableau = Tableau6::trouve_par_id($id);
+$tableau = Tableau6_1::trouve_par_id($id);
 if (!$tableau) redirect_to('tab4.php?action=list_tab4&error=الجدول غير موجود');
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab6::trouve_par_tableau($id);
+//$details = DetailTab6_1::trouve_par_tableau($id);
 $annee = $tableau->annee;
 
 $titre = "تفاصيل الجدول رقم 6 - ".$id;
@@ -90,37 +90,24 @@ require_once("composit/header.php");
                         <table class="table table-bordered table-striped mb-0">
                             <thead>
                                   <tr>
-                                      <th>الاسم</th>
+                                        <th>الاسم</th>
                                         <th>اللقب</th>
-                                        <th>تاريخ الميلاد</th>
-                                        <th>السلك</th>
+                                        <th> السلك أو الرتبة</th>
+                                        <th>الوظيفة الممارسة</th>
                                         <th>تاريخ التقاعد</th>
+                                        <th>تاريخ العودة</th>
                                         <th>الملاحظات</th>
                                     </tr>
                             </thead>
                            <tbody>
-                    <?php if (!empty($details)): ?>
-                        <?php foreach ($details as $detail): 
-                            $grade = Grade::trouve_par_id($detail->id_grade);
-                        ?>
-                        <tr>                          
-                            <td><?php echo $detail->nom; ?></td>
-                            <td><?php echo $detail->prenom; ?></td>
-                            <td><?php echo $detail->date_naissance; ?></td>
-                            <td><?php echo $grade ? $grade->grade : ''; ?></td>
-                            <td><?php echo $detail->date_retraite; ?></td>
-                            <td><?php echo $detail->observations; ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan="6" class="text-center">لا توجد بيانات</td></tr>
-                    <?php endif; ?>
+                        <tr><td colspan="6" class="text-center"> لا شيئ  </td></tr>
+                    
                 </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <script> var tableauType = 'tab6'; // exemple </script>
+            <script> var tableauType = 'tab6_1'; // exemple </script>
 
             <?php if (!empty($tableau->commentaire_admin)): ?>
             <div class="alert alert-info"><strong><i class="fas fa-comment"></i> ملاحظة الإدارة :</strong><br><?php echo nl2br(htmlspecialchars($tableau->commentaire_admin)); ?></div>

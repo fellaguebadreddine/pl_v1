@@ -167,14 +167,14 @@ if ($existe) {
         <a href="../<?php echo htmlspecialchars($tabls->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
             <i class="fas fa-file-download"></i>
         </a>
-        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
+        <button type="button" class="btn btn-sm btn-warning" onclick="uploadAttachment('tab3', <?php echo $tabls->id; ?>)" title="تغيير المرفق">
             <i class="fas fa-upload"></i>
         </button>
-        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab2', <?php echo $tabls->id; ?>)" title="حذف المرفق">
+        <button type="button" class="btn btn-sm btn-danger" onclick="deleteAttachment('tab3', <?php echo $tabls->id; ?>)" title="حذف المرفق">
             <i class="fas fa-trash"></i>
         </button>
     <?php else: ?>
-        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab2', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
+        <button type="button" class="btn btn-sm btn-success" onclick="uploadAttachment('tab3', <?php echo $tabls->id; ?>)" title="إضافة مرفق">
             <i class="fas fa-upload"></i> إضافة
         </button>
     <?php endif; ?>
@@ -194,7 +194,7 @@ if ($existe) {
                                     </tr>
                                     <?php else: ?>
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
+                                        <td colspan="8" class="text-center py-4">
                                             <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
                                             لا توجد جداول مسجلة
                                         </td>

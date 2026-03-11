@@ -6,11 +6,11 @@ $current_user = Accounts::trouve_par_id($session->id_utilisateur);
 if (!$current_user) { $session->logout(); redirect_to('../login.php'); }
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) redirect_to('tab4.php?action=list_tab4&error=معرف غير صالح');
-$tableau = Tableau6::trouve_par_id($id);
+$tableau = Tableau6_2::trouve_par_id($id);
 if (!$tableau) redirect_to('tab4.php?action=list_tab4&error=الجدول غير موجود');
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab6::trouve_par_tableau($id);
+$details = DetailTab6_2::trouve_par_tableau($id);
 $annee = $tableau->annee;
 
 $titre = "تفاصيل الجدول رقم 6 - ".$id;
@@ -58,7 +58,7 @@ require_once("composit/header.php");
                 <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-arrow-right me-1"></i> رجوع</a>
                 <div>
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal"><i class="fas fa-comment me-1"></i> إضافة ملاحظة</button>
-                    <a href="../utilisateur/print_tab6.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank"><i class="fas fa-print me-1"></i> طباعة</a>
+                    <a href="../utilisateur/print_tab6_2.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank"><i class="fas fa-print me-1"></i> طباعة</a>
                 </div>
             </div>
 
@@ -90,11 +90,11 @@ require_once("composit/header.php");
                         <table class="table table-bordered table-striped mb-0">
                             <thead>
                                   <tr>
-                                      <th>الاسم</th>
+                                        <th>الاسم</th>
                                         <th>اللقب</th>
                                         <th>تاريخ الميلاد</th>
-                                        <th>السلك</th>
-                                        <th>تاريخ التقاعد</th>
+                                        <th>الوظيفة أو الرتبة</th>
+                                        <th> الاقدمية إلى غاية 31-12- <?php echo $annee;?></th>
                                         <th>الملاحظات</th>
                                     </tr>
                             </thead>
@@ -108,7 +108,7 @@ require_once("composit/header.php");
                             <td><?php echo $detail->prenom; ?></td>
                             <td><?php echo $detail->date_naissance; ?></td>
                             <td><?php echo $grade ? $grade->grade : ''; ?></td>
-                            <td><?php echo $detail->date_retraite; ?></td>
+                            <td><?php echo $detail->nbr_annee; ?></td>
                             <td><?php echo $detail->observations; ?></td>
                         </tr>
                         <?php endforeach; ?>
@@ -120,7 +120,7 @@ require_once("composit/header.php");
                     </div>
                 </div>
             </div>
-            <script> var tableauType = 'tab6'; // exemple </script>
+            <script> var tableauType = 'tab6_2'; // exemple </script>
 
             <?php if (!empty($tableau->commentaire_admin)): ?>
             <div class="alert alert-info"><strong><i class="fas fa-comment"></i> ملاحظة الإدارة :</strong><br><?php echo nl2br(htmlspecialchars($tableau->commentaire_admin)); ?></div>

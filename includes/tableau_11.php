@@ -3,9 +3,10 @@
 require_once('bd.php');
 require_once('fonctions.php');
 // Tableau1.php
-class Tableau3 {
-    protected static $nom_table="tableau_3";
-	protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user', 'date_creation', 'commentaire_admin','id_admin_validateur', 'attachment');
+class Tableau11 {
+    protected static $nom_table="tableau_11";
+	protected static $champs = array('id', 'id_societe', 'statut', 'annee', 'date_valide', 'id_user',
+     'date_creation', 'commentaire_admin','id_admin_validateur', 'attachment');
 	public $id;	
 	public $id_societe;
 	public $statut;
@@ -20,7 +21,7 @@ class Tableau3 {
 	public static function existe_pour_societe_annee($id_societe, $annee) {
 		global $bd;
 	
-		$sql = "SELECT id FROM tableau_3 
+		$sql = "SELECT id FROM tableau_11 
 				WHERE id_societe = $id_societe 
 				AND annee = $annee 
 				LIMIT 1";
@@ -66,7 +67,7 @@ class Tableau3 {
 
     public static function trouve_par_societe_annee($id_societe, $annee) {
         global $bd;
-        $sql = "SELECT * FROM tableau_3 WHERE id_societe = $id_societe AND annee = '{$annee}'";
+        $sql = "SELECT * FROM tableau_11 WHERE id_societe = $id_societe AND annee = '{$annee}'";
        $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
     }
@@ -78,7 +79,7 @@ public static function trouve_par_criteres($criteres = []) {
         $conditions[] = "`$champ` = '{$valeur}'";
         $params[] = $valeur;
     }
-    $sql = "SELECT * FROM tableau_3 " ;
+    $sql = "SELECT * FROM tableau_11 " ;
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(" AND ", $conditions);
     }
@@ -96,7 +97,7 @@ public static function trouve_par_criteres($criteres = []) {
   
     public static function get_annees_par_societe($id_societe) {
         global $bd;
-        $sql = "SELECT DISTINCT annee FROM tableau_3 WHERE id_societe = $id_societe ORDER BY annee DESC";
+        $sql = "SELECT DISTINCT annee FROM tableau_11 WHERE id_societe = $id_societe ORDER BY annee DESC";
         $result_array = self::trouve_par_sql($sql);
 		return !empty($result_array) ? array_shift($result_array) : false;
     }
@@ -129,7 +130,7 @@ public static function trouve_par_criteres($criteres = []) {
    return  self::trouve_par_sql($q);
 }
 
-	public static function trouve_tableau_3_par_id($id=0) {
+	public static function trouve_tableau_11_par_id($id=0) {
     $result_array = self::trouve_par_sql("SELECT * FROM ".self::$nom_table." WHERE id_societe={$id} LIMIT 1");
 		return !empty($result_array) ? array_shift($result_array) : false;
   }

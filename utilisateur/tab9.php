@@ -170,16 +170,22 @@ if ($action == "add_tab9") {
                                         <table class="table table-bordered table-striped">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th>الرتبة</th>
+                                                    <th colspan="11" class="text-center">التعداد حسب طبيعة العمل</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2"></th>
+                                                    <th colspan="2" class="text-center">عقد غير محدد المدة</th>
+                                                    <th colspan="2" class="text-center">عقد محدد المدة</th>
+                                                    <th colspan="3"></th>
+                                                </tr>
+                                                <tr>
                                                     <th>منصب الشغل</th>
-                                                    <th>التصنيف</th>
-                                                    <th>الإطار القانوني للانتقال</th>
-                                                    <th>توقيت كامل (نوع 1)</th>
-                                                    <th>توقيت جزئي (نوع 1)</th>
-                                                    <th>توقيت كامل (نوع 2)</th>
-                                                    <th>توقيت جزئي (نوع 2)</th>
-                                                    <th>توقيت كامل (نوع 3)</th>
-                                                    <th>توقيت جزئي (نوع 3)</th>
+                                                    <th>الصنف</th>
+                                                    <th>توقيت كامل</th>
+                                                    <th>توقيت جزئي</th>
+                                                    <th>توقيت كامل</th>
+                                                    <th>توقيت جزئي</th>
+                                                    <th>التعداد</th>
                                                     <th>الملاحظات</th>
                                                     <th>الإجراءات</th>
                                                 </tr>
@@ -202,15 +208,12 @@ if ($action == "add_tab9") {
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </td>
-                                                    <td><input type="text" name="details[<?php echo $index; ?>][poste]" class="form-control" value="<?php echo htmlspecialchars($detail->poste ?? ''); ?>"></td>
                                                     <td><input type="text" name="details[<?php echo $index; ?>][classification]" class="form-control" value="<?php echo htmlspecialchars($detail->classification ?? ''); ?>"></td>
-                                                    <td><input type="text" name="details[<?php echo $index; ?>][cadre_juridique]" class="form-control" value="<?php echo htmlspecialchars($detail->cadre_juridique ?? ''); ?>"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_plein_1]" class="form-control" value="<?php echo $detail->temps_plein_1; ?>" min="0"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_partiel_1]" class="form-control" value="<?php echo $detail->temps_partiel_1; ?>" min="0"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_plein_2]" class="form-control" value="<?php echo $detail->temps_plein_2; ?>" min="0"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_partiel_2]" class="form-control" value="<?php echo $detail->temps_partiel_2; ?>" min="0"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_plein_3]" class="form-control" value="<?php echo $detail->temps_plein_3; ?>" min="0"></td>
-                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_partiel_3]" class="form-control" value="<?php echo $detail->temps_partiel_3; ?>" min="0"></td>
+                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_plein_1]" class="form-control temps-plein-1" value="<?php echo $detail->temps_plein_1; ?>" min="0"></td>
+                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_partiel_1]" class="form-control temps-partiel-1" value="<?php echo $detail->temps_partiel_1; ?>" min="0"></td>
+                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_plein_2]" class="form-control temps-plein-2" value="<?php echo $detail->temps_plein_2; ?>" min="0"></td>
+                                                    <td><input type="number" name="details[<?php echo $index; ?>][temps_partiel_2]" class="form-control temps-partiel-2" value="<?php echo $detail->temps_partiel_2; ?>" min="0"></td>
+                                                    <td><input type="number" name="details[<?php echo $index; ?>][total]" class="form-control total-ligne" value="<?php echo $detail->total; ?>" min="0" readonly></td>
                                                     <td><textarea name="details[<?php echo $index; ?>][observations]" class="form-control" rows="1"><?php echo htmlspecialchars($detail->observations); ?></textarea></td>
                                                     <td class="text-center"><button type="button" class="btn btn-danger btn-sm" onclick="supprimerLigne(this)"><i class="fas fa-trash"></i></button></td>
                                                 </tr>
@@ -222,17 +225,17 @@ if ($action == "add_tab9") {
                                             </tbody>
                                             <tfoot class="table-secondary">
                                                 <tr>
-                                                    <td colspan="4" class="fw-bold text-end">المجموع العام</td>
+                                                    <td colspan="2" class="fw-bold text-end">المجموع العام</td>
                                                     <td class="fw-bold" id="total_temps_plein_1">0</td>
                                                     <td class="fw-bold" id="total_temps_partiel_1">0</td>
                                                     <td class="fw-bold" id="total_temps_plein_2">0</td>
                                                     <td class="fw-bold" id="total_temps_partiel_2">0</td>
-                                                    <td class="fw-bold" id="total_temps_plein_3">0</td>
-                                                    <td class="fw-bold" id="total_temps_partiel_3">0</td>
+                                                    <td class="fw-bold" id="total_general">0</td>
                                                     <td colspan="2"></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
+
                                     </div>
                                 </div>
                             </div>

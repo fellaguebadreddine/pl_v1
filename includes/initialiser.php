@@ -63,8 +63,14 @@ require_once(LIB_PATH . DS . 'detailTab6_2.php');
 require_once(LIB_PATH . DS . 'tableau_7.php');
 require_once(LIB_PATH . DS . 'detailTab7.php');
 
+require_once(LIB_PATH . DS . 'tableau_8.php');
+
 require_once(LIB_PATH . DS . 'tableau_9.php');
 require_once(LIB_PATH . DS . 'detailTab9.php');
+
+require_once(LIB_PATH . DS . 'tableau_10.php');
+require_once(LIB_PATH . DS . 'tableau_11.php');
+require_once(LIB_PATH . DS . 'tableau_12.php');
 
 require_once(LIB_PATH . DS . 'wilayas.php');
 require_once(LIB_PATH . DS . 'employees.php');

@@ -71,13 +71,17 @@ try {
 
                 $id_detail = isset($det_data['id']) ? intval($det_data['id']) : 0;
                 $fields = [
-                    'poste', 'classification', 'cadre_juridique',
-                    'temps_plein_1', 'temps_partiel_1', 'temps_plein_2', 'temps_partiel_2',
-                    'temps_plein_3', 'temps_partiel_3', 'observations'
+                    'classification' => 'string',
+                    'temps_plein_1' => 'int',
+                    'temps_partiel_1' => 'int',
+                    'temps_plein_2' => 'int',
+                    'temps_partiel_2' => 'int',
+                    'total' => 'int',
+                    'observations' => 'string'
                 ];
                 $data_detail = [];
-                foreach ($fields as $f) {
-                    if ($f == 'observations' || $f == 'poste' || $f == 'classification' || $f == 'cadre_juridique') {
+                foreach ($fields as $f => $type) {
+                    if ($type == 'string') {
                         $data_detail[$f] = isset($det_data[$f]) ? trim($det_data[$f]) : '';
                     } else {
                         $data_detail[$f] = isset($det_data[$f]) ? intval($det_data[$f]) : 0;
@@ -95,6 +99,10 @@ try {
                     $obj = new DetailTab9();
                     $obj->id_tableau9 = $id_tableau;
                     $obj->id_grade = $id_grade;
+                    // Note: If detail table contains id_societe, id_user, annee, uncomment below
+                    // $obj->id_societe = $id_societe;
+                    // $obj->id_user = $id_user;
+                    // $obj->annee = $annee;
                     foreach ($data_detail as $k=>$v) $obj->$k = $v;
                     $obj->save();
                 }

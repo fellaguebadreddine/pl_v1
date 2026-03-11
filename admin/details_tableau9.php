@@ -6,16 +6,16 @@ $current_user = Accounts::trouve_par_id($session->id_utilisateur);
 if (!$current_user) { $session->logout(); redirect_to('../login.php'); }
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($id <= 0) redirect_to('tab4.php?action=list_tab4&error=معرف غير صالح');
-$tableau = Tableau6::trouve_par_id($id);
+$tableau = Tableau9::trouve_par_id($id);
 if (!$tableau) redirect_to('tab4.php?action=list_tab4&error=الجدول غير موجود');
 $societe = Societe::trouve_par_id($tableau->id_societe);
 $createur = Accounts::trouve_par_id($tableau->id_user);
-$details = DetailTab6::trouve_par_tableau($id);
+$details = DetailTab9::trouve_par_tableau($id);
 $annee = $tableau->annee;
 
-$titre = "تفاصيل الجدول رقم 6 - ".$id;
-$active_menu = "tab_6";
-$active_submenu = "tab_6";
+$titre = "تفاصيل الجدول رقم 9 - ".$id;
+$active_menu = "tab_9";
+$active_submenu = "tab_9";
 $header = array('select2', 'sweetalert2');
 require_once("composit/header.php");
 ?>
@@ -46,8 +46,8 @@ require_once("composit/header.php");
     <div class="app-content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-6"><h3 class="mb-0"><i class="fas fa-file-alt me-2"></i> تفاصيل الجدول رقم 6 </h3></div>
-                <div class="col-sm-6"><ol class="breadcrumb float-sm-end"><li class="breadcrumb-item"><a href="index.php">الرئيسية</a></li><li class="breadcrumb-item"><a href="tab6.php?action=list_tab6">الجداول</a></li><li class="breadcrumb-item active">تفاصيل الجدول</li></ol></div>
+                <div class="col-sm-6"><h3 class="mb-0"><i class="fas fa-file-alt me-2"></i> تفاصيل الجدول رقم 7 </h3></div>
+                <div class="col-sm-6"><ol class="breadcrumb float-sm-end"><li class="breadcrumb-item"><a href="index.php">الرئيسية</a></li><li class="breadcrumb-item"><a href="#">الجداول</a></li><li class="breadcrumb-item active">تفاصيل الجدول</li></ol></div>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@ require_once("composit/header.php");
                 <a href="javascript:history.back()" class="btn btn-secondary"><i class="fas fa-arrow-right me-1"></i> رجوع</a>
                 <div>
                     <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#noteModal"><i class="fas fa-comment me-1"></i> إضافة ملاحظة</button>
-                    <a href="../utilisateur/print_tab6.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank"><i class="fas fa-print me-1"></i> طباعة</a>
+                    <a href="../utilisateur/print_tab9.php?id=<?php echo $id; ?>" class="btn btn-info" target="_blank"><i class="fas fa-print me-1"></i> طباعة</a>
                 </div>
             </div>
 
@@ -89,26 +89,39 @@ require_once("composit/header.php");
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped mb-0">
                             <thead>
-                                  <tr>
-                                      <th>الاسم</th>
-                                        <th>اللقب</th>
-                                        <th>تاريخ الميلاد</th>
-                                        <th>السلك</th>
-                                        <th>تاريخ التقاعد</th>
-                                        <th>الملاحظات</th>
-                                    </tr>
+                               <tr>
+                                                    <th colspan="8" class="text-center">التعداد حسب طبيعة العمل</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2"></th>
+                                                    <th colspan="2" class="text-center">عقد غير محدد المدة</th>
+                                                    <th colspan="2" class="text-center">عقد محدد المدة</th>
+                                                    <th colspan="2"></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>منصب الشغل</th>
+                                                    <th>الصنف</th>
+                                                    <th>توقيت كامل</th>
+                                                    <th>توقيت جزئي</th>
+                                                    <th>توقيت كامل</th>
+                                                    <th>توقيت جزئي</th>
+                                                    <th>التعداد</th>
+                                                    <th>الملاحظات</th>
+                                                </tr>
                             </thead>
                            <tbody>
                     <?php if (!empty($details)): ?>
                         <?php foreach ($details as $detail): 
                             $grade = Grade::trouve_par_id($detail->id_grade);
                         ?>
-                        <tr>                          
-                            <td><?php echo $detail->nom; ?></td>
-                            <td><?php echo $detail->prenom; ?></td>
-                            <td><?php echo $detail->date_naissance; ?></td>
+                        <tr>   
                             <td><?php echo $grade ? $grade->grade : ''; ?></td>
-                            <td><?php echo $detail->date_retraite; ?></td>
+                            <td><?php echo $grade ? $grade->classe : ''; ?></td>
+                            <td><?php echo $detail->temps_plein_1; ?></td>
+                            <td><?php echo $detail->temps_partiel_1; ?></td>
+                            <td><?php echo $detail->temps_plein_2; ?></td>
+                            <td><?php echo $detail->temps_partiel_2; ?></td>
+                            <td><?php echo $detail->total; ?></td>
                             <td><?php echo $detail->observations; ?></td>
                         </tr>
                         <?php endforeach; ?>
@@ -116,11 +129,22 @@ require_once("composit/header.php");
                         <tr><td colspan="6" class="text-center">لا توجد بيانات</td></tr>
                     <?php endif; ?>
                 </tbody>
+                <tfoot class="table-secondary">
+                                                <tr>
+                                                    <td colspan="2" class="fw-bold">المجموع العام</td>
+                                                    <td class="fw-bold" id="total_temps_plein_1">0</td>
+                                                    <td class="fw-bold" id="total_temps_partiel_1">0</td>
+                                                    <td class="fw-bold" id="total_temps_plein_2">0</td>
+                                                    <td class="fw-bold" id="total_temps_partiel_2">0</td>
+                                                    <td class="fw-bold" id="total_general">0</td>
+                                                    <td colspan="2"></td>
+                                                </tr>
+                                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
-            <script> var tableauType = 'tab6'; // exemple </script>
+            <script> var tableauType = 'tab9'; // exemple </script>
 
             <?php if (!empty($tableau->commentaire_admin)): ?>
             <div class="alert alert-info"><strong><i class="fas fa-comment"></i> ملاحظة الإدارة :</strong><br><?php echo nl2br(htmlspecialchars($tableau->commentaire_admin)); ?></div>
@@ -149,6 +173,7 @@ require_once("composit/header.php");
         </div>
     </div>
 </main>
+
 
 
 <?php require_once("composit/footer.php"); ?>

@@ -141,6 +141,169 @@ $annee_courante = $exercice_actif ? $exercice_actif->annee : date('Y');
                     </div>
                  </div>
                 </div>
+                <br>
+                <!-- Onglets de navigation -->
+                 <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول رقم 6 مكرر 1 </h3>
+                                    </div>
+               <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                 <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                       
+                                        <th width="10%" class="text-center">الملاحظة</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $tabls = Tableau6_1::trouve_par_societe($nav_societe->id_societe);
+                                    if (!empty($tabls)): 
+                                        foreach ($tabls as $row): 
+                                            $statut_badge = $row->statut == 'validé' ? 'success' : 
+                                                          ($row->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            
+                                            <a href="../utilisateur/print_tab6_1.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
+                                            <i class="fa fa-print "></i> <?php echo $row->id; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                <?php echo $row->statut; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
+                                        </td>                                        
+                                        <td><?php echo $row->commentaire_admin; ?></td>
+                                         <td class="text-center">
+                                            <?php if (!empty($tabls->attachment)): ?>
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i>
+                                            </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td class="text-center">
+                                      
+                                            <a href="details_tableau6_1.php?action=affchier_detail&id=<?php echo $row->id; ?>" 
+                                               class="btn btn-sm btn-warning me-1" title="التفاصيل">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button onclick="commentTableau6_1(<?php echo $row->id; ?>)" 
+                                                    class="btn btn-sm btn-danger" title="ملاحظة">
+                                                <i class="fas fa-commenting"></i>
+                                            </button>
+                                            
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" class="text-center py-4">
+                                            <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                            لا توجد جداول مسجلة
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+
+                <br>
+                <!-- Onglets de navigation -->
+                 <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-table me-2"></i>   الجدول رقم 6 مكرر 2</h3>
+                    </div>
+               <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                 <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">ID</th>
+                                        <th width="10%" class="text-center">السنة</th>
+                                        <th width="10%" class="text-center">الحالة</th>
+                                        <th width="15%" class="text-center">تاريخ التقديم</th>                                       
+                                        <th width="10%" class="text-center">الملاحظة</th>
+                                         <th width="10%" class="text-center">المرفقات</th>
+                                        <th width="15%" class="text-center">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $tabls = Tableau6_2::trouve_par_societe($nav_societe->id_societe);
+                                    if (!empty($tabls)): 
+                                        foreach ($tabls as $row): 
+                                            $statut_badge = $row->statut == 'validé' ? 'success' : 
+                                                          ($row->statut == 'en_attente' ? 'warning' : 'secondary');
+                                    ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            
+                                            <a href="../utilisateur/print_tab6_2.php?id=<?php echo $row->id; ?>" class="btn btn-sm btn-primary text-white" target="_blank">
+                                            <i class="fa fa-print "></i> <?php echo $row->id; ?>
+                                            </a>
+                                        </td>
+                                        <td class="text-center"><?php echo $row->annee; ?></td>
+                                        <td class="text-center">
+                                            <span class="badge bg-<?php echo $statut_badge; ?>">
+                                                <?php echo $row->statut; ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo $row->date_valide ? date('d/m/Y', strtotime($row->date_valide)) : '---'; ?>
+                                        </td>                                        
+                                        <td><?php echo $row->commentaire_admin; ?></td>
+                                         <td class="text-center">
+                                            <?php if (!empty($tabls->attachment)): ?>
+                                            <a href="../<?php echo htmlspecialchars($row->attachment); ?>" target="_blank" class="btn btn-sm btn-info" title="تحميل المرفق">
+                                            <i class="fas fa-file-download"></i>
+                                            </a>
+                                            <?php endif;?>
+                                        </td>
+                                        <td class="text-center">
+                                      
+                                            <a href="details_tableau6_2.php?action=affchier_detail&id=<?php echo $row->id; ?>" 
+                                               class="btn btn-sm btn-warning me-1" title="التفاصيل">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <button onclick="commentTableau6_1(<?php echo $row->id; ?>)" 
+                                                    class="btn btn-sm btn-danger" title="ملاحظة">
+                                                <i class="fas fa-commenting"></i>
+                                            </button>
+                                            
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="10" class="text-center py-4">
+                                            <i class="fas fa-table fa-2x text-muted mb-3 d-block"></i>
+                                            لا توجد جداول مسجلة
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+                </div>
                              
             <?php endif; ?>
         </div>
