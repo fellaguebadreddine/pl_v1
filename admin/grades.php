@@ -223,9 +223,6 @@ require_once("composit/header.php");
                                                 <td>
                                                     <?php echo $grade->loi ?: '---'; ?>
                                                 </td>
-                                                <td>
-                                                    <?php echo $grade->badge_etat_simple(); ?>
-                                                </td>
                                                 <td class="text-center">
                                                     <div class="btn-group btn-group-sm" role="group">
                                                         <button type="button" 
