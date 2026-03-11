@@ -251,7 +251,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                         <input class="form-check-input row-checkbox" type="checkbox" value="<?php echo $utilisateur->id; ?>">
                                                     </div>
                                                 </td>
-                                                <td><?php echo $societe->raison_ar ?: '---'; ?></td>
+                                               
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar avatar-sm me-3">
@@ -272,6 +272,7 @@ if ($current_user->type =='administrateur' or $current_user->type =='utilisateur
                                                         </div>
                                                     </div>
                                                 </td>
+                                                 <td><?php echo $societe->raison_ar ?: '---'; ?></td>
                                                 <td>
                                                     <?php echo $utilisateur->prenom . ' ' . $utilisateur->nom; ?>
                                                 </td>
