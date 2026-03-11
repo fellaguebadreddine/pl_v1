@@ -230,7 +230,7 @@ public static function trouver_par_login_simple($username) {
 	public static function not_sup_admin(){
 	$q =  "SELECT * FROM ".self::$nom_table;
 	$q .= " WHERE type !='super_admin'";
-	$q .= " AND type !='administrateur'";
+	$q .= " and type !='administrateur'";
     return  self::trouve_par_sql($q);
 	}
 	public static function ens(){
